@@ -1,7 +1,7 @@
 {
-  "name": "node-http-server",
+  "name": "fetchq-cron",
   "version": "1.0.0",
-  "description": "Node.js example server starter project",
+  "description": "",
   "main": "src/index.js",
   "scripts": {
     "start": "nodemon src/index.js"
