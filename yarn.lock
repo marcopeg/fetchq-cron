@@ -1491,10 +1491,10 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "2.1.1"
 
-fetchq@2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/fetchq/-/fetchq-2.6.1.tgz#0649a8c6fbae9f7a48f561c743b426fb90f13497"
-  integrity sha512-yig8X36vgpJEhfFkJW1WJyzxcGkPIXHBAfeM2rWNkS8nPKoMRq3IfVXibppeZYpP2za74veI5g7NOdEI5e1k+Q==
+fetchq@2.6.2:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/fetchq/-/fetchq-2.6.2.tgz#429cba4141a8adbf9370600148a672877a06bb4d"
+  integrity sha512-seimbw3pRRLtQ2HgojayFxXFw+kTh0LYpcMBsoHXoIFEcyrfcq98Unk0hLIpQYRelmWVT3nhsJTtiIp+hlJUqQ==
   dependencies:
     "@marcopeg/utils" "^2.0.1"
     pg "^7.17.1"
@@ -4290,7 +4290,7 @@ util.promisify@^1.0.0:
     has-symbols "^1.0.1"
     object.getownpropertydescriptors "^2.1.0"
 
-uuid@3.4.0, uuid@^3.3.2, uuid@^3.4.0:
+uuid@^3.3.2, uuid@^3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==

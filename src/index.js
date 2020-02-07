@@ -3,9 +3,8 @@ const libFetchq = require('fetchq');
 const envalid = require('envalid');
 const { Q1 } = require('./contants');
 
-// const { v1QueueCreate } = require('./routes/v1-queue-create');
-// const { v1QueueDrop } = require('./routes/v1-queue-drop');
-const { v1CronCreate } = require('./routes/v1-cron-create');
+const { v1CronUpsert } = require('./routes/v1-cron-upsert');
+const { v1CronList } = require('./routes/v1-cron-list');
 
 const env = envalid.cleanEnv(process.env, {
   PGSTRING: envalid.str(),
@@ -41,8 +40,7 @@ const fastify = libFastify();
 fastify.decorateRequest('env', env);
 fastify.decorateRequest('fetchq', fetchq);
 
-// fastify.route(v1QueueCreate);
-// fastify.route(v1QueueDrop);
-fastify.route(v1CronCreate);
+fastify.route(v1CronUpsert);
+fastify.route(v1CronList);
 
 Promise.all([fetchq.boot(), fastify.listen(8080)]).catch(err => console.error);
