@@ -6,6 +6,12 @@ module.exports = {
       group: {
         type: 'string',
       },
+      limit: {
+        type: 'integer',
+      },
+      cursor: {
+        type: 'string',
+      },
     },
   },
   response: {
