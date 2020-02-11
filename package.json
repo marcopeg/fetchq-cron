@@ -5,17 +5,21 @@
   "main": "src/index.js",
   "scripts": {
     "start": "nodemon src/index.js",
-    "tdd": "./node_modules/.bin/jest . --watchAll"
+    "tdd:e2e": "./node_modules/.bin/jest --projects test/e2e --runInBand --watchAll --testTimeout=10000",
+    "tdd:unit": "./node_modules/.bin/jest --projects test/unit --watchAll"
   },
   "dependencies": {
+    "@forrestjs/hooks": "3.9.0",
+    "axios": "0.19.2",
     "cron-parser": "2.13.0",
     "envalid": "6.0.0",
     "fastify": "2.11.0",
-    "fetchq": "2.6.2",
-    "jest": "25.1.0"
+    "fastify-cors": "3.0.1",
+    "fetchq": "2.6.2"
   },
   "devDependencies": {
-    "nodemon": "1.18.4"
+    "nodemon": "1.18.4",
+    "jest": "25.1.0"
   },
   "keywords": []
 }

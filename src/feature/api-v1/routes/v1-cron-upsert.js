@@ -1,4 +1,3 @@
-const { Q1 } = require('../contants');
 const { getNextIteration } = require('../lib/get-next-iteration');
 const schema = require('./v1-cron-upsert.schema');
 
@@ -7,7 +6,8 @@ const v1CronUpsert = {
   url: '/api/v1/cron/',
   schema,
   handler: async (request, reply) => {
-    const { fetchq } = request;
+    const { fetchq, getConfig } = request;
+    const Q1 = getConfig('app.q1');
     const { group_name, task_name, schedule } = request.body;
 
     const subject = `${group_name}__${task_name}`;
