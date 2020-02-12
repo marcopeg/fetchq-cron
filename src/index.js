@@ -10,6 +10,7 @@ const serviceTdd = require('./service/service-tdd');
 
 // Features
 const featurePing = require('./feature/ping');
+const featureSchemaV1 = require('./feature/schema-v1');
 const featureApiV1 = require('./feature/api-v1');
 
 // Settings
@@ -51,5 +52,5 @@ runHookApp({
     serviceFastifyFetchq,
     serviceTdd,
   ],
-  features: [featurePing, featureApiV1],
+  features: [featurePing, featureSchemaV1, featureApiV1],
 }).catch(err => console.error(err.message));

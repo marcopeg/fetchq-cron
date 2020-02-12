@@ -17,8 +17,17 @@ const serviceTDD = ({ registerAction, createHook, registerHook }) => {
         handler: async () => ({ message: '+ok' }),
       });
 
+      // Register route abstraction that prefixes
+      // end routes with `/test`
+      const registerRoute = config => {
+        ctx.registerRoute({
+          ...config,
+          url: `/test${config.url}`,
+        });
+      };
+
       // Let other features to integrate test routes:
-      createHook.sync(hooks.TDD_FASTIFY_ROUTE, ctx);
+      createHook.sync(hooks.TDD_FASTIFY_ROUTE, { registerRoute });
     },
   });
 

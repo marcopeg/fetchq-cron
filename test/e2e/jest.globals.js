@@ -43,7 +43,7 @@ const env = getEnv();
 // };
 
 module.exports = () => ({
-  ...env,
+  env,
   // axios,
   // pause,
   // assertQueueMetrics,
