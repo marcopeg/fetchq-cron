@@ -16,27 +16,31 @@ const featureApiV1 = require('./feature/api-v1');
 // Settings
 const settings = ({ setConfig }) => {
   // FetchQ Maintenance
-  setConfig('fetchq.pool.max', 1);
-  setConfig('fetchq.maintenance', {
-    limit: 1,
-    delay: 100,
-    sleep: 1000,
-  });
-  setConfig('fetchq.queues', [
-    {
-      name: Q1,
-      isActive: true,
-      enableNotifications: true,
-      maxAttempts: 5,
-      errorsRetention: '1h',
-      maintenance: {
-        mnt: { delay: '3s', duration: '5m', limit: 500 },
-        sts: { delay: '1m', duration: '5m' },
-        cmp: { delay: '30m', duration: '5m' },
-        drp: { delay: '10m', duration: '5m' },
-      },
+  setConfig('fetchq', {
+    pool: {
+      max: 1,
     },
-  ]);
+    maintenance: {
+      limit: 1,
+      delay: 100,
+      sleep: 1000,
+    },
+    queues: [
+      {
+        name: Q1,
+        isActive: true,
+        enableNotifications: true,
+        maxAttempts: 5,
+        errorsRetention: '1h',
+        maintenance: {
+          mnt: { delay: '3s', duration: '5m', limit: 500 },
+          sts: { delay: '1m', duration: '5m' },
+          cmp: { delay: '30m', duration: '5m' },
+          drp: { delay: '10m', duration: '5m' },
+        },
+      },
+    ],
+  });
 
   // Generica app configuration
   setConfig('app.q1', Q1);
