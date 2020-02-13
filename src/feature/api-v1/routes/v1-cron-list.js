@@ -23,7 +23,7 @@ const v1CronList = {
     }
 
     if (query.cursor) {
-      where.push(`next_iteration < '${query.cursor}'`);
+        where.push(`next_iteration < '${query.cursor}'`);
     }
 
     if (where.length) {
