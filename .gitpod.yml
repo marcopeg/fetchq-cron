@@ -2,6 +2,7 @@ tasks:
   - name: App.
     init: yarn install
     command: yarn start
+    openIn: right
   - name: E2E Tests
     command: yarn tdd:e2e
     openIn: right
