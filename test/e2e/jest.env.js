@@ -1,5 +1,6 @@
 const envalid = require('envalid');
-const BACKEND_ROOT = 'https://204bi.sse.codesandbox.io';
+const BACKEND_ROOT =
+  process.env.SERVER_ROOT || 'https://204bi.sse.codesandbox.io';
 
 module.exports = () =>
   envalid.cleanEnv(process.env, {

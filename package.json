@@ -1,5 +1,5 @@
 {
-  "name": "fetchq-cron-api",
+  "name": "fetch-cron-api",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
