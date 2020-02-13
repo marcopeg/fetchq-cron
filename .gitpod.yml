@@ -1,11 +1,14 @@
 tasks:
-  - init: yarn install
+  - name: App.
+    init: yarn install
     command: yarn start
-  - command: yarn tdd:e2e
-    openIn: bottom
+  - name: E2E Tests
+    command: yarn tdd:e2e
+    openIn: right
     openMode: tab-after
-  - command: yarn tdd:unit
-    openIn: bottom
+  - name: Unit Tests
+    command: yarn tdd:unit
+    openIn: right
     openMode: tab-after
 
 ports:
