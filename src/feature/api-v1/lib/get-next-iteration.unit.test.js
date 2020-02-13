@@ -13,4 +13,9 @@ describe('schedule', () => {
     });
     expect(next.toISOString()).toBe('2012-12-26T12:40:00.000Z');
   });
+
+  it('should calculate by PLAN', () => {
+    const next = getNextIteration('plan', '2012-12-26 12:00:00');
+    expect(next.toISOString()).toBe('2012-12-26T12:00:00.000Z');
+  });
 });

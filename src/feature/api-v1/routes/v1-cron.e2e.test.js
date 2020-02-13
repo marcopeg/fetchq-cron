@@ -24,11 +24,30 @@ describe('v1/cron', () => {
   // afterAll(() => axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/reset`));
 
   describe('upsert', () => {
-    it('should upsert a new task', async () => {
+    it('should upsert a new task with a delay', async () => {
       const r1 = await axios.post(`${TEST_SERVER_ROOT}/api/v1/cron/`, t1);
       // console.info(r1.data);
       expect(r1.data.success).toBe(true);
       expect(r1.data.data.was_created).toBe(true);
+
+      // Assert on the delay
+      const ni = new Date(r1.data.data.next_iteration);
+      const ct = new Date(r1.data.data.created_at);
+      expect(ni - ct).toBeLessThanOrEqual(1000);
+    });
+
+    it('should upsert a new task with a cron plan', async () => {
+      const r1 = await axios.post(`${TEST_SERVER_ROOT}/api/v1/cron/`, {
+        ...t1,
+        schedule: {
+          method: 'plan',
+          value: '2012-12-26 12:00:00',
+        },
+      });
+      // console.info(r1.data);
+      expect(r1.data.success).toBe(true);
+      expect(r1.data.data.was_created).toBe(true);
+      expect(r1.data.data.next_iteration).toBe('2012-12-26T12:00:00.000Z');
     });
 
     it('should upsert a existing task', async () => {

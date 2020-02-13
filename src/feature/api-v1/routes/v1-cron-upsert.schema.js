@@ -40,9 +40,11 @@ const schedule = {
       type: 'string',
       // delay: 10s
       // cron: cron job schedule format
+      // plan: set a specific date
+      // ??? not implemented yet ???
       // complete: 1 shot then complete
       // single: 1 shot then drop
-      enum: ['delay', 'cron'],
+      enum: ['delay', 'cron', 'plan'],
     },
     value: {
       type: 'string',
