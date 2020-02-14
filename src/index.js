@@ -57,10 +57,5 @@ runHookApp({
     serviceFastifyFetchq,
     serviceTdd,
   ],
-  features: [
-    featurePing,
-    featureSchemaV1,
-    featureApiV1,
-    featureWorkersV1,
-],
+  features: [featurePing, featureSchemaV1, featureApiV1, featureWorkersV1],
 }).catch(err => console.error(err.message));

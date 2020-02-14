@@ -1,6 +1,10 @@
 const { SERVICE_NAME, ...hooks } = require('./hooks');
 
-const useServiceTDD = ['development', 'test'].includes(process.env.NODE_ENV);
+// Force to use the TDD service if the code is running into
+// CodeSandbox or if in a development environment.
+const useServiceTDD =
+  ['development', 'test'].includes(process.env.NODE_ENV) ||
+  Boolean(process.env.SANDBOX_URL);
 
 const serviceTDD = ({ registerAction, createHook, registerHook }) => {
   registerHook(hooks);
