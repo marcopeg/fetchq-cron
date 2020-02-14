@@ -1,24 +1,39 @@
 const handler = require('./q1-handler');
 const fixture = require('./q1.fixture');
 
-describe('v1/q1-handler', () => {
-  const t1 = JSON.parse(
-    JSON.stringify(fixture.t1).replace(
+const makeTask = task =>
+  JSON.parse(
+    JSON.stringify(task).replace(
       /{{TEST_SERVER_ROOT}}/g,
       global.env.TEST_SERVER_ROOT,
     ),
   );
 
-  it('should work', async () => {
-    // console.log(global.env.TEST_SERVER_ROOT);
-    // console.log(t1);
-    const doc = {
-      ...t1,
-      complete: () => {},
-    };
+describe('v1/q1-handler', () => {
+  describe('method:webhook', () => {
+    describe('rest/GET', () => {
+      it('should reschedule from the task definition', async () => {
+        const doc = {
+          ...makeTask(fixture.f1.task),
+          reschedule: (...args) => args,
+        };
 
-    const res = await handler(doc);
+        const [p1, p2] = await handler(doc);
+        expect(p1).toBe('+1s');
+        expect(p2.payload.count).toBe(1);
+      });
 
-    console.log(res);
+      it('should reschedule from the response', async () => {
+        const doc = {
+          ...makeTask(fixture.f2.task),
+          reschedule: (...args) => args,
+        };
+
+        const [p1, p2] = await handler(doc);
+        expect(p1).toBe('+1m');
+        expect(p2.payload.count).toBe(1);
+        expect(p2.payload.foo).toBe('abc');
+      });
+    });
   });
 });

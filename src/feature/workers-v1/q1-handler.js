@@ -1,4 +1,5 @@
 const createFetchResolver = require('fetch-resolver').default;
+const { getNextIteration } = require('../../lib/get-next-iteration');
 
 const actionHandlers = {
   webhook: async doc => {
@@ -8,14 +9,21 @@ const actionHandlers = {
 };
 
 module.exports = async doc => {
-  console.log('>>', doc.subject);
+  // console.log('>>', doc.subject);
 
-  // Run the external action
+  // Run the task's external action
   const actionHandler = actionHandlers[doc.payload.action.method];
   const actionResult = await actionHandler(doc);
-  console.log(actionResult);
 
-  // Calculate exit action
+  // Calculate next iteration
+  const schedule = actionResult.schedule || doc.payload.schedule;
+  const nextIteration = getNextIteration(schedule.method, schedule.value);
 
-  return doc.complete();
+  // Calculate next payload
+  const payload = {
+    ...doc.payload.payload,
+    ...(actionResult.payload || {}),
+  };
+
+  return doc.reschedule(nextIteration, { payload });
 };

@@ -1,29 +1,68 @@
-const t1 = {
-  subject: 'foo__t1',
-  version: 0,
-  priority: 0,
-  status: 2,
-  attempts: 0,
-  iterations: 1,
-  lock_upgrade: null,
-  created_at: '2020-02-14 11:41:36.755532+00',
-  last_iteration: '2020-02-14 11:41:40.153691+00',
-  payload: {
-    group_name: 'foo',
-    task_name: 't1',
-    schedule: {
-      value: '+1s',
-      method: 'delay',
-    },
-    action: {
-      method: 'webhook',
-      request: {
-        type: 'rest',
-        url: '{{TEST_SERVER_ROOT}}/test/worker/v1/q1/foo__t1',
+const f1 = {
+  task: {
+    subject: 'foo__t1',
+    payload: {
+      group_name: 'foo',
+      task_name: 't1',
+      schedule: {
+        value: '+1s',
+        method: 'delay',
+      },
+      action: {
+        method: 'webhook',
+        request: {
+          type: 'rest',
+          url: '{{TEST_SERVER_ROOT}}/test/worker/v1/q1/foo__t1',
+        },
+      },
+      payload: {
+        count: 1,
       },
     },
-    payload: {},
+  },
+  handler: {
+    method: 'GET',
+    url: '/worker/v1/q1/foo__t1',
+    handler: async () => ({}),
   },
 };
 
-module.exports = { t1 };
+const f2 = {
+  task: {
+    subject: 'foo__t2',
+    payload: {
+      group_name: 'foo',
+      task_name: 't1',
+      schedule: {
+        value: '+1s',
+        method: 'delay',
+      },
+      action: {
+        method: 'webhook',
+        request: {
+          type: 'rest',
+          url: '{{TEST_SERVER_ROOT}}/test/worker/v1/q1/foo__t2',
+        },
+      },
+      payload: {
+        count: 1,
+      },
+    },
+  },
+  handler: {
+    method: 'GET',
+    url: '/worker/v1/q1/foo__t2',
+    handler: async () => ({
+      success: true,
+      schedule: {
+        method: 'delay',
+        value: '+1m',
+      },
+      payload: {
+        foo: 'abc',
+      },
+    }),
+  },
+};
+
+module.exports = { f1, f2, handlers: [f1.handler, f2.handler] };

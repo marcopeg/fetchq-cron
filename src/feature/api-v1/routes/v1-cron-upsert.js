@@ -1,4 +1,4 @@
-const { getNextIteration } = require('../lib/get-next-iteration');
+const { getNextIteration } = require('../../../lib/get-next-iteration');
 const schema = require('./v1-cron-upsert.schema');
 
 const v1CronUpsert = {
