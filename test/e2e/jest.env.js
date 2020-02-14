@@ -1,5 +1,28 @@
 const envalid = require('envalid');
-const BACKEND_ROOT = process.env.SERVER_ROOT || process.env.SANDBOX_URL;
+
+// Setup the internal connection to the backend using
+// environment variables and some guesswork for
+// CodeSanbox.
+const BACKEND_ROOT = (() => {
+  if (process.env.SERVER_ROOT) {
+    return process.env.SERVER_ROOT;
+  }
+
+  if (process.env.SANDBOX_URL) {
+    return process.env.SANDBOX_URL;
+  }
+
+  if (process.env.HOSTNAME) {
+    try {
+      const sandboxId = process.env.HOSTNAME.split('-')[2];
+      return `https://${sandboxId}.sse.codesandbox.io`;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  return null;
+})();
 
 module.exports = () =>
   envalid.cleanEnv(process.env, {
