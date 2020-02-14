@@ -10,4 +10,20 @@ module.exports = ({ registerAction }) => {
       handler: q1Handler,
     }),
   });
+
+  registerAction({
+    hook: '$TDD_FASTIFY_ROUTE?',
+    name: FEATURE_NAME,
+    handler: ({ registerRoute }) => {
+      registerRoute({
+        method: 'GET',
+        url: '/worker/v1/q1/foo__t1',
+        handler: (request, reply) => {
+          reply.send({
+            success: true,
+          });
+        },
+      });
+    },
+  });
 };

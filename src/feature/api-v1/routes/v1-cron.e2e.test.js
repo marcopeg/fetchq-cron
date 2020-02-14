@@ -7,9 +7,8 @@ describe('v1/cron', () => {
     task_name: 't1',
     action: {
       method: 'webhook',
-      endpoint: `${TEST_SERVER_ROOT}/test/w1`,
-      auth: {
-        method: 'none',
+      request: {
+        url: `${TEST_SERVER_ROOT}/test/w1`,
       },
     },
     schedule: {

@@ -1,12 +1,18 @@
-const auth = {
+// Should implement the schema of:
+// https://github.com/marcopeg/npm-packages/tree/master/packages/fetch-resolver
+const webhookRequest = {
   oneOf: [
     {
       type: 'object',
-      required: ['method'],
+      required: ['url'],
       properties: {
-        method: {
+        type: {
           type: 'string',
-          enum: ['none'],
+          enum: ['rest', 'graphql'],
+          default: 'rest',
+        },
+        url: {
+          type: 'string',
         },
       },
     },
@@ -17,16 +23,13 @@ const action = {
   oneOf: [
     {
       type: 'object',
-      required: ['method', 'endpoint', 'auth'],
+      required: ['method', 'request'],
       properties: {
         method: {
           type: 'string',
           enum: ['webhook'],
         },
-        endpoint: {
-          type: 'string',
-        },
-        auth,
+        request: webhookRequest,
       },
     },
   ],
