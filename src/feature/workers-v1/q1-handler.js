@@ -4,7 +4,13 @@ const { getNextIteration } = require('../../lib/get-next-iteration');
 const actionHandlers = {
   webhook: async doc => {
     const resolver = createFetchResolver(doc.payload.action.request);
-    return resolver(doc.payload.payload);
+
+    // Here I control the variables that are exposed to the actions.
+    // those may be forwarded as webhooks' parameters or POST body.
+    return resolver({
+      payload: doc.payload.payload,
+      schedule: doc.payload.schedule,
+    });
   },
 };
 
@@ -14,16 +20,29 @@ module.exports = async doc => {
   // Run the task's external action
   const actionHandler = actionHandlers[doc.payload.action.method];
   const actionResult = await actionHandler(doc);
+  // console.log(actionResult);
+
+  // @TODO: ajv the actionResult against a schema
 
   // Calculate next iteration
-  const schedule = actionResult.schedule || doc.payload.schedule;
-  const nextIteration = getNextIteration(schedule.method, schedule.value);
+  const schedule = {
+    ...doc.payload.schedule,
+    ...(actionResult.schedule || {}),
+  };
 
-  // Calculate next payload
+  // Extend the internal task's payload
   const payload = {
     ...doc.payload.payload,
     ...(actionResult.payload || {}),
   };
 
-  return doc.reschedule(nextIteration, { payload });
+  // Calculate full payload and nextIteration
+  const nextIteration = getNextIteration(schedule.method, schedule.value);
+  const nextPayload = {
+    ...doc.payload,
+    schedule,
+    payload,
+  };
+
+  return doc.reschedule(nextIteration, { payload: nextPayload });
 };

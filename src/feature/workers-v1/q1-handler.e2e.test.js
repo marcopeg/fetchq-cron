@@ -20,7 +20,7 @@ describe('v1/q1-handler', () => {
 
         const [p1, p2] = await handler(doc);
         expect(p1).toBe('+1s');
-        expect(p2.payload.count).toBe(1);
+        expect(p2.payload.payload.count).toBe(1);
       });
 
       it('should reschedule from the response', async () => {
@@ -31,8 +31,22 @@ describe('v1/q1-handler', () => {
 
         const [p1, p2] = await handler(doc);
         expect(p1).toBe('+1m');
-        expect(p2.payload.count).toBe(1);
-        expect(p2.payload.foo).toBe('abc');
+        expect(p2.payload.payload.count).toBe(1);
+        expect(p2.payload.payload.foo).toBe('abc');
+      });
+    });
+
+    describe('rest/POST', () => {
+      it('should reschedule from the task definition', async () => {
+        const doc = {
+          ...makeTask(fixture.f3.task),
+          reschedule: (...args) => args,
+        };
+
+        const [p1, p2] = await handler(doc);
+        // console.log(p1, p2);
+        expect(p1).toBe('+1m');
+        expect(p2.payload.payload.count).toBe(2);
       });
     });
   });
