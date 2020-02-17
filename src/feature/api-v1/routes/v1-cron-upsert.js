@@ -28,7 +28,7 @@ const v1CronUpsert = {
         success: false,
         errors: [
           {
-            message: 'failed to upsert the task',
+            message: 'failed to upsert the task_',
           },
         ],
       });

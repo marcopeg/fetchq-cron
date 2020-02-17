@@ -19,8 +19,11 @@ describe('v1/cron', () => {
   };
 
   // CLEANUP
-  beforeEach(() => axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/reset`));
-  // afterAll(() => axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/reset`));
+  beforeEach(async () => {
+    await axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/reset`);
+    await axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/queues/stop`);
+  });
+  afterAll(() => axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/reset`));
 
   describe('upsert', () => {
     it('should upsert a new task with a delay', async () => {
@@ -35,6 +38,7 @@ describe('v1/cron', () => {
       expect(ni - ct).toBeLessThanOrEqual(1000);
     });
 
+    // @TODO: sometimes it works, sometimes it doesn't
     it('should upsert a new task with a cron plan', async () => {
       const r1 = await axios.post(`${TEST_SERVER_ROOT}/api/v1/cron/`, {
         ...t1,
@@ -43,7 +47,7 @@ describe('v1/cron', () => {
           value: '2012-12-26 12:00:00',
         },
       });
-      // console.info(r1.data);
+      //   console.info(r1.data);
       expect(r1.data.success).toBe(true);
       expect(r1.data.data.was_created).toBe(true);
       expect(r1.data.data.next_iteration).toBe('2012-12-26T12:00:00.000Z');

@@ -33,6 +33,32 @@ module.exports = ({ registerAction }) => {
           reply.send('+ok');
         },
       });
+
+      registerRoute({
+        method: 'GET',
+        url: '/schema-v1/queues/stop',
+        handler: async (request, reply) => {
+          console.info('@TEST: stop queues schema/v1');
+          const fetchq = request.getContext('fetchq');
+          await fetchq.pool.query(
+            `UPDATE fetchq_catalog.fetchq_sys_queues SET is_active = false`,
+          );
+          reply.send('+ok');
+        },
+      });
+
+      registerRoute({
+        method: 'GET',
+        url: '/schema-v1/queues/start',
+        handler: async (request, reply) => {
+          console.info('@TEST: start queues schema/v1');
+          const fetchq = request.getContext('fetchq');
+          await fetchq.pool.query(
+            `UPDATE fetchq_catalog.fetchq_sys_queues SET is_active = true`,
+          );
+          reply.send('+ok');
+        },
+      });
     },
   });
 };
