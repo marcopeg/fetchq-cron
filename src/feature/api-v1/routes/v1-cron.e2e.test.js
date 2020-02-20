@@ -23,7 +23,10 @@ describe('v1/cron', () => {
     await axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/reset`);
     await axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/queues/stop`);
   });
-  afterAll(() => axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/reset`));
+  afterAll(async () => {
+    await axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/reset`);
+    await axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/queues/start`);
+  });
 
   describe('upsert', () => {
     it('should upsert a new task with a delay', async () => {
