@@ -15,8 +15,10 @@ module.exports = ({ registerAction }) => {
     hook: '$TDD_FASTIFY_ROUTE?',
     name: FEATURE_NAME,
     handler: ({ registerRoute }) => {
-      const { handlers } = require('./q1.fixture');
-      handlers.forEach(h => registerRoute(h));
+      const fixture = require('./q1.fixture');
+      Object.values(fixture)
+        .map(fixture => fixture.handler)
+        .forEach(handler => registerRoute(handler));
     },
   });
 };
