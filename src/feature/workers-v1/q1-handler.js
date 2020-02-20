@@ -20,9 +20,17 @@ module.exports = async doc => {
   // Run the task's external action
   const actionHandler = actionHandlers[doc.payload.action.method];
   const actionResult = await actionHandler(doc);
-  // console.log(actionResult);
+  //   console.log(actionResult);
 
   // @TODO: ajv the actionResult against a schema
+
+  // Write logs using the document API
+  if (actionResult.logs) {
+    for (const log of actionResult.logs) {
+      const { message, details = {}, refId = null } = log;
+      await doc.logError(message, details, refId);
+    }
+  }
 
   // Calculate next iteration
   const schedule = {

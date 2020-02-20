@@ -1,4 +1,13 @@
-const f1 = {
+/**
+ * Each of those fixtures exposes a "task" and a "handler".
+ *
+ * The "handler" is setup as route only during testing.
+ * (in the future we need to figure out a better way to solve this)
+ *
+ *
+ */
+
+exports.f1 = {
   task: {
     subject: 'foo__t1',
     payload: {
@@ -27,7 +36,7 @@ const f1 = {
   },
 };
 
-const f2 = {
+exports.f2 = {
   task: {
     subject: 'foo__t2',
     payload: {
@@ -61,6 +70,16 @@ const f2 = {
       payload: {
         foo: 'abc',
       },
+      logs: [
+        {
+          message: 'log1',
+          details: { a: 123 },
+        },
+        {
+          message: 'log2',
+          refId: 'xxx',
+        },
+      ],
     }),
   },
 };
@@ -75,7 +94,7 @@ const f2 = {
  * The handler is also responsible for changing the schedule
  * plan
  */
-const f3 = {
+exports.f3 = {
   task: {
     subject: 'foo__t3',
     payload: {
@@ -125,5 +144,3 @@ const f3 = {
     },
   },
 };
-
-module.exports = { f1, f2, f3, handlers: [f1.handler, f2.handler, f3.handler] };

@@ -27,12 +27,32 @@ describe('v1/q1-handler', () => {
         const doc = {
           ...makeTask(fixture.f2.task),
           reschedule: (...args) => args,
+          logError: () => {},
         };
 
         const [p1, p2] = await handler(doc);
         expect(p1).toBe('+1m');
         expect(p2.payload.payload.count).toBe(1);
         expect(p2.payload.payload.foo).toBe('abc');
+      });
+
+      it('should add a log out of the webhook response', async () => {
+        const logError = jest.fn(async (msg, details, refId) => {
+          //   console.log({ msg, details, refId });
+          return true;
+        });
+        const doc = {
+          ...makeTask(fixture.f2.task),
+          reschedule: (...args) => args,
+          logError,
+        };
+
+        const [p1, p2] = await handler(doc);
+        // console.log(p1, p2);
+
+        expect(logError.mock.calls.length).toBe(2);
+        expect(logError).toHaveBeenCalledWith('log1', { a: 123 }, null);
+        expect(logError).toHaveBeenCalledWith('log2', {}, 'xxx');
       });
     });
 
