@@ -21,7 +21,8 @@ const BACKEND_ROOT = (() => {
     }
   }
 
-  return null;
+  // Apply default if running in localhost
+  return 'http://localhost:8080';
 })();
 
 module.exports = () =>

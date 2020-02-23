@@ -41,13 +41,12 @@ describe('v1/cron', () => {
       expect(ni - ct).toBeLessThanOrEqual(1000);
     });
 
-    // @TODO: sometimes it works, sometimes it doesn't
-    it('should upsert a new task with a cron plan', async () => {
+    it('should upsert a new task at a specific point in time', async () => {
       const r1 = await axios.post(`${TEST_SERVER_ROOT}/api/v1/cron/`, {
         ...t1,
         schedule: {
           method: 'plan',
-          value: '2012-12-26 12:00:00',
+          value: '2012-12-26T12:00:00Z',
         },
       });
       //   console.info(r1.data);
@@ -55,6 +54,8 @@ describe('v1/cron', () => {
       expect(r1.data.data.was_created).toBe(true);
       expect(r1.data.data.next_iteration).toBe('2012-12-26T12:00:00.000Z');
     });
+
+    // TODO: add a test for cron task, mostly as an example
 
     it('should upsert a existing task', async () => {
       await axios.post(`${TEST_SERVER_ROOT}/api/v1/cron/`, t1);
