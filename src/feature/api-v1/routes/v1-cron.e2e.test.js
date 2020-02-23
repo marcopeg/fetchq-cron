@@ -99,4 +99,18 @@ describe('v1/cron', () => {
       expect(r1.data.data.tasks).toHaveLength(3);
     });
   });
+
+  describe('single task', () => {
+    beforeEach(async () => {
+      await axios.post(`${TEST_SERVER_ROOT}/api/v1/cron/`, t1);
+    });
+
+    it('should show details for a single task', async () => {
+      const r1 = await axios.get(`${TEST_SERVER_ROOT}/api/v1/cron/foo/t1`);
+      expect(r1.data.success).toBe(true);
+      expect(r1.data.data.task.subject).toBe('foo__t1');
+      expect(r1.data.data.task).toHaveProperty('payload');
+      // console.log(r1.data.data);
+    });
+  });
 });
