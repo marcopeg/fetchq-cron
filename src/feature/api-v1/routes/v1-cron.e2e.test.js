@@ -94,6 +94,18 @@ describe('v1/cron', () => {
       expect(r1.data.data.tasks).toHaveLength(1);
     });
 
+    it('should paginate with a cursor based on created date', async () => {
+      const r1 = await axios.get(`${TEST_SERVER_ROOT}/api/v1/cron/?limit=1`);
+      const cursor = r1.data.data.tasks[0].next_iteration;
+
+      const r2 = await axios.get(
+        `${TEST_SERVER_ROOT}/api/v1/cron/?limit=1&cursor=${cursor}`,
+      );
+
+      expect(r1.data.data.tasks[0].subject).toBe('faa__t6');
+      expect(r2.data.data.tasks[0].subject).toBe('faa__t5');
+    });
+
     it('should fetch tasks by group', async () => {
       const r1 = await axios.get(`${TEST_SERVER_ROOT}/api/v1/cron/?group=foo`);
       expect(r1.data.success).toBe(true);
