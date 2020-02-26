@@ -1,3 +1,5 @@
+const { schedule } = require('../../../lib/ajv-schema');
+
 // Should implement the schema of:
 // https://github.com/marcopeg/npm-packages/tree/master/packages/fetch-resolver
 const webhookRequest = {
@@ -33,28 +35,6 @@ const action = {
       },
     },
   ],
-};
-
-// TODO: this is duplicate from webhook response validation
-//       and should go into a library of shared schemas
-const schedule = {
-  type: 'object',
-  required: ['method', 'value'],
-  properties: {
-    method: {
-      type: 'string',
-      // delay: 10s
-      // cron: cron job schedule format
-      // plan: set a specific date
-      // ??? not implemented yet ???
-      // complete: 1 shot then complete
-      // single: 1 shot then drop
-      enum: ['delay', 'cron', 'plan'],
-    },
-    value: {
-      type: 'string',
-    },
-  },
 };
 
 module.exports = {

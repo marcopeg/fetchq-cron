@@ -1,23 +1,7 @@
 const Ajv = require('ajv');
+const { schedule } = require('./ajv-schema');
 
 const ajv = new Ajv();
-
-// TODO: this is duplicate from the API feature and should go into a library
-//       of shared schemas
-const schedule = {
-  type: 'object',
-  required: ['method', 'value'],
-  additionalProperties: false,
-  properties: {
-    method: {
-      type: 'string',
-      enum: ['delay', 'cron', 'plan'],
-    },
-    value: {
-      type: 'string',
-    },
-  },
-};
 
 const log = {
   type: 'object',
