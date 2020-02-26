@@ -6,7 +6,33 @@ const {
 
 const actionHandlers = {
   webhook: async doc => {
-    const resolver = createFetchResolver(doc.payload.action.request);
+    const resolver = createFetchResolver({
+      ...doc.payload.action.request,
+
+      /**
+       * These rules are intended to catch particular returning data
+       * structures from the webhook.
+       *
+       * So far it handles http status code errors > 400 and trigger
+       * a forced rejection that is handled later in the worker function.
+       */
+      rules: [
+        {
+          match: ['statusError'],
+          apply: [
+            'res2json',
+            {
+              reject: true,
+              details: {
+                statusCode: 'res.status',
+                statusText: 'res.statusText',
+                content: 'text',
+              },
+            },
+          ],
+        },
+      ],
+    });
 
     // Here I control the variables that are exposed to the actions.
     // those may be forwarded as webhooks' parameters or POST body.
@@ -24,6 +50,13 @@ module.exports = async doc => {
   const actionHandler = actionHandlers[doc.payload.action.method];
   const actionResult = await actionHandler(doc);
   // console.log('****>>>>', actionResult);
+
+  // Handle a custom rejection based on the rules applied to the fetcher
+  if (actionResult.reject) {
+    return doc.reject('webhook returned an error status code', {
+      details: actionResult.details,
+    });
+  }
 
   // Apply ajv validation to the webhook's response
   const [isValid, validationErrors] = validateWebhookResponse(actionResult);

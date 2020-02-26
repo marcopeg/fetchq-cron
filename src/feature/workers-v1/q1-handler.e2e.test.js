@@ -10,7 +10,23 @@ const makeTask = task =>
   );
 
 const deepLog = arg => console.info(JSON.stringify(arg, null, 2));
-const deepLogArgs = (...args) => deepLogArgs(args);
+const deepLogArgs = (...args) => deepLog(args);
+
+const makeHandlerWithReject = async (payload, debugFn) => {
+  const doc = {
+    ...makeTask(fixture.f4.task),
+    reject: debugFn ? jest.fn(debugFn) : jest.fn(),
+  };
+
+  doc.payload.payload = payload;
+  const result = await handler(doc);
+  return [doc, result];
+};
+
+const expectReject = (doc, errorMessage) =>
+  expect(doc.reject).toHaveBeenCalledWith(errorMessage, {
+    details: expect.any(Object),
+  });
 
 describe('v1/q1-handler', () => {
   describe('method:webhook', () => {
@@ -74,25 +90,6 @@ describe('v1/q1-handler', () => {
     });
 
     describe('webhook response validation', () => {
-      const makeFoo = async (payload, debugFn) => {
-        const doc = {
-          ...makeTask(fixture.f4.task),
-          reject: debugFn ? jest.fn(debugFn) : jest.fn(),
-        };
-
-        doc.payload.payload = payload;
-        const result = await handler(doc);
-        return [doc, result];
-      };
-
-      const expectReject = doc =>
-        expect(doc.reject).toHaveBeenCalledWith(
-          'failed webhook payload validation',
-          {
-            details: [expect.any(Object)],
-          },
-        );
-
       const testCases = [
         [
           'should detect and log a wrong response schema',
@@ -131,11 +128,28 @@ describe('v1/q1-handler', () => {
 
       testCases.forEach(([message, payload]) =>
         it(message, async () => {
-          const [doc] = await makeFoo(payload);
+          const [doc] = await makeHandlerWithReject(payload);
           expect(doc.reject.mock.calls.length).toBe(1);
-          expectReject(doc);
+          expectReject(doc, 'failed webhook payload validation');
         }),
       );
+    });
+
+    describe('webhook response code & types', () => {
+      it('should detect a non 200 response and log it', async () => {
+        const [doc] = await makeHandlerWithReject(
+          {
+            status: 400,
+            payload: {
+              success: false,
+              foo: 123,
+            },
+          },
+          // deepLogArgs,
+        );
+        expect(doc.reject.mock.calls.length).toBe(1);
+        expectReject(doc, 'webhook returned an error status code');
+      });
     });
   });
 });

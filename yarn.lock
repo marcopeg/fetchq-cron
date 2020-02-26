@@ -347,20 +347,20 @@
   dependencies:
     "@babel/runtime" "^7.4.4"
 
-"@marcopeg/dotted@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@marcopeg/dotted/-/dotted-1.2.0.tgz#e439b474d4fe55ff230713d36b88e140553c6e43"
-  integrity sha512-pbA6HVOm5WvFuRy2gpdxyvg0qzCvz/u1ZBxLMDT85aut32hL0OjviUGikMyJOsEFgBPv22RZMnv5jSFvh+Ir6w==
+"@marcopeg/dotted@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@marcopeg/dotted/-/dotted-1.3.0.tgz#97baaf9c12ae76227d1fd10257653b493617502f"
+  integrity sha512-POKO7kwAN/on3L/lPqZ50N3fRcF2Un38gMmER49FDeAsGcjryD9h6IUzPu+BZqSn0SuhRXmRYZsk5N5XPCxC8Q==
   dependencies:
     "@babel/runtime" "^7.4.4"
 
-"@marcopeg/template@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@marcopeg/template/-/template-1.2.0.tgz#ecbef1d9abe653b1f17118a7ef56baae916f5e86"
-  integrity sha512-cS+rH862tRZVpgULYdAedd97CvTmZseyolSXOi2OlXvVcTPLTn5T4rhNOjH3MFERirojUsquGii+rsOyfJLnKw==
+"@marcopeg/template@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@marcopeg/template/-/template-1.3.0.tgz#c1833fcdd381aa8fa5df0562f9e4dc63aa9cf9ad"
+  integrity sha512-CckoSzeLOiiSd6WzaH4UhFcTBTL4u5RMznLRhGkW36x1kvUQT9sSSbI80Fv+Syz+Pk6357OeQBJkt61RcgzdNw==
   dependencies:
     "@babel/runtime" "^7.4.4"
-    "@marcopeg/dotted" "^1.2.0"
+    "@marcopeg/dotted" "^1.3.0"
 
 "@marcopeg/utils@^2.0.1":
   version "2.0.1"
@@ -1573,14 +1573,14 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "2.1.1"
 
-fetch-resolver@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/fetch-resolver/-/fetch-resolver-1.2.0.tgz#ea8021c78d71eba0d83869aca86091d112c885c2"
-  integrity sha512-Ayc7RSu+1+eu9PLPzaI7R+jBZIpeECwdrMeMzab7xflONiq5PZRri1zsrSygdepkY+hSSqIt87H73v/OB1MK6Q==
+fetch-resolver@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/fetch-resolver/-/fetch-resolver-1.3.0.tgz#e60829e65652841bb8c1e67819234fbb9bec17f9"
+  integrity sha512-XT4rwfyyrEp1ePVcZNlRG3iHfUF26b4JBFsd58PerYxY5Wmn0drwRneYVRvmPHlEZyInC7evtFs6k2up8OOehw==
   dependencies:
     "@babel/runtime" "^7.4.4"
-    "@marcopeg/dotted" "^1.2.0"
-    "@marcopeg/template" "^1.2.0"
+    "@marcopeg/dotted" "^1.3.0"
+    "@marcopeg/template" "^1.3.0"
     clone-deep "^4.0.1"
     isomorphic-fetch "^2.2.1"
 

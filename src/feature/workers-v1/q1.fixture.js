@@ -179,6 +179,15 @@ exports.f4 = {
   handler: {
     method: 'POST',
     url: '/worker/v1/q1/foo__t4',
-    handler: async request => request.body.payload,
+    handler: async (request, reply) => {
+      // Honors the request to spit out a custom
+      // response code
+      if (request.body.payload.status) {
+        const { status, payload = {} } = request.body.payload;
+        return reply.code(status).send(payload);
+      }
+
+      return request.body.payload;
+    },
   },
 };
