@@ -9,6 +9,9 @@ const makeTask = task =>
     ),
   );
 
+const deepLog = arg => console.info(JSON.stringify(arg, null, 2));
+const deepLogArgs = (...args) => deepLogArgs(args);
+
 describe('v1/q1-handler', () => {
   describe('method:webhook', () => {
     describe('rest/GET', () => {
@@ -68,6 +71,71 @@ describe('v1/q1-handler', () => {
         expect(p1).toBe('+1m');
         expect(p2.payload.payload.count).toBe(2);
       });
+    });
+
+    describe('webhook response validation', () => {
+      const makeFoo = async (payload, debugFn) => {
+        const doc = {
+          ...makeTask(fixture.f4.task),
+          reject: debugFn ? jest.fn(debugFn) : jest.fn(),
+        };
+
+        doc.payload.payload = payload;
+        const result = await handler(doc);
+        return [doc, result];
+      };
+
+      const expectReject = doc =>
+        expect(doc.reject).toHaveBeenCalledWith(
+          'failed webhook payload validation',
+          {
+            details: [expect.any(Object)],
+          },
+        );
+
+      const testCases = [
+        [
+          'should detect and log a wrong response schema',
+          { foo: 123, aaa: 'hoho' },
+        ],
+        [
+          'should require mandatory logs when success=false',
+          { success: false },
+        ],
+        [
+          'should detect a wrong scheduling payload type',
+          { success: true, schedule: 'foo' },
+        ],
+        [
+          'should detect a wrong scheduling method',
+          {
+            success: true,
+            schedule: { method: 'xxx', value: 'hoho' },
+          },
+        ],
+        [
+          'should detect a wrong payload type in a log request keyword',
+          {
+            success: true,
+            logs: { foo: 123 },
+          },
+        ],
+        [
+          'should detect a wrong payload type in a log request item',
+          {
+            success: true,
+            logs: [{ wrogKey: '123' }],
+          },
+        ],
+      ];
+
+      testCases.forEach(([message, payload]) =>
+        it(message, async () => {
+          const [doc] = await makeFoo(payload);
+          expect(doc.reject.mock.calls.length).toBe(1);
+          expectReject(doc);
+        }),
+      );
     });
   });
 });

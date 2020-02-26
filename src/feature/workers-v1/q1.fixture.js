@@ -32,7 +32,7 @@ exports.f1 = {
   handler: {
     method: 'GET',
     url: '/worker/v1/q1/foo__t1',
-    handler: async () => ({}),
+    handler: async () => ({ success: true }),
   },
 };
 
@@ -142,5 +142,43 @@ exports.f3 = {
         },
       };
     },
+  },
+};
+
+/**
+ * This task's handler returns the payload that was set into the task.
+ * it is used to run multiple tests on webhook's response handling & validation.
+ */
+exports.f4 = {
+  task: {
+    subject: 'foo__t4',
+    payload: {
+      group_name: 'foo',
+      task_name: 't4',
+      schedule: {
+        method: 'delay',
+        value: '+1s',
+      },
+      action: {
+        method: 'webhook',
+        request: {
+          type: 'rest',
+          method: 'POST',
+          url: '{{TEST_SERVER_ROOT}}/test/worker/v1/q1/foo__t4',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: {
+            payload: 'payload',
+          },
+        },
+      },
+      payload: {},
+    },
+  },
+  handler: {
+    method: 'POST',
+    url: '/worker/v1/q1/foo__t4',
+    handler: async request => request.body.payload,
   },
 };

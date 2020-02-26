@@ -35,6 +35,8 @@ const action = {
   ],
 };
 
+// TODO: this is duplicate from webhook response validation
+//       and should go into a library of shared schemas
 const schedule = {
   type: 'object',
   required: ['method', 'value'],
