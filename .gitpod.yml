@@ -3,12 +3,12 @@ tasks:
     init: yarn install
     command: yarn start
     openIn: right
-  - name: E2E Tests
-    command: yarn tdd:e2e
-    openIn: right
-    openMode: tab-after
   - name: Unit Tests
     command: yarn tdd:unit
+    openIn: right
+    openMode: tab-after
+  - name: E2E Tests
+    command: yarn tdd:e2e
     openIn: right
     openMode: tab-after
 
