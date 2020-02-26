@@ -32,7 +32,7 @@ exports.f1 = {
   handler: {
     method: 'GET',
     url: '/worker/v1/q1/foo__t1',
-    handler: async () => ({}),
+    handler: async () => ({ success: true }),
   },
 };
 
@@ -146,8 +146,8 @@ exports.f3 = {
 };
 
 /**
- * The task returns an invalid schema and should be
- * logged into the queue's errors table.
+ * This task's handler returns the payload that was set into the task.
+ * it is used to run multiple tests on webhook's response handling & validation.
  */
 exports.f4 = {
   task: {
@@ -163,20 +163,22 @@ exports.f4 = {
         method: 'webhook',
         request: {
           type: 'rest',
-          method: 'GET',
+          method: 'POST',
           url: '{{TEST_SERVER_ROOT}}/test/worker/v1/q1/foo__t4',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: {
+            payload: 'payload',
+          },
         },
       },
       payload: {},
     },
   },
   handler: {
-    method: 'GET',
+    method: 'POST',
     url: '/worker/v1/q1/foo__t4',
-    handler: async request => {
-      return {
-        success: true,
-      };
-    },
+    handler: async request => request.body.payload,
   },
 };

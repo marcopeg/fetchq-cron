@@ -16,6 +16,7 @@ const statusCheck = async () => {
 
 module.exports = async () => {
   console.info(`\n[jest] await for server's health check...`);
+  console.info(`\n[jest] ${env.TEST_STATUS_CHECK_URL}`);
 
   let isup = false;
   while (isup === false) {

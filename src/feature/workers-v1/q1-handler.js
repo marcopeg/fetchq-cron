@@ -1,5 +1,8 @@
 const createFetchResolver = require('fetch-resolver').default;
 const { getNextIteration } = require('../../lib/get-next-iteration');
+const {
+  validateWebhookResponse,
+} = require('../../lib/validate-webhook-response');
 
 const actionHandlers = {
   webhook: async doc => {
@@ -20,10 +23,15 @@ module.exports = async doc => {
   // Run the task's external action
   const actionHandler = actionHandlers[doc.payload.action.method];
   const actionResult = await actionHandler(doc);
-  console.log('****>>>>', actionResult);
-  return;
+  // console.log('****>>>>', actionResult);
 
-  // @TODO: ajv the actionResult against a schema
+  // Apply ajv validation to the webhook's response
+  const [isValid, validationErrors] = validateWebhookResponse(actionResult);
+  if (!isValid) {
+    return doc.reject('failed webhook payload validation', {
+      details: validationErrors,
+    });
+  }
 
   // Write logs using the document API
   if (actionResult.logs) {

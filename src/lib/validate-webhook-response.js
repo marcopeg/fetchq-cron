@@ -30,6 +30,9 @@ const log = {
     details: {
       type: 'object',
     },
+    refId: {
+      type: 'string',
+    },
   },
 };
 
@@ -49,7 +52,7 @@ const validate = ajv.compile({
       items: log,
     },
   },
-  // If "success:false", "logs" are mandatory
+  // If "success:false", "logs[]" are mandatory
   if: {
     properties: {
       success: {
