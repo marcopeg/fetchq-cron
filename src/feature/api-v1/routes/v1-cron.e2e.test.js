@@ -55,7 +55,18 @@ describe('v1/cron', () => {
       expect(r1.data.data.next_iteration).toBe('2012-12-26T12:00:00.000Z');
     });
 
-    // TODO: add a test for cron task, mostly as an example
+    it('should upsert a new task with a cron strategy', async () => {
+      const r1 = await axios.post(`${TEST_SERVER_ROOT}/api/v1/cron/`, {
+        ...t1,
+        schedule: {
+          method: 'cron',
+          value: '* * * * *',
+        },
+      });
+      const dateNext = new Date(r1.data.data.next_iteration);
+      const dateCreate = new Date(r1.data.data.created_at);
+      expect(dateNext - dateCreate).toBeLessThanOrEqual(60000);
+    });
 
     it('should upsert a existing task', async () => {
       await axios.post(`${TEST_SERVER_ROOT}/api/v1/cron/`, t1);
