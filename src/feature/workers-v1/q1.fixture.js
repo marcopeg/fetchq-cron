@@ -144,3 +144,39 @@ exports.f3 = {
     },
   },
 };
+
+/**
+ * The task returns an invalid schema and should be
+ * logged into the queue's errors table.
+ */
+exports.f4 = {
+  task: {
+    subject: 'foo__t4',
+    payload: {
+      group_name: 'foo',
+      task_name: 't4',
+      schedule: {
+        method: 'delay',
+        value: '+1s',
+      },
+      action: {
+        method: 'webhook',
+        request: {
+          type: 'rest',
+          method: 'GET',
+          url: '{{TEST_SERVER_ROOT}}/test/worker/v1/q1/foo__t4',
+        },
+      },
+      payload: {},
+    },
+  },
+  handler: {
+    method: 'GET',
+    url: '/worker/v1/q1/foo__t4',
+    handler: async request => {
+      return {
+        success: true,
+      };
+    },
+  },
+};

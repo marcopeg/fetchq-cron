@@ -20,7 +20,8 @@ module.exports = async doc => {
   // Run the task's external action
   const actionHandler = actionHandlers[doc.payload.action.method];
   const actionResult = await actionHandler(doc);
-  //   console.log(actionResult);
+  console.log('****>>>>', actionResult);
+  return;
 
   // @TODO: ajv the actionResult against a schema
 

@@ -69,5 +69,18 @@ describe('v1/q1-handler', () => {
         expect(p2.payload.payload.count).toBe(2);
       });
     });
+
+    it('should detect and log a wrong response schema', async () => {
+      const doc = {
+        ...makeTask(fixture.f4.task),
+        reschedule: (...args) => args,
+      };
+
+      // console.log(doc);
+
+      const f = await handler(doc);
+      console.log(f);
+      // const [p1, p2] = await handler(doc);
+    });
   });
 });
