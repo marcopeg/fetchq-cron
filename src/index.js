@@ -18,6 +18,9 @@ const featureWorkersV1 = require('./feature/workers-v1');
 const settings = ({ setConfig }) => {
   // FetchQ Maintenance
   setConfig('fetchq', {
+    connectionString:
+      process.env.PGSTRING ||
+      'postgres://gitpod:gitpod@localhost:5432/postgres',
     pool: {
       max: 1,
     },
