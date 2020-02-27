@@ -23,8 +23,10 @@ const onInitService = ({ getConfig, setContext, createHook, getContext }) => {
 
 const onStartService = ({ getContext, getConfig, createHook }) => {
   const server = getContext('fastify');
+  const serverPort = getConfig('fastify.port', 8080);
+  const serverMeta = getConfig('fastify.meta', '::');
   createHook.sync(hooks.FASTIFY_HACKS_AFTER, { fastify: server });
-  server.listen(getConfig('fastify.port', 8080));
+  server.listen(serverPort, serverMeta);
 };
 
 module.exports = ({ registerAction, registerHook }) => {

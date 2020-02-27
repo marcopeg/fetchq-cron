@@ -14,7 +14,11 @@ const BACKEND_ROOT = (() => {
 
   // Try to create a code sandbox server url guessing it from
   // the HOSTNAME, with an exception for a GitPod like hostname
-  if (process.env.HOSTNAME && !process.env.HOSTNAME.includes('ws-')) {
+  if (
+    process.env.HOSTNAME &&
+    process.env.HOSTNAME.includes('-') &&
+    !process.env.HOSTNAME.includes('ws-')
+  ) {
     try {
       const sandboxId = process.env.HOSTNAME.split('-')[2];
       return `https://${sandboxId}.sse.codesandbox.io`;

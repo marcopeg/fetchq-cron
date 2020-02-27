@@ -1,0 +1,27 @@
+version: '3.6'
+services:
+  postgres:
+    image: postgres:11.5
+    restart: always
+    ports:
+      - ${PG_PORT:-5432}:5432
+    volumes:
+      - ${HUMBLE_DATA:-./data}/postgres:/var/lib/postgresql/data:consistent
+      - ${HUMBLE_DATA:-./data}/backup:/backup:consistent
+
+  webapp:
+    image: node:10.19-alpine
+    ports:
+      - ${WEBAPP_PORT:-8080}:8080
+    volumes:
+      - ${HUMBLE_DATA:-./data}/webapp/node_modules:/usr/src/app/node_modules:cached
+      - ./package.json:/usr/src/app/package.json:delegated
+      - ./yarn.lock:/usr/src/app/yarn.lock:delegated
+      - ./jest.config.js:/usr/src/app/jest.config.js:delegated
+      - ./src:/usr/src/app/src:delegated
+      - ./test:/usr/src/app/test:delegated
+    environment:
+      NODE_ENV: development
+      PGSTRING: postgres://${PG_DATABASE:-postgres}:${PG_PASSWORD:-postgres}@${PG_HOST:-postgres}:${PG_PORT:-5432}/${PG_DATABASE:-postgres}
+    working_dir: /usr/src/app
+    entrypoint: ['yarn', 'start:docker']
