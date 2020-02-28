@@ -1,10 +1,6 @@
-image: gitpod/workspace-postgres
+image: marcopeg/gitpod-workspace-postgres:2.5.0
 
 tasks:
-  - name: Adminer
-    before: mkdir -p ${GITPOD_REPO_ROOT}/public
-    init: wget -O ${GITPOD_REPO_ROOT}/public/index.php https://github.com/vrana/adminer/releases/download/v4.7.6/adminer-4.7.6-en.php
-    command: apachectl start
   - name: App.
     init: yarn install
     command: yarn start
@@ -19,7 +15,9 @@ tasks:
     openMode: tab-after
 
 ports:
-  - port: 8001
+  - port: 5432
+    onOpen: ignore
+  - port: 8008
     onOpen: ignore
   - port: 8080
     onOpen: ignore
