@@ -12,7 +12,7 @@ tasks:
   - name: E2E Tests
     command: yarn tdd:e2e
     openIn: right
-    openMode: tab-after
+    openMode: split-bottom
 
 ports:
   - port: 5432
