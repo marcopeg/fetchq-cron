@@ -150,6 +150,19 @@ describe('v1/q1-handler', () => {
         expect(doc.reject.mock.calls.length).toBe(1);
         expectReject(doc, 'webhook returned an error status code');
       });
+
+      it('should detect a NON-JSON response and throw an error', async () => {
+        const [doc] = await makeHandlerWithReject(
+          {
+            status: 200,
+            payload: '+ok',
+          },
+          // deepLogArgs,
+        );
+
+        expect(doc.reject.mock.calls.length).toBe(1);
+        expectReject(doc, 'failed communication toward webhook');
+      });
     });
   });
 });

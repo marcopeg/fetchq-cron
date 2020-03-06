@@ -47,8 +47,23 @@ module.exports = async doc => {
   // console.log('>>', doc.subject);
 
   // Run the task's external action
+  // Any NON-JSON response is treated as an error and rejected
   const actionHandler = actionHandlers[doc.payload.action.method];
-  const actionResult = await actionHandler(doc);
+  let actionResult = null;
+  try {
+    actionResult = await actionHandler(doc);
+  } catch (err) {
+    return doc.reject('failed communication toward webhook', {
+      details: {
+        originalError: {
+          name: err.name,
+          type: err.type,
+          message: err.message,
+        },
+      },
+    });
+  }
+
   // console.log('****>>>>', actionResult);
 
   // Handle a custom rejection based on the rules applied to the fetcher
