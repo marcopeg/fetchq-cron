@@ -226,6 +226,8 @@ exports.f5 = {
       const { iterations = 0, iterationsLimit = 1 } = request.body;
       console.info({ iterations, iterationsLimit });
 
+      // When hits iteration limit, try to complete the process
+      // TODO: return a "schedule.method: 'complete'"
       if (iterations >= iterationsLimit) {
         return {
           success: true,

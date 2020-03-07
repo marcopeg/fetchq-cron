@@ -6,7 +6,7 @@ const v1CronDetails = {
   schema,
   handler: async (request, reply) => {
     const { query, getConfig, getContext } = request;
-    const Q1 = getConfig('app.q1');
+    const Q1 = getConfig('app.q1.name');
     const fetchq = getContext('fetchq');
 
     // TODO: validate that this is just a string?

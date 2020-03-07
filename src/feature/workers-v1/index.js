@@ -6,7 +6,7 @@ module.exports = ({ registerAction }) => {
     hook: '$FETCHQ_REGISTER_WORKER',
     name: FEATURE_NAME,
     handler: (_, { getConfig }) => ({
-      queue: getConfig('app.q1'),
+      queue: getConfig('app.q1.name'),
       handler: q1Handler,
     }),
   });

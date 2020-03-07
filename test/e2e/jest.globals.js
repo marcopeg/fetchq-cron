@@ -117,6 +117,8 @@ const setQueueMaintenanceDelay = (queue, delay = '1s') =>
 //   await pause(delay);
 // };
 
+const info = data => console.info(JSON.stringify(data, null, 2));
+
 module.exports = () => ({
   env,
   // axios,
@@ -126,5 +128,6 @@ module.exports = () => ({
   getQueueMaintenanceDelay,
   setQueueMaintenanceDelay,
   getAppConfig,
+  info,
   // seed,
 });

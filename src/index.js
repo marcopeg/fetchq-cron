@@ -47,7 +47,8 @@ const settings = ({ setConfig }) => {
   });
 
   // Generica app configuration
-  setConfig('app.q1', Q1);
+  setConfig('app.q1.name', Q1);
+  setConfig('app.logs.page.size', 100);
 };
 
 runHookApp({

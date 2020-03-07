@@ -7,7 +7,7 @@ const v1CronUpsert = {
   schema,
   handler: async (request, reply) => {
     const { fetchq, getConfig } = request;
-    const Q1 = getConfig('app.q1');
+    const Q1 = getConfig('app.q1.name');
     const { group_name, task_name, schedule } = request.body;
 
     const subject = `${group_name}__${task_name}`;

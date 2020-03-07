@@ -2,9 +2,10 @@ const axios = require('axios');
 
 describe('v1/cron', () => {
   const { TEST_SERVER_ROOT } = global.env;
+  const TASKS_COUNT = 5;
   const t1 = {
     group_name: 'foo',
-    task_name: 't5',
+    task_name: 't1',
     action: {
       method: 'webhook',
       request: {
@@ -16,7 +17,7 @@ describe('v1/cron', () => {
         },
         body: {
           iterations: 'iterations',
-          iterationsLimit: 10,
+          iterationsLimit: TASKS_COUNT,
         },
       },
     },
@@ -28,29 +29,94 @@ describe('v1/cron', () => {
 
   let queueName = '';
   let originalDelay = '';
+
   beforeAll(async () => {
-    queueName = await global.getAppConfig('app.q1');
+    await axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/reset`);
+    queueName = await global.getAppConfig('app.q1.name');
     originalDelay = await global.getQueueMaintenanceDelay(queueName);
+    await global.setQueueMaintenanceDelay(queueName, '3ms');
+
+    // Push a document and await the completion of a few tasks in order
+    // to produce a decent amount of logs.
+    await axios.post(`${TEST_SERVER_ROOT}/api/v1/cron/`, {
+      ...t1,
+      group_name: 'foo',
+      task_name: 't1',
+    });
+    await axios.post(`${TEST_SERVER_ROOT}/api/v1/cron/`, {
+      ...t1,
+      group_name: 'foo',
+      task_name: 't2',
+    });
+    await axios.post(`${TEST_SERVER_ROOT}/api/v1/cron/`, {
+      ...t1,
+      group_name: 'faa',
+      task_name: 't1',
+    });
+    await global.assertQueueIterations(queueName, 'foo__t1', TASKS_COUNT);
+    await global.assertQueueIterations(queueName, 'foo__t2', TASKS_COUNT);
+    await global.assertQueueIterations(queueName, 'faa__t1', TASKS_COUNT);
   });
 
-  // CLEANUP
-  beforeEach(async () => {
-    await axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/reset`);
-    await global.setQueueMaintenanceDelay(queueName, '1ms');
-  });
   afterAll(async () => {
-    await axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/reset`);
     await global.setQueueMaintenanceDelay(queueName, originalDelay);
+    await axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/reset`);
   });
 
   describe('logs', () => {
-    it('should just work', async () => {
-      // Push a document and await the completion of a few tasks in order
-      // to produce a decent amount of logs.
-      await axios.post(`${TEST_SERVER_ROOT}/api/v1/cron/`, t1);
-      await global.assertQueueIterations(queueName, 'foo__t5', 10);
+    it('should return a page of results using the default page size', async () => {
+      const res = await axios.get(`${TEST_SERVER_ROOT}/api/v1/logs`);
+      // global.info(res.data);
+      expect(res.data.success).toBe(true);
+      expect(res.data.data.logs.length).toBeGreaterThan(
+        TASKS_COUNT + TASKS_COUNT * 0.5,
+      );
+    });
 
-      // TODO: build expectations on the logs
+    it('should return a page of results using a custom page size', async () => {
+      const res = await axios.get(`${TEST_SERVER_ROOT}/api/v1/logs?limit=2`);
+      // global.info(res.data);
+      expect(res.data.success).toBe(true);
+      expect(res.data.data.logs.length).toBe(2);
+    });
+
+    it('should return a page of results using a custom page size after a given cursor', async () => {
+      const r1 = await axios.get(`${TEST_SERVER_ROOT}/api/v1/logs?limit=2`);
+      // global.info(r1.data.data.logs);
+      const cursor = r1.data.data.logs[1].cursor;
+
+      expect(r1.data.success).toBe(true);
+      expect(r1.data.data.logs.length).toBe(2);
+
+      // Get second page based on cursor
+      const r2 = await axios.get(
+        `${TEST_SERVER_ROOT}/api/v1/logs?limit=2&cursor=${cursor}`,
+      );
+      // global.info(r2.data.data.logs);
+
+      expect(r2.data.success).toBe(true);
+      expect(r2.data.data.logs.length).toBe(2);
+      expect(r2.data.data.logs[0].cursor).toBeLessThan(cursor);
+    });
+
+    it('should filter logs by group', async () => {
+      const res = await axios.get(`${TEST_SERVER_ROOT}/api/v1/logs/foo`);
+      // global.info(res.data);
+
+      // All logs should have the same group
+      expect(res.data.data.logs.every(log => log.group === 'foo')).toBe(true);
+    });
+
+    it('should filter logs by task', async () => {
+      const res = await axios.get(`${TEST_SERVER_ROOT}/api/v1/logs/foo/t1`);
+      // global.info(res.data);
+
+      // All tasks should have the same name and group
+      expect(
+        res.data.data.logs.every(
+          log => log.group === 'foo' && log.task === 't1',
+        ),
+      ).toBe(true);
     });
   });
 });
