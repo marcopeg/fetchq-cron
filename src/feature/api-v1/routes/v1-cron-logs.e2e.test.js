@@ -60,7 +60,7 @@ describe('v1/cron', () => {
 
   afterAll(async () => {
     await global.setQueueMaintenanceDelay(queueName, originalDelay);
-    await axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/reset`);
+    // await axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/reset`);
   });
 
   describe('logs', () => {
@@ -87,6 +87,7 @@ describe('v1/cron', () => {
 
       expect(r1.data.success).toBe(true);
       expect(r1.data.data.logs.length).toBe(2);
+      expect(r1.data.data.logs.length).toBe(2);
 
       // Get second page based on cursor
       const r2 = await axios.get(
@@ -101,9 +102,10 @@ describe('v1/cron', () => {
 
     it('should filter logs by group', async () => {
       const res = await axios.get(`${TEST_SERVER_ROOT}/api/v1/logs/foo`);
-      // global.info(res.data);
+      // global.info(res.data.data.logs);
 
       // All logs should have the same group
+      expect(res.data.data.logs.length).toBeGreaterThanOrEqual(TASKS_COUNT);
       expect(res.data.data.logs.every(log => log.group === 'foo')).toBe(true);
     });
 
@@ -112,6 +114,7 @@ describe('v1/cron', () => {
       // global.info(res.data);
 
       // All tasks should have the same name and group
+      expect(res.data.data.logs.length).toBeGreaterThanOrEqual(TASKS_COUNT);
       expect(
         res.data.data.logs.every(
           log => log.group === 'foo' && log.task === 't1',

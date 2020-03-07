@@ -89,7 +89,17 @@ module.exports = async doc => {
   if (actionResult.logs) {
     for (const log of actionResult.logs) {
       const { message, details = {}, refId = null } = log;
-      await doc.logError(message, details, refId);
+      const hrTime = process.hrtime();
+      await doc.logError(
+        message,
+        {
+          group_name: doc.payload.group_name,
+          task_name: doc.payload.task_name,
+          cursor: Math.floor(hrTime[0] * 1000000 + hrTime[1] / 1000),
+          details,
+        },
+        refId,
+      );
     }
   }
 

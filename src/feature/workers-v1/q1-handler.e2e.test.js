@@ -57,7 +57,7 @@ describe('v1/q1-handler', () => {
 
       it('should add a log out of the webhook response', async () => {
         const logError = jest.fn(async (msg, details, refId) => {
-          //   console.log({ msg, details, refId });
+          // console.log({ msg, details, refId });
           return true;
         });
         const doc = {
@@ -70,8 +70,26 @@ describe('v1/q1-handler', () => {
         // console.log(p1, p2);
 
         expect(logError.mock.calls.length).toBe(2);
-        expect(logError).toHaveBeenCalledWith('log1', { a: 123 }, null);
-        expect(logError).toHaveBeenCalledWith('log2', {}, 'xxx');
+        expect(logError).toHaveBeenCalledWith(
+          'log1',
+          {
+            group_name: 'foo',
+            task_name: 't1',
+            cursor: expect.any(Number),
+            details: { a: 123 },
+          },
+          null,
+        );
+        expect(logError).toHaveBeenCalledWith(
+          'log2',
+          {
+            group_name: 'foo',
+            task_name: 't1',
+            cursor: expect.any(Number),
+            details: {},
+          },
+          'xxx',
+        );
       });
     });
 

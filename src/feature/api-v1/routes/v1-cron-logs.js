@@ -4,18 +4,15 @@ const {
   v1LogsSchemaTask,
 } = require('./v1-cron-logs.schema');
 
-const prepareLog = log => {
-  const tokens = log.subject.split('__');
-  return {
-    group: tokens[0],
-    task: tokens[1],
-    created_at: log.created_at,
-    cursor: log.created_at.getTime(),
-    message: log.message,
-    details: log.details,
-    ref_id: log.ref_id,
-  };
-};
+const prepareLog = log => ({
+  group: log.details.group_name,
+  task: log.details.task_name,
+  created_at: log.created_at,
+  cursor: log.details.cursor,
+  message: log.message,
+  details: log.details,
+  ref_id: log.ref_id,
+});
 
 const handler = async (request, reply) => {
   const { query, params, getConfig, getContext } = request;
@@ -30,13 +27,11 @@ const handler = async (request, reply) => {
   if (params.groupName && params.taskName) {
     where.push(`subject = '${params.groupName}__${params.taskName}'`);
   } else if (params.groupName) {
-    where.push(`subject LIKE '${params.groupName}__%'`);
+    where.push(`details->>'group_name' = '${params.groupName}'`);
   }
 
   if (query.cursor) {
-    where.push(
-      `created_at < TO_TIMESTAMP(${query.cursor}::double precision / 1000)`,
-    );
+    where.push(`(details->>'cursor')::bigint < ${query.cursor}`);
   }
 
   if (where.length) {
@@ -44,11 +39,11 @@ const handler = async (request, reply) => {
     sql.push(where.join(' AND '));
   }
 
-  sql.push(`ORDER BY created_at DESC`);
+  sql.push(`ORDER BY details->>'cursor' DESC`);
   sql.push(`LIMIT ${pageSize}`);
 
   const sqlTxt = sql.join(' ');
-  // console.log(sqlTxt);
+  // console.info(sqlTxt);
   const res = await fetchq.pool.query(sqlTxt);
 
   reply.send({
