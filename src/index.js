@@ -26,8 +26,8 @@ const settings = ({ setConfig }) => {
     },
     maintenance: {
       limit: 1,
-      delay: 100,
-      sleep: 1000,
+      delay: 10,
+      sleep: 100,
     },
     queues: [
       {
@@ -37,7 +37,7 @@ const settings = ({ setConfig }) => {
         maxAttempts: 5,
         errorsRetention: '1h',
         maintenance: {
-          mnt: { delay: '3s', duration: '5m', limit: 500 },
+          mnt: { delay: '500ms', duration: '5m', limit: 500 },
           sts: { delay: '1m', duration: '5m' },
           cmp: { delay: '30m', duration: '5m' },
           drp: { delay: '10m', duration: '5m' },

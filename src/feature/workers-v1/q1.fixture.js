@@ -191,3 +191,60 @@ exports.f4 = {
     },
   },
 };
+
+exports.f5 = {
+  task: {
+    subject: 'foo__t5',
+    payload: {
+      group_name: 'foo',
+      task_name: 't5',
+      schedule: {
+        method: 'delay',
+        value: '+1ms',
+      },
+      action: {
+        method: 'webhook',
+        request: {
+          type: 'rest',
+          method: 'POST',
+          url: '{{TEST_SERVER_ROOT}}/test/worker/v1/q1/foo__t5',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: {
+            payload: 'payload',
+          },
+        },
+      },
+      payload: {},
+    },
+  },
+  handler: {
+    method: 'POST',
+    url: '/worker/v1/q1/foo__t5',
+    handler: async (request, reply) => {
+      const { iterations = 0, iterationsLimit = 1 } = request.body;
+      console.info({ iterations, iterationsLimit });
+
+      if (iterations >= iterationsLimit) {
+        return {
+          success: true,
+          schedule: {
+            method: 'delay',
+            value: '+100y',
+          },
+        };
+      }
+
+      return {
+        success: true,
+        logs: [
+          {
+            message: `log for iteration: ${request.body.iterations}`,
+            details: request.body,
+          },
+        ],
+      };
+    },
+  },
+};

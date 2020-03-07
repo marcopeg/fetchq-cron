@@ -9,20 +9,12 @@ const useServiceTDD =
 const serviceTDD = ({ registerAction, createHook, registerHook }) => {
   registerHook(hooks);
 
+  // Exposes a hook that let register routes scoped under `/test`
   registerAction({
     hook: '$FASTIFY_ROUTE?',
     name: SERVICE_NAME,
     trace: __filename,
     handler: ctx => {
-      // Provide a health-check route to the TDD environment:
-      ctx.registerRoute({
-        method: 'GET',
-        url: '/test/status',
-        handler: async () => ({ message: '+ok' }),
-      });
-
-      // Register route abstraction that prefixes
-      // end routes with `/test`
       const registerRoute = config => {
         ctx.registerRoute({
           ...config,
@@ -35,26 +27,48 @@ const serviceTDD = ({ registerAction, createHook, registerHook }) => {
     },
   });
 
-  // Expose a query interface to interact with the database
-  registerAction({
-    hook: '$TDD_FASTIFY_ROUTE?',
-    name: SERVICE_NAME,
-    trace: __filename,
-    handler: ({ registerRoute }, { getContext }) => {
-      registerRoute({
-        method: 'POST',
-        url: '/test/query',
-        handler: request => getContext('pg').query(request.body.query),
-      });
-    },
-  });
-
+  // Exposes a hook that is intended to mocking stuff like with NOK
   registerAction({
     hook: '$FINISH',
     name: SERVICE_NAME,
     trace: __filename,
     handler: ctx => {
       createHook.sync(hooks.TDD_HTTP_MOCKS, ctx);
+    },
+  });
+
+  // Register all the `/test` prefixed routes
+  registerAction({
+    hook: '$TDD_FASTIFY_ROUTE?',
+    name: SERVICE_NAME,
+    trace: __filename,
+    handler: ({ registerRoute }, { getContext }) => {
+      const fq = getContext('fetchq');
+
+      // Provide a health-check route to the TDD environment:
+      registerRoute({
+        method: 'GET',
+        url: '/status',
+        handler: async () => ({ message: '+ok' }),
+      });
+
+      // Expose a query interface to interact with the database
+      // POST://test/query
+      // BODY: { query: 'SELECT NOW()' }
+      registerRoute({
+        method: 'POST',
+        url: '/query',
+        handler: request => fq.pool.query(request.body.query),
+      });
+
+      // Expose a way to dynamically access the App's configuration
+      // GET://test/config?path=foo.aaa
+      // (query param is optional)
+      registerRoute({
+        method: 'GET',
+        url: '/config',
+        handler: async request => request.getConfig(request.query.path),
+      });
     },
   });
 };

@@ -39,6 +39,10 @@ const actionHandlers = {
     return resolver({
       payload: doc.payload.payload,
       schedule: doc.payload.schedule,
+      iterations: doc.iterations,
+      attempts: doc.attempts,
+      created_at: doc.created_at,
+      next_iteration: doc.next_iteration,
     });
   },
 };
