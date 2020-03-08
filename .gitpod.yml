@@ -1,18 +1,24 @@
 image: marcopeg/gitpod-workspace-postgres:2.5.0
 
 tasks:
-  - name: E2E Tests
-    init: sleep 30
-    command: yarn tdd:e2e
-    openIn: bottom
   - name: Unit Tests
     init: sleep 30
     command: yarn tdd:unit
-    openIn: bottom
-    openMode: split-right
-  - name: App.
+    openIn: right
+    openMode: tab-after
+  - name: E2E Tests
+    init: sleep 30
+    command: yarn tdd:e2e
+    openIn: right
+    openMode: tab-after
+  - name: Api
     init: yarn install
-    command: yarn start
+    command: yarn start:api
+    openIn: bottom
+    openMode: tab-after
+  - name: App
+    init: sleep 30
+    command: yarn start:app
     openIn: bottom
     openMode: split-right
 
@@ -22,4 +28,6 @@ ports:
   - port: 8008
     onOpen: ignore
   - port: 8080
+    onOpen: ignore
+  - port: 3000
     onOpen: ignore

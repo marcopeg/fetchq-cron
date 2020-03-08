@@ -1,10 +1,9 @@
-const corsPlugin = require('fastify-cors');
+const staticPlugin = require('fastify-static');
 const hooks = require('./hooks');
 
-const onFastifyHacksBefore = ({ registerPlugin }) => {
-  registerPlugin(corsPlugin, {
-    // put your options here
-  })
+const onFastifyHacksBefore = ({ registerPlugin }, { getConfig }) => {
+  const options = getConfig('fastify.static', {});
+  registerPlugin(staticPlugin, options);
 };
 
 module.exports = ({ registerAction }) => {

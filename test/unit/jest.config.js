@@ -12,18 +12,16 @@ module.exports = {
   coverageDirectory: 'coverage',
 
   // The root directory that Jest should scan for tests and modules within
-  rootDir: '../../src/',
+  rootDir: '../../',
 
   // A list of paths to directories that Jest should use to search for files in
-  roots: [
-    '<rootDir>'
-  ],
+  roots: ['<rootDir>/ssr/'],
 
   // The test environment that will be used for testing
   testEnvironment: 'node',
 
   testMatch: [
     '**/__tests__/**/*.unit.[jt]s?(x)',
-    '**/?(*.)+(unic.spec|unit.test).[jt]s?(x)'
+    '**/?(*.)+(unic.spec|unit.test).[jt]s?(x)',
   ],
 };
