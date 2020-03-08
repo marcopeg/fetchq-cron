@@ -5,6 +5,7 @@ const serviceFastify = require('./service/service-fastify');
 const serviceFastifyCors = require('./service/service-fastify-cors');
 const serviceFastifyStatic = require('./service/service-fastify-static');
 const serviceFastifyCookie = require('./service/service-fastify-cookie');
+const serviceFastifyJwt = require('./service/service-fastify-jwt');
 const serviceFetchq = require('./service/service-fetchq');
 const serviceFastifyFetchq = require('./service/service-fastify-fetchq');
 const serviceTdd = require('./service/service-tdd');
@@ -27,6 +28,7 @@ runHookApp({
     serviceFastifyCors,
     serviceFastifyStatic,
     serviceFastifyCookie,
+    serviceFastifyJwt,
     serviceFastifyFetchq,
     serviceTdd,
   ],

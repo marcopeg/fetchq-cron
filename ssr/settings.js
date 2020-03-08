@@ -56,6 +56,10 @@ const settings = ({ setConfig }) => {
   setConfig('fastify.cookie', {
     secret: 'fetchq-cron', // TODO: move it to an environment variable
   });
+
+  setConfig('fastify.jwt', {
+    secret: 'fetchq-cron', // TODO: move it to an environment variable
+  });
 };
 
 module.exports = { settings };

@@ -8,14 +8,26 @@ const onInitService = ({ getConfig, setContext, createHook, getContext }) => {
   const registerPlugin = (...options) => server.register(...options);
   const registerRoute = (...options) => server.route(...options);
 
-  server.decorateRequest('getConfig', getConfig);
-  server.decorateRequest('getContext', getContext);
+  const decorate = (...options) => server.decorate(...options);
+  const decorateRequest = (...options) => server.decorateRequest(...options);
+  const decorateReply = (...options) => server.decorateReply(...options);
 
   server.decorate('getConfig', getConfig);
   server.decorate('getContext', getContext);
 
+  server.decorateRequest('getConfig', getConfig);
+  server.decorateRequest('getContext', getContext);
+
+  server.decorateReply('getConfig', getConfig);
+  server.decorateReply('getContext', getContext);
+
   createHook.sync(hooks.FASTIFY_HACKS_BEFORE, { fastify: server });
-  createHook.sync(hooks.FASTIFY_PLUGIN, { registerPlugin });
+  createHook.sync(hooks.FASTIFY_PLUGIN, {
+    registerPlugin,
+    decorate,
+    decorateRequest,
+    decorateReply,
+  });
   createHook.sync(hooks.FASTIFY_ROUTE, { registerRoute });
 
   setContext('fastify', server);
