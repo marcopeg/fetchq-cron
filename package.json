@@ -2,12 +2,12 @@
   "name": "fetchq-cron-api",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "ssr/index.js",
   "scripts": {
-    "start": "nodemon src/index.js",
+    "start": "nodemon ssr/index.js",
     "test:unit": "./node_modules/.bin/jest --projects test/unit",
     "test:e2e": "./node_modules/.bin/jest --projects test/e2e --runInBand --testTimeout=10000",
-    "start:docker": "yarn && nodemon src/index.js",
+    "start:docker": "yarn && nodemon ssr/index.js",
     "tdd:e2e": "./node_modules/.bin/jest --projects test/e2e --runInBand --watchAll --testTimeout=10000",
     "tdd:unit": "./node_modules/.bin/jest --projects test/unit --watchAll"
   },
