@@ -66,13 +66,4 @@ module.exports = ({ registerAction }) => {
       });
     },
   });
-
-  // registerAction({
-  //   hook: '$FASTIFY_ROUTE',
-  //   name: FEATURE_NAME,
-  //   handler: ({ registerRoute }) => {
-  //     registerRoute(v1SessionCreate);
-  //     registerRoute(v1SessionDetails);
-  //   },
-  // });
 };

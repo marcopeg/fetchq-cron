@@ -3,15 +3,6 @@ const axios = require('axios');
 describe('v1/session/details', () => {
   const PWD_PATH = 'app.auth.console.password';
   const { TEST_SERVER_ROOT } = global.env;
-  // let passwdSettings = null;
-
-  // beforeAll(async () => {
-  //   passwdSettings = await global.setAppConfig(PWD_PATH, null);
-  // });
-
-  // afterAll(async () => {
-  //   await global.setAppConfig(PWD_PATH, passwdSettings.old);
-  // });
 
   it('should receive a dummy session for a non secured instance', async () => {
     const passwdSettings = await global.setAppConfig(PWD_PATH, null);
