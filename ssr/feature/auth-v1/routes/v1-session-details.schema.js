@@ -1,17 +1,4 @@
 module.exports = {
-  // body: {
-  //   type: 'object',
-  //   required: ['uname', 'passw'],
-  //   additionalProperties: false,
-  //   properties: {
-  //     uname: {
-  //       type: 'string',
-  //     },
-  //     passw: {
-  //       type: 'string',
-  //     },
-  //   },
-  // },
   response: {
     '2xx': {
       type: 'object',

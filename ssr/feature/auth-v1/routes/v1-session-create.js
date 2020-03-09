@@ -74,7 +74,7 @@ const v1SessionCreate = {
       success: true,
       data: {
         ...details.public,
-        // iat: details.iat.toISOString(),
+        iat: details.iat,
         eat: details.eat,
         token,
       },
