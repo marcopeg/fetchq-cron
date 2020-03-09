@@ -6,7 +6,7 @@ const onFastifyPlugin = (
   { registerPlugin, decorateRequest },
   { getConfig },
 ) => {
-  const decoratedJWTPlugin = fp(async function(fastify) {
+  const decoratedJwtPlugin = async fastify => {
     // Register plugin
     const options = getConfig('fastify.jwt', {});
     fastify.register(jwtPlugin, options);
@@ -17,9 +17,9 @@ const onFastifyPlugin = (
       request.jwt = fastify.jwt;
       done();
     });
-  });
+  };
 
-  registerPlugin(decoratedJWTPlugin);
+  registerPlugin(fp(decoratedJwtPlugin));
 };
 
 module.exports = ({ registerAction }) => {

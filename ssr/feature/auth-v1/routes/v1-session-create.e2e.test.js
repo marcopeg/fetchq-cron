@@ -1,8 +1,7 @@
 const axios = require('axios');
 
-const PWD_PATH = 'app.auth.console.password';
-
 describe('v1/session', () => {
+  const PWD_PATH = 'app.auth.console.password';
   const { TEST_SERVER_ROOT } = global.env;
 
   it('should authenticate without a password', async () => {
