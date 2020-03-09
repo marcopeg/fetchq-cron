@@ -64,8 +64,8 @@ const v1SessionCreate = {
     // Send out secure cookie
     const expiryMs = ms(jwtOptions.expiresIn);
     reply.setCookie('auth', token, {
-      // httpOnly: true,
-      // signed: true,
+      httpOnly: true,
+      signed: true,
       maxAge: expiryMs / 1000,
       expires: details.eat,
     });

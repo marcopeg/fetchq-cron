@@ -7,6 +7,12 @@ const getRequestToken = request => {
   if (request.headers.authorization) {
     return request.headers.authorization.substr(7);
   }
+  if (request.cookies.auth) {
+    return request.cookies.auth;
+  }
+  if (request.query.auth) {
+    return request.query.auth;
+  }
 };
 
 const authenticateDecorator = async (request, reply) => {
