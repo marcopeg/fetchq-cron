@@ -89,6 +89,10 @@ const assertQueueIterations = async (
 const getAppConfig = async path =>
   (await axios.get(`${env.TEST_SERVER_ROOT}/test/config?path=${path}`)).data;
 
+const setAppConfig = async (path, value) =>
+  (await axios.post(`${env.TEST_SERVER_ROOT}/test/config`, { path, value }))
+    .data;
+
 const getQueueMaintenanceDelay = async queue =>
   (
     await axios.post(`${env.TEST_SERVER_ROOT}/test/query`, {
@@ -128,6 +132,7 @@ module.exports = () => ({
   getQueueMaintenanceDelay,
   setQueueMaintenanceDelay,
   getAppConfig,
+  setAppConfig,
   info,
   // seed,
 });

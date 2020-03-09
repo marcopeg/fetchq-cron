@@ -60,7 +60,7 @@ describe('v1/cron', () => {
 
   afterAll(async () => {
     await global.setQueueMaintenanceDelay(queueName, originalDelay);
-    // await axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/reset`);
+    await axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/reset`);
   });
 
   describe('logs', () => {

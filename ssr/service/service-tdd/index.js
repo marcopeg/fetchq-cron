@@ -42,7 +42,7 @@ const serviceTDD = ({ registerAction, createHook, registerHook }) => {
     hook: '$TDD_FASTIFY_ROUTE?',
     name: SERVICE_NAME,
     trace: __filename,
-    handler: ({ registerRoute }, { getContext }) => {
+    handler: ({ registerRoute }, { getContext, setConfig }) => {
       const fq = getContext('fetchq');
 
       // Provide a health-check route to the TDD environment:
@@ -68,6 +68,32 @@ const serviceTDD = ({ registerAction, createHook, registerHook }) => {
         method: 'GET',
         url: '/config',
         handler: async request => request.getConfig(request.query.path),
+      });
+
+      // Expose a way to dynamically edit a piece of configuration
+      // POST://test/config
+      // BODY: { path: 'app.foo', value: 123 }
+      // RETURN: { old: 'xxx', new: 123}
+      registerRoute({
+        method: 'POST',
+        url: '/config',
+        handler: async request => {
+          const getConfig = path => {
+            try {
+              return request.getConfig(path);
+            } catch (err) {
+              return undefined;
+            }
+          };
+
+          const old = getConfig(request.body.path);
+          setConfig(request.body.path, request.body.value);
+
+          return {
+            old,
+            new: getConfig(request.body.path),
+          };
+        },
       });
     },
   });
