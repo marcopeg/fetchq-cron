@@ -1,6 +1,7 @@
 const { FEATURE_NAME } = require('./hooks');
 
 const pingRouteHandler = async () => ({
+  success: true,
   message: '+ok',
   emotion: '💩',
 });

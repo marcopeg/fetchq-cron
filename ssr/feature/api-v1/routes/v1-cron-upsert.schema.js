@@ -6,12 +6,11 @@ const webhookRequest = {
   oneOf: [
     {
       type: 'object',
-      required: ['url'],
+      required: ['type', 'url'],
       properties: {
         type: {
           type: 'string',
           enum: ['rest', 'graphql'],
-          default: 'rest',
         },
         url: {
           type: 'string',
@@ -22,19 +21,16 @@ const webhookRequest = {
 };
 
 const action = {
-  oneOf: [
-    {
-      type: 'object',
-      required: ['method', 'request'],
-      properties: {
-        method: {
-          type: 'string',
-          enum: ['webhook'],
-        },
-        request: webhookRequest,
-      },
+  type: 'object',
+  required: ['method', 'request'],
+  additionalProperties: false,
+  properties: {
+    method: {
+      type: 'string',
+      enum: ['webhook'],
     },
-  ],
+    request: webhookRequest,
+  },
 };
 
 module.exports = {

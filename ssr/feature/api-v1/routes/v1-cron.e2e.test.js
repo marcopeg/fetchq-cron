@@ -8,6 +8,7 @@ describe('v1/cron', () => {
     action: {
       method: 'webhook',
       request: {
+        type: 'rest',
         url: `${TEST_SERVER_ROOT}/test/w1`,
       },
     },
