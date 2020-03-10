@@ -3,7 +3,7 @@ import globalHook from 'use-global-hook';
 import { useGet } from './use-get';
 
 const initialState = {
-  isLoading: true,
+  isLoading: false,
   hasChecked: false,
   hasAuth: false,
 };
@@ -20,12 +20,21 @@ const useGlobalAuth = globalHook(React, initialState, { updateLoginDetails });
 
 export const useAuth = () => {
   const [state, { updateLoginDetails }] = useGlobalAuth();
-  const [sessionDetails] = useGet('/api/v1/session', {
-    // poll: 1000,
+  const [sessionDetails, sessionActions] = useGet('/api/v1/session', {
+    lazy: true,
   });
+
+  // First check once the app starts
+  // using the hooks in other components should be safe
+  useEffect(() => {
+    if (!state.isLoading && !state.hasChecked) {
+      sessionActions.fetch();
+    }
+  }, [state.isLoading, state.hasChecked, sessionActions]);
 
   // Persist new details in the global store
   useEffect(() => {
+    console.log('>>>', sessionDetails);
     updateLoginDetails(sessionDetails);
   }, [sessionDetails, updateLoginDetails]);
 

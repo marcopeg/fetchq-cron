@@ -1,9 +1,16 @@
+/**
+ * React hook interface to `axios.get`.
+ * It follows the API's convention to always return 200
+ * with a `success:boolean` flag and `data` or `errors`
+ * keywords in the payload
+ */
+
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 const SERVER_URL = process.env.REACT_APP_SERVER_URL || '';
 
 const INITIAL_STATE = {
-  isLoading: true,
+  isLoading: false,
   isFirstLoading: true,
   data: null,
   errors: null,
@@ -19,12 +26,13 @@ export const useGet = (
 ) => {
   const [state, setState] = useState(INITIAL_STATE);
   const { lazy, poll, ...fetchOptions } = options;
+  const endpointUrl = SERVER_URL + url;
 
   const fetch = async (url, options) => {
-    console.log('fetch', url, options);
     setState(state => ({ ...state, isLoading: true }));
+
     try {
-      const response = await axios.get(SERVER_URL + url, {
+      const response = await axios.get(url, {
         ...options,
         withCredentials: true,
       });
@@ -32,8 +40,8 @@ export const useGet = (
         ...state,
         isLoading: false,
         isFirstLoading: false,
-        data: response.data,
-        errors: null,
+        data: response.data.success ? response.data.data : null,
+        errors: response.data.success ? null : response.data.errors,
         response,
       }));
     } catch (error) {
@@ -51,14 +59,14 @@ export const useGet = (
   // First fetch, only if not lazy
   useEffect(() => {
     if (!lazy) {
-      fetch(url, fetchOptions);
+      fetch(endpointUrl, fetchOptions);
     }
   }, []); // eslint-disable-line
 
   useEffect(() => {
     let t = null;
     if (poll) {
-      t = setInterval(() => fetch(url, fetchOptions), poll);
+      t = setInterval(() => fetch(endpointUrl, fetchOptions), poll);
     }
 
     return () => {
@@ -66,5 +74,12 @@ export const useGet = (
     };
   }, []); // eslint-disable-line
 
-  return [state, { fetch }];
+  return [
+    state,
+    {
+      // Provide a lazy and fully customizable interface to Fetch
+      fetch: (_url = endpointUrl, _options = fetchOptions) =>
+        fetch(_url, _options),
+    },
+  ];
 };

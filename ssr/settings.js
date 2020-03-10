@@ -48,7 +48,7 @@ const settings = ({ setConfig, getConfig }) => {
   // Generica app configuration
   setConfig('app.q1.name', Q1);
   setConfig('app.logs.page.size', 100);
-  setConfig('app.auth.console.password', null);
+  setConfig('app.auth.console.password', process.env.CONSOLE_PASSWORD || null);
 
   // Setup static files from CRA's build folder
   setConfig('fastify.static', {
