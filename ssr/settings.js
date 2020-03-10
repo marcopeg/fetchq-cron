@@ -12,7 +12,9 @@
 const path = require('path');
 const { Q1 } = require('./contants');
 
-const settings = ({ setConfig }) => {
+const settings = ({ setConfig, getConfig }) => {
+  // TODO: add envalid
+
   // FetchQ Maintenance
   setConfig('fetchq', {
     connectionString:
@@ -59,6 +61,13 @@ const settings = ({ setConfig }) => {
 
   setConfig('fastify.jwt', {
     secret: 'fetchq-cron', // TODO: move it to an environment variable
+  });
+
+  // TODO: cors should be enabled only on demand
+  //       need to better figure out the environment based configuration
+  setConfig('fastify.cors', {
+    origin: process.env.CORS_ORIGIN,
+    credentials: true,
   });
 };
 
