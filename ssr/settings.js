@@ -12,7 +12,9 @@
 const path = require('path');
 const { Q1 } = require('./contants');
 
-const settings = ({ setConfig }) => {
+const settings = ({ setConfig, getConfig }) => {
+  // TODO: add envalid
+
   // FetchQ Maintenance
   setConfig('fetchq', {
     connectionString:
@@ -46,7 +48,7 @@ const settings = ({ setConfig }) => {
   // Generica app configuration
   setConfig('app.q1.name', Q1);
   setConfig('app.logs.page.size', 100);
-  setConfig('app.auth.console.password', null);
+  setConfig('app.auth.console.password', process.env.CONSOLE_PASSWORD || null);
 
   // Setup static files from CRA's build folder
   setConfig('fastify.static', {
@@ -55,10 +57,23 @@ const settings = ({ setConfig }) => {
 
   setConfig('fastify.cookie', {
     secret: 'fetchq-cron', // TODO: move it to an environment variable
+    options: {
+      httpOnly: true,
+      secure: true,
+      domain: '.gitpod.io', // TODO: set this automatically or via environment?
+      path: '/',
+    },
   });
 
   setConfig('fastify.jwt', {
     secret: 'fetchq-cron', // TODO: move it to an environment variable
+  });
+
+  // TODO: cors should be enabled only on demand
+  //       need to better figure out the environment based configuration
+  setConfig('fastify.cors', {
+    origin: process.env.CORS_ORIGIN,
+    credentials: true,
   });
 };
 

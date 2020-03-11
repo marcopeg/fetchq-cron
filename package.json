@@ -4,22 +4,26 @@
   "description": "",
   "main": "ssr/index.js",
   "scripts": {
-    "### Development Utilities": "",
+    "___// Development Utilities //___": "",
     "start": "node ssr/index.js",
     "start:api": "nodemon ssr/index.js",
     "start:app": "react-scripts start",
+    "start:gitpod:api": "CORS_ORIGIN=$(gp url 3000) nodemon ssr/index.js",
+    "start:gitpod:app": "REACT_APP_SERVER_URL=$(gp url 8080) react-scripts start",
     "start:docker:api": "yarn && nodemon ssr/index.js",
     "start:docker:app": "yarn && react-scripts start",
-    "### Testing Utilities": "",
+    "___// Testing Utilities //___": "",
     "test:unit": "./node_modules/.bin/jest --projects test/unit",
     "test:e2e": "./node_modules/.bin/jest --projects test/e2e --runInBand --testTimeout=10000",
     "tdd:e2e": "./node_modules/.bin/jest --projects test/e2e --runInBand --watchAll --testTimeout=10000",
     "tdd:unit": "./node_modules/.bin/jest --projects test/unit --watchAll",
-    "### Production Utilities": "",
+    "___// Production Utilities //___": "",
     "build": "react-scripts build"
   },
   "dependencies": {
     "@forrestjs/hooks": "3.9.0",
+    "@material-ui/core": "^4.9.5",
+    "@material-ui/icons": "^4.9.1",
     "axios": "0.19.2",
     "cron-parser": "2.13.0",
     "envalid": "6.0.0",
@@ -33,7 +37,8 @@
     "ms": "^2.1.2",
     "react": "16.12.0",
     "react-dom": "16.12.0",
-    "react-scripts": "3.0.1"
+    "react-scripts": "3.0.1",
+    "use-global-hook": "^0.1.12"
   },
   "devDependencies": {
     "nodemon": "1.18.4"

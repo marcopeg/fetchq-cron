@@ -13,12 +13,12 @@ tasks:
     openMode: tab-after
   - name: Api
     init: yarn install
-    command: yarn start:api
+    command: yarn start:gitpod:api
     openIn: bottom
     openMode: tab-after
   - name: App
     init: sleep 30
-    command: yarn start:app
+    command: yarn start:gitpod:app
     openIn: bottom
     openMode: split-right
 
