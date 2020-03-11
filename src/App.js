@@ -5,7 +5,6 @@ import { useAuth } from './state/use-auth';
 
 export default function App() {
   const { hasChecked, hasAuth } = useAuth();
-  console.log('?', hasChecked, hasAuth);
 
   if (!hasChecked) {
     return <LoadingView />;

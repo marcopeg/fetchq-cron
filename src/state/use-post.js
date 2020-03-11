@@ -1,11 +1,4 @@
-/**
- * React hook interface to `axios.get`.
- * It follows the API's convention to always return 200
- * with a `success:boolean` flag and `data` or `errors`
- * keywords in the payload
- */
-
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 const SERVER_URL = process.env.REACT_APP_SERVER_URL || '';
 
@@ -17,18 +10,12 @@ const INITIAL_STATE = {
   response: null,
 };
 
-export const useGet = (
-  url,
-  options = {
-    lazy: false,
-    poll: null, // interval in ms, must be above 0 to work
-  },
-) => {
+export const usePost = (url, options = {}) => {
   const [state, setState] = useState(INITIAL_STATE);
-  const { lazy, poll, ...fetchOptions } = options;
+  const { ...fetchOptions } = options;
   const endpointUrl = SERVER_URL + url;
 
-  const fetch = async (url, options) => {
+  const send = async (url, data, options) => {
     setState(state => ({
       ...state,
       isLoading: true,
@@ -38,7 +25,7 @@ export const useGet = (
     }));
 
     try {
-      const response = await axios.get(url, {
+      const response = await axios.post(url, data, {
         ...fetchOptions,
         withCredentials: true,
       });
@@ -62,30 +49,12 @@ export const useGet = (
     }
   };
 
-  // First fetch, only if not lazy
-  useEffect(() => {
-    if (!lazy) {
-      fetch(endpointUrl, fetchOptions);
-    }
-  }, []); // eslint-disable-line
-
-  useEffect(() => {
-    let t = null;
-    if (poll) {
-      t = setInterval(() => fetch(endpointUrl, fetchOptions), poll);
-    }
-
-    return () => {
-      clearInterval(t);
-    };
-  }, []); // eslint-disable-line
-
   return [
     state,
     {
-      // Provide a lazy and fully customizable interface to Fetch
-      fetch: (_options = fetchOptions, _url = endpointUrl) =>
-        fetch(_url, _options),
+      // Provide a lazy and fully customizable interface to Post
+      send: (data, _options = fetchOptions, _url = endpointUrl) =>
+        send(_url, data, _options),
     },
   ];
 };

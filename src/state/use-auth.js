@@ -1,44 +1,60 @@
-import React, { useEffect } from 'react';
-import globalHook from 'use-global-hook';
+import React, { useContext, useState, useEffect } from 'react';
 import { useGet } from './use-get';
+import { usePost } from './use-post';
 
 const initialState = {
+  // Properties
   isLoading: false,
+  errorMsg: null,
   hasChecked: false,
   hasAuth: false,
+
+  // Methods
+  login: () => {},
 };
 
-const updateLoginDetails = (store, details) => {
-  store.setState({
-    hasAuth: details.data !== null,
-    hasChecked: !details.isFirstLoading,
-    isLoading: details.isLoading,
-  });
-};
+export const AuthContext = React.createContext(initialState);
+export const useAuth = () => useContext(AuthContext);
 
-const useGlobalAuth = globalHook(React, initialState, { updateLoginDetails });
+export const AuthProvider = ({ children }) => {
+  const [sessionInfo] = useGet('/api/v1/session', { poll: 5000 });
+  const [loginInfo, loginActions] = usePost('/api/v1/session');
+  const [auth, setAuth] = useState(null);
 
-export const useAuth = () => {
-  const [state, { updateLoginDetails }] = useGlobalAuth();
-  const [sessionDetails, sessionActions] = useGet('/api/v1/session', {
-    lazy: true,
-  });
+  const login = (uname = 'console', passw = '') =>
+    loginActions.send({
+      uname,
+      passw,
+    });
 
-  // First check once the app starts
-  // using the hooks in other components should be safe
+  // Persist auth info after login or session check
   useEffect(() => {
-    if (!state.isLoading && !state.hasChecked) {
-      sessionActions.fetch();
+    const data = sessionInfo.data || loginInfo.data;
+    if (data) {
+      setAuth(data);
     }
-  }, [state.isLoading, state.hasChecked, sessionActions]);
+  }, [sessionInfo.data, loginInfo.data]);
 
-  // Persist new details in the global store
+  // Remove auth info in case of session or login errors
   useEffect(() => {
-    console.log('>>>', sessionDetails);
-    updateLoginDetails(sessionDetails);
-  }, [sessionDetails, updateLoginDetails]);
+    const errors = sessionInfo.errors || loginInfo.errors;
+    if (errors) {
+      setAuth(null);
+    }
+  }, [sessionInfo.errors, loginInfo.errors]);
 
-  return {
-    ...state,
+  const currentState = {
+    ...initialState,
+    // Properties
+    isLoading: loginInfo.isLoading,
+    errorMsg: loginInfo.errors ? loginInfo.errors[0].message : null,
+    hasChecked: !sessionInfo.isFirstLoading,
+    hasAuth: auth !== null,
+    // Methods
+    login,
   };
+
+  return (
+    <AuthContext.Provider value={currentState}>{children}</AuthContext.Provider>
+  );
 };

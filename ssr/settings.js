@@ -57,6 +57,12 @@ const settings = ({ setConfig, getConfig }) => {
 
   setConfig('fastify.cookie', {
     secret: 'fetchq-cron', // TODO: move it to an environment variable
+    options: {
+      httpOnly: true,
+      secure: true,
+      domain: '.gitpod.io', // TODO: set this automatically or via environment?
+      path: '/',
+    },
   });
 
   setConfig('fastify.jwt', {
