@@ -1,9 +1,32 @@
 const axios = require('axios');
-const getEnv = require('./jest.env');
-
-const env = getEnv();
+const env = require('./jest.env')();
 
 const pause = (delay = 0) => new Promise(r => setTimeout(r, delay));
+
+const statusCheck = async (endpoint, test) => {
+  try {
+    const res = await axios.get(endpoint);
+    return test(res);
+  } catch (err) {
+    return false;
+  }
+};
+
+const serverIsUp = async prefix => {
+  console.info(`[${prefix}] await for server's health check...`);
+  console.info(`[${prefix}] ${env.TEST_STATUS_CHECK_URL}`);
+
+  let isup = false;
+  while (isup === false) {
+    await pause(env.TEST_STATUS_CHECK_INTERVAL);
+    isup = await statusCheck(
+      env.TEST_STATUS_CHECK_URL,
+      res => res.status === 200,
+    );
+  }
+
+  console.info(`[${prefix}] server is up...`);
+};
 
 // FIXME: it still uses the Sequelize data format
 // const assertQueueMetrics = async (
@@ -125,8 +148,10 @@ const info = data => console.info(JSON.stringify(data, null, 2));
 
 module.exports = () => ({
   env,
-  // axios,
+  axios,
   pause,
+  statusCheck,
+  serverIsUp,
   // assertQueueMetrics,
   assertQueueIterations,
   getQueueMaintenanceDelay,

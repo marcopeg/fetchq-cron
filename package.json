@@ -17,6 +17,8 @@
     "test:e2e": "./node_modules/.bin/jest --projects test/e2e --runInBand --testTimeout=10000",
     "tdd:e2e": "./node_modules/.bin/jest --projects test/e2e --runInBand --watchAll --testTimeout=10000",
     "tdd:unit": "./node_modules/.bin/jest --projects test/unit --watchAll",
+    "seed": "node test/seed/index.js",
+    "seed:watch": "nodemon test/seed/index.js",
     "___// Production Utilities //___": "",
     "build": "react-scripts build"
   },
