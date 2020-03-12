@@ -1,6 +1,7 @@
 import React from 'react';
 import LoadingView from './views/LoadingView';
 import LoginView from './views/LoginView';
+import TasksList from './containers/TasksList';
 import { useAuth } from './state/use-auth';
 
 export default function App() {
@@ -18,6 +19,8 @@ export default function App() {
     <div className="App">
       <h1>Fetchq Cron</h1>
       <h2>Schedule tasks like a king!</h2>
+      <hr />
+      <TasksList />
     </div>
   );
 }
