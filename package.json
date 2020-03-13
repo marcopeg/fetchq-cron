@@ -12,7 +12,7 @@
     "start:gitpod:app": "REACT_APP_SERVER_URL=$(gp url 8080) react-scripts start",
     "start:docker:api": "yarn && nodemon ssr/index.js",
     "start:docker:app": "yarn && react-scripts start",
-    "styleguide": "HOST=$(gp url 6060) styleguidist server",
+    "start:styleguide": "HOST=$(gp url 6060) styleguidist server",
     "___// Testing Utilities //___": "",
     "test:unit": "./node_modules/.bin/jest --projects test/unit",
     "test:e2e": "./node_modules/.bin/jest --projects test/e2e --runInBand --testTimeout=10000",
