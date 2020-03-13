@@ -16,7 +16,7 @@ tasks:
     command: yarn start:gitpod:api
     openIn: bottom
     openMode: tab-after
-  - name: Stlpeguide
+  - name: Styleguide
     init: sleep 30
     command: yarn start:styleguide
     openIn: bottom
