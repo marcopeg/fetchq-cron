@@ -46,9 +46,11 @@ DisplayDate.propTypes = {
   refreshInterval: PropTypes.number,
   /** Translation function, lets you customize the locale */
   translate: PropTypes.func,
+  /** Formats a date within the same year */
+  formatShortDate: PropTypes.func,
+  /** Formats a date */
+  formatFullDate: PropTypes.func,
   thresholdNow: PropTypes.number,
-  thresholdAboutNow: PropTypes.number,
-  thresholdFewSeconds: PropTypes.number,
   thresholdSeconds: PropTypes.number,
   thresholdAboutAMinute: PropTypes.number,
   thresholdMinutes: PropTypes.number,

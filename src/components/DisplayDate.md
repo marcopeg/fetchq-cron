@@ -4,7 +4,7 @@ Current date:
 <DisplayDate date={new Date()} />
 ```
 
-About now:
+Less than a minute:
 
 ```js
 <p>
@@ -17,64 +17,26 @@ About now:
 <p>
   <DisplayDate
     date={moment()
-      .subtract(4, 'seconds')
+      .subtract(59, 'seconds')
       .toDate()}
   />
 </p>
 ```
 
-Few seconds around:
+One minute:
 
 ```js
 <p>
   <DisplayDate
     date={moment()
-      .add(8, 'seconds')
+      .add(60, 'seconds')
       .toDate()}
   />
 </p>
 <p>
   <DisplayDate
     date={moment()
-      .subtract(8, 'seconds')
-      .toDate()}
-  />
-</p>
-```
-
-Seconds around:
-
-```js
-<p>
-  <DisplayDate
-    date={moment()
-      .add(35, 'seconds')
-      .toDate()}
-  />
-</p>
-<p>
-  <DisplayDate
-    date={moment()
-      .subtract(46, 'seconds')
-      .toDate()}
-  />
-</p>
-```
-
-About a minute:
-
-```js
-<p>
-  <DisplayDate
-    date={moment()
-      .add(59, 'seconds')
-      .toDate()}
-  />
-</p>
-<p>
-  <DisplayDate
-    date={moment()
-      .subtract(65, 'seconds')
+      .subtract(80, 'seconds')
       .toDate()}
   />
 </p>
@@ -93,7 +55,7 @@ Few minutes around:
 <p>
   <DisplayDate
     date={moment()
-      .subtract(40, 'minutes')
+      .subtract(59, 'minutes')
       .toDate()}
   />
 </p>
@@ -112,7 +74,7 @@ About one hour:
 <p>
   <DisplayDate
     date={moment()
-      .subtract(62, 'minutes')
+      .subtract(61, 'minutes')
       .toDate()}
   />
 </p>
@@ -124,52 +86,52 @@ Few hours around:
 <p>
   <DisplayDate
     date={moment()
-      .add(6, 'hours')
+      .subtract(2, 'hours')
       .toDate()}
   />
 </p>
 <p>
   <DisplayDate
     date={moment()
-      .subtract(23, 'hours')
-      .toDate()}
-  />
-</p>
-```
-
-Few days around:
-
-```js
-<p>
-  <DisplayDate
-    date={moment()
-      .add(6, 'days')
-      .toDate()}
-  />
-</p>
-<p>
-  <DisplayDate
-    date={moment()
-      .subtract(23, 'days')
+      .add(2, 'hours')
       .toDate()}
   />
 </p>
 ```
 
-Few months around:
+Tomorrow / Yesterday:
 
 ```js
 <p>
   <DisplayDate
     date={moment()
-      .add(6, 'months')
+      .add(24, 'hours')
       .toDate()}
   />
 </p>
 <p>
   <DisplayDate
     date={moment()
-      .subtract(9, 'months')
+      .subtract(24, 'hours')
+      .toDate()}
+  />
+</p>
+```
+
+Few days within same year:
+
+```js
+<p>
+  <DisplayDate
+    date={moment()
+      .add(3, 'days')
+      .toDate()}
+  />
+</p>
+<p>
+  <DisplayDate
+    date={moment()
+      .subtract(3, 'days')
       .toDate()}
   />
 </p>
