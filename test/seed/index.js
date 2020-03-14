@@ -40,6 +40,8 @@ const runSeedSuite = ({ registerAction }) =>
         console.info('>>> Done!');
       } catch (err) {
         console.error(err);
+      } finally {
+        process.exit(0);
       }
     },
   });
