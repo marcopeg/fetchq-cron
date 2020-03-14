@@ -2,7 +2,7 @@ const path = require('path');
 const makeCRAWebpackConfig = require('react-scripts/config/webpack.config.js');
 
 module.exports = {
-  components: 'src/components/**/*.js',
+  components: 'src/components/**/[A-Z]*.js',
   template: {
     head: {
       links: [
