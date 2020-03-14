@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -12,13 +12,26 @@ import date2text from '../lib/date2text';
  * All the thresholds an be customised, look into `lib/date2text` for their
  * defaults.
  */
-const DisplayDate = ({ date, stringify, ...config }) => {
-  const display = date2text(date, config);
+const DisplayDate = ({ date, stringify, refreshInterval, ...config }) => {
+  const timer = useRef();
+  const [, refreshUpdate] = useState(0);
+
+  // Automatically refreshes the relative string time
+  useEffect(() => {
+    if (!refreshInterval) {
+      return () => {};
+    }
+    timer.current = setInterval(
+      () => refreshUpdate(value => value + 1),
+      refreshInterval,
+    );
+    return () => clearInterval(timer.current);
+  }, [refreshInterval, refreshUpdate]);
 
   return (
     <Tooltip title={stringify(date)}>
       <Typography variant="body1" component="span">
-        {display}
+        {date2text(date, config)}
       </Typography>
     </Tooltip>
   );
@@ -29,6 +42,8 @@ DisplayDate.propTypes = {
   date: PropTypes.instanceOf(Date).isRequired,
   /** Renders a full text date in the tooltip */
   stringify: PropTypes.func,
+  /** Refresh the string value every {x}ms. Use {0} to disable. */
+  refreshInterval: PropTypes.number,
   /** Translation function, lets you customize the locale */
   translate: PropTypes.func,
   thresholdNow: PropTypes.number,
@@ -44,6 +59,7 @@ DisplayDate.propTypes = {
 };
 
 DisplayDate.defaultProps = {
+  refreshInterval: 0,
   stringify: date =>
     date
       .toString()
@@ -51,4 +67,4 @@ DisplayDate.defaultProps = {
       .shift(),
 };
 
-export default DisplayDate;
+export default React.memo(DisplayDate);

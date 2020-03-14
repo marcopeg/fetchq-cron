@@ -13,7 +13,17 @@ const runSeedSuite = ({ registerAction }) =>
 
       // TODO: present a list of available suites and let the user decide
       const args = process.argv.slice(2);
-      const suite = require(`./${args[0]}.js`);
+      let suite = null;
+      try {
+        suite = require(`./${args[0]}.js`);
+      } catch (err) {
+        console.info('=======================');
+        console.error('Seeder file not found!');
+        console.info('=======================');
+        console.info('\nUse the seeder command as:');
+        console.info('\n  yarn seed {fileName}\n\n');
+        process.exit();
+      }
 
       const globals = makeGlobals();
       const { env, pause, serverIsUp } = globals;

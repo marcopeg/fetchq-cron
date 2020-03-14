@@ -22,4 +22,4 @@ const TasksList = () => {
   );
 };
 
-export default TasksList;
+export default React.memo(TasksList);
