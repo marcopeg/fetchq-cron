@@ -6,6 +6,10 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import IconAdd from '@material-ui/icons/Add';
+import IconRemove from '@material-ui/icons/RemoveCircleOutlineOutlined';
 
 const useStyles = makeStyles(theme => ({
   formSection: {
@@ -33,22 +37,39 @@ const ConfigHttpHeaders = ({ headers, onChange }) => {
     onChange(updatedHeaders);
   };
 
-  const onCreateItem = prop => event => {
+  const onRemoveItem = targetItem => () => {
+    const updatedHeaders = headers.filter(item => item !== targetItem);
+    onChange(updatedHeaders);
+  };
+
+  const onAddItem = () => {
     onChange([
       ...headers,
       {
         key: '',
         value: '',
-        [prop]: event.target.value,
       },
     ]);
   };
 
   return (
     <Paper variant="outlined" className={classes.formSection}>
-      <Typography gutterBottom variant="button">
-        Headers:
-      </Typography>
+      <Grid container spacing={2}>
+        <Grid item xs={11}>
+          <Typography gutterBottom variant="button">
+            Headers:
+          </Typography>
+        </Grid>
+        <Grid item xs={1}>
+          <IconButton
+            aria-label="Create new header"
+            color="primary"
+            onClick={onAddItem}
+          >
+            <IconAdd />
+          </IconButton>
+        </Grid>
+      </Grid>
       {headers.map((item, idx) => (
         <Grid key={idx} container spacing={2}>
           <Grid item xs={4}>
@@ -59,7 +80,7 @@ const ConfigHttpHeaders = ({ headers, onChange }) => {
               className={classes.formControl}
             />
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={7}>
             <TextField
               placeholder="value"
               value={item.value}
@@ -67,26 +88,16 @@ const ConfigHttpHeaders = ({ headers, onChange }) => {
               className={classes.formControl}
             />
           </Grid>
+          <Grid item xs={1}>
+            <IconButton
+              aria-label="Create new header"
+              onClick={onRemoveItem(item)}
+            >
+              <IconRemove />
+            </IconButton>
+          </Grid>
         </Grid>
       ))}
-      <Grid container spacing={2}>
-        <Grid item xs={4}>
-          <TextField
-            placeholder="header"
-            value={''}
-            onChange={onCreateItem('key')}
-            className={classes.formControl}
-          />
-        </Grid>
-        <Grid item xs={8}>
-          <TextField
-            placeholder="value"
-            value={''}
-            onChange={onCreateItem('value')}
-            className={classes.formControl}
-          />
-        </Grid>
-      </Grid>
     </Paper>
   );
 };
