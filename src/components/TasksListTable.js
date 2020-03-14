@@ -41,10 +41,10 @@ const TasksListTable = ({ items }) => {
                 </TableCell>
                 <TableCell align="right">{iterations}</TableCell>
                 <TableCell align="right">
-                  <DisplayDate date={lastIteration} />
+                  <DisplayDate date={lastIteration} refreshInterval={500} />
                 </TableCell>
                 <TableCell align="right">
-                  <DisplayDate date={nextIteration} />
+                  <DisplayDate date={nextIteration} refreshInterval={500} />
                 </TableCell>
               </TableRow>
             );
