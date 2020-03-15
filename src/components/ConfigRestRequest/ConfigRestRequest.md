@@ -2,9 +2,11 @@
 const [config, setConfig] = React.useState({
   method: 'GET',
   url: '',
+  headers: [],
+  body: {},
 });
 <>
-  <ConfigRestRequest config={config} onChange={setConfig} />
+  <ConfigRestRequest value={config} onChange={setConfig} />
   <div
     style={{
       border: '1px solid #888',

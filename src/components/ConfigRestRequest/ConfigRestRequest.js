@@ -9,6 +9,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
+import ConfigHttpHeaders from '../ConfigHttpHeaders';
+import JsonEditor from '../JsonEditor';
+
 const useStyles = makeStyles(theme => ({
   formSection: {
     padding: theme.spacing(2),
@@ -19,14 +22,21 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ConfigRestRequest = ({ config, onChange }) => {
+const ConfigRestRequest = ({ value, onChange }) => {
   const classes = useStyles();
 
   const onChangeMethod = evt =>
-    onChange({ ...config, method: evt.target.value });
+    onChange({ ...value, method: evt.target.value });
 
-  const onChangeUrl = evt =>
-    onChange({ ...config, endpoint: evt.target.value });
+  const onChangeUrl = evt => onChange({ ...value, endpoint: evt.target.value });
+
+  const onChangeHeaders = (evt, headers) => {
+    onChange({ ...value, headers });
+  };
+
+  const onChangeBody = (evt, body) => {
+    onChange({ ...value, body });
+  };
 
   return (
     <div>
@@ -37,7 +47,7 @@ const ConfigRestRequest = ({ config, onChange }) => {
         <Grid container spacing={2}>
           <Grid item xs={2}>
             <FormControl className={classes.formControl}>
-              <Select value={config.method} onChange={onChangeMethod}>
+              <Select value={value.method} onChange={onChangeMethod}>
                 <MenuItem value={'GET'}>GET</MenuItem>
                 <MenuItem value={'POST'}>POST</MenuItem>
                 <MenuItem value={'PUT'}>PUT</MenuItem>
@@ -48,24 +58,26 @@ const ConfigRestRequest = ({ config, onChange }) => {
             <FormControl className={classes.formControl}>
               <TextField
                 placeholder="https://"
-                value={config.url}
+                value={value.url}
                 onChange={onChangeUrl}
               />
             </FormControl>
           </Grid>
         </Grid>
       </Paper>
+      <ConfigHttpHeaders value={value.headers} onChange={onChangeHeaders} />
       <Paper variant="outlined" className={classes.formSection}>
         <Typography gutterBottom variant="button">
-          Headers:
+          Body:
         </Typography>
+        <JsonEditor value={value.body} onChange={onChangeBody} />
       </Paper>
     </div>
   );
 };
 
 ConfigRestRequest.propTypes = {
-  config: PropTypes.shape({
+  value: PropTypes.shape({
     method: PropTypes.oneOf(['GET', 'POST', 'PUT', 'DELETE']).isRequired,
     url: PropTypes.string.isRequired,
   }).isRequired,

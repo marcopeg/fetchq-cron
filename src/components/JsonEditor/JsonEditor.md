@@ -1,7 +1,7 @@
 ```js
 const [json, setJson] = React.useState({ prop: 'value' });
 <>
-  <JsonEditor value={json} onChange={setJson} />
+  <JsonEditor value={json} onChange={(evt, json) => setJson(json)} />
   <div
     style={{
       border: '1px solid #888',

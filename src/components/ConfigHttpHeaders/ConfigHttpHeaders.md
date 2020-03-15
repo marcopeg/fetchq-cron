@@ -1,16 +1,10 @@
 ```js
-const [config, setConfig] = React.useState([
-  {
-    key: 'x-foo',
-    value: 'bar',
-  },
-  {
-    key: 'Authorisation',
-    value: 'Bearer: xxx',
-  },
-]);
+const [headers, setHeaders] = React.useState([]);
 <>
-  <ConfigHttpHeaders headers={config} onChange={setConfig} />
+  <ConfigHttpHeaders
+    value={headers}
+    onChange={(evt, value) => setHeaders(value)}
+  />
   <div
     style={{
       border: '1px solid #888',
@@ -20,7 +14,7 @@ const [config, setConfig] = React.useState([
       marginTop: 20,
     }}
   >
-    <pre>{JSON.stringify(config, null, 2)}</pre>
+    <pre>{JSON.stringify(headers, null, 2)}</pre>
   </div>
 </>;
 ```

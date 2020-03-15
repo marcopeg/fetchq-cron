@@ -15,35 +15,43 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     marginBottom: theme.spacing(1),
   },
+  formSectionEmpty: {
+    padding: theme.spacing(2),
+    paddingBottom: theme.spacing(0.5),
+    marginBottom: theme.spacing(1),
+  },
   formControl: {
     minWidth: '100%',
   },
+  btnAdd: {
+    marginTop: 0 - theme.spacing(1.5),
+  },
 }));
 
-const ConfigHttpHeaders = ({ headers, onChange }) => {
+const ConfigHttpHeaders = ({ value, onChange }) => {
   const classes = useStyles();
 
-  const onChangeItem = (prop, targetItem) => event => {
-    const updatedHeaders = headers.map(item => {
+  const onChangeItem = (prop, targetItem) => evt => {
+    const updatedHeaders = value.map(item => {
       if (item === targetItem) {
         return {
           ...item,
-          [prop]: event.target.value,
+          [prop]: evt.target.value,
         };
       }
       return item;
     });
-    onChange(updatedHeaders);
+    onChange(evt, updatedHeaders);
   };
 
-  const onRemoveItem = targetItem => () => {
-    const updatedHeaders = headers.filter(item => item !== targetItem);
-    onChange(updatedHeaders);
+  const onRemoveItem = targetItem => evt => {
+    const updatedHeaders = value.filter(item => item !== targetItem);
+    onChange(evt, updatedHeaders);
   };
 
-  const onAddItem = () => {
-    onChange([
-      ...headers,
+  const onAddItem = evt => {
+    onChange(evt, [
+      ...value,
       {
         key: '',
         value: '',
@@ -52,7 +60,12 @@ const ConfigHttpHeaders = ({ headers, onChange }) => {
   };
 
   return (
-    <Paper variant="outlined" className={classes.formSection}>
+    <Paper
+      variant="outlined"
+      className={
+        value.length > 0 ? classes.formSection : classes.formSectionEmpty
+      }
+    >
       <Grid container spacing={2}>
         <Grid item xs={11}>
           <Typography gutterBottom variant="button">
@@ -62,14 +75,15 @@ const ConfigHttpHeaders = ({ headers, onChange }) => {
         <Grid item xs={1}>
           <IconButton
             aria-label="Create new header"
-            color="primary"
             onClick={onAddItem}
+            color="primary"
+            className={classes.btnAdd}
           >
             <IconAdd />
           </IconButton>
         </Grid>
       </Grid>
-      {headers.map((item, idx) => (
+      {value.map((item, idx) => (
         <Grid key={idx} container spacing={2}>
           <Grid item xs={4}>
             <TextField
@@ -102,7 +116,7 @@ const ConfigHttpHeaders = ({ headers, onChange }) => {
 };
 
 ConfigHttpHeaders.propTypes = {
-  headers: PropTypes.arrayOf(
+  value: PropTypes.arrayOf(
     PropTypes.shape({
       key: PropTypes.string.isRequired,
       value: PropTypes.string.isRequired,

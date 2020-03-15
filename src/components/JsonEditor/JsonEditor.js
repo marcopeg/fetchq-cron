@@ -10,8 +10,11 @@ const useStyles = makeStyles(theme => ({
   },
   beautifyBtn: {
     position: 'absolute',
-    top: 0,
+    top: theme.spacing(0.5),
     right: 0,
+  },
+  inputEl: {
+    fontFamily: 'monospace',
   },
 }));
 
@@ -45,7 +48,7 @@ const JsonEditor = ({
     setTextValue(evt.target.value);
     setError(false);
     try {
-      onChange(JSON.parse(evt.target.value));
+      onChange(evt, JSON.parse(evt.target.value));
     } catch (err) {
       setError(true);
     }
@@ -66,6 +69,7 @@ const JsonEditor = ({
         helperText={error ? invalidJsonHelperText : helperText}
         value={textValue}
         onChange={handleChange}
+        inputProps={{ className: classes.inputEl }}
       />
       {error ? null : (
         <Typography
@@ -95,8 +99,8 @@ JsonEditor.defaultProps = {
   label: null,
   helperText: null,
   invalidJsonHelperText: 'Invalid JSON',
-  rows: 5,
-  maxRows: null,
+  rows: 1,
+  maxRows: 10,
 };
 
 export default JsonEditor;
