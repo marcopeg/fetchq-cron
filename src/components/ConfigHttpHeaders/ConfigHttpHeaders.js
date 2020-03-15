@@ -7,7 +7,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import IconAdd from '@material-ui/icons/Add';
 import IconRemove from '@material-ui/icons/RemoveCircleOutlineOutlined';
 
