@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -11,15 +10,6 @@ import IconAdd from '@material-ui/icons/Add';
 import IconRemove from '@material-ui/icons/RemoveCircleOutlineOutlined';
 
 const useStyles = makeStyles(theme => ({
-  formSection: {
-    padding: theme.spacing(2),
-    marginBottom: theme.spacing(1),
-  },
-  formSectionEmpty: {
-    padding: theme.spacing(2),
-    paddingBottom: theme.spacing(0.5),
-    marginBottom: theme.spacing(1),
-  },
   formControl: {
     minWidth: '100%',
   },
@@ -60,12 +50,7 @@ const ConfigHttpHeaders = ({ value, onChange }) => {
   };
 
   return (
-    <Paper
-      variant="outlined"
-      className={
-        value.length > 0 ? classes.formSection : classes.formSectionEmpty
-      }
-    >
+    <>
       <Grid container spacing={2}>
         <Grid item xs={11}>
           <Typography gutterBottom variant="button">
@@ -111,7 +96,7 @@ const ConfigHttpHeaders = ({ value, onChange }) => {
           </Grid>
         </Grid>
       ))}
-    </Paper>
+    </>
   );
 };
 
