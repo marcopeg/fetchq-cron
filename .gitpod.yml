@@ -18,7 +18,7 @@ tasks:
     openMode: tab-after
   - name: Styleguide
     init: sleep 30
-    command: yarn start:styleguide
+    command: yarn start:gitpod:styleguide
     openIn: bottom
     openMode: split-right
   - name: App

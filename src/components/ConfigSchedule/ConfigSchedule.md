@@ -1,15 +1,10 @@
 ```js
 const [config, setConfig] = React.useState({
-  method: 'GET',
-  url: '',
-  headers: [],
-  body: {},
+  method: 'delay',
+  value: '',
 });
 <>
-  <ConfigRestRequest
-    value={config}
-    onChange={(evt, value) => setConfig(value)}
-  />
+  <ConfigSchedule value={config} onChange={(evt, value) => setConfig(value)} />
   <div
     style={{
       border: '1px solid #888',
