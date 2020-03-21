@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import AppLayout from '../layouts/AppLayout';
 import { useGet } from '../state/use-get';
 import { usePost } from '../state/use-post';
 import ConfigTask from '../components/ConfigTask';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const EditTask = ({ match }) => {
   const { groupName, taskName } = match.params;
@@ -20,12 +23,14 @@ const EditTask = ({ match }) => {
           ...data.task.payload.action,
           request: {
             ...data.task.payload.action.request,
-            headers: Object.keys(data.task.payload.action.request.headers).map(
-              key => ({
-                key,
-                value: data.task.payload.action.request.headers[key],
-              }),
-            ),
+            headers: data.task.payload.action.request.headers
+              ? Object.keys(data.task.payload.action.request.headers).map(
+                  key => ({
+                    key,
+                    value: data.task.payload.action.request.headers[key],
+                  }),
+                )
+              : [],
           },
         },
       });
@@ -56,18 +61,30 @@ const EditTask = ({ match }) => {
     return <Redirect to="/" />;
   }
 
+  if (!config) {
+    return (
+      <AppLayout>
+        <LoadingSpinner />
+      </AppLayout>
+    );
+  }
+
   return (
-    <form onSubmit={handleSubmit}>
-      <Button type="submit">Save</Button>
-      {config ? (
+    <AppLayout>
+      <Typography variant="h4">Edit task:</Typography>
+      <form onSubmit={handleSubmit}>
         <ConfigTask
           value={config}
           onChange={(evt, value) => setConfig(value)}
         />
-      ) : (
-        'loading'
-      )}
-    </form>
+        <Button type="submit" color="primary" variant="contained">
+          Save
+        </Button>
+        <Link to="/">
+          <Button>Cancel</Button>
+        </Link>
+      </form>
+    </AppLayout>
   );
 };
 

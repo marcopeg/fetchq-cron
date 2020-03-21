@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import AppLayout from '../layouts/AppLayout';
 import ConfigTask from '../components/ConfigTask';
 import { usePost } from '../state/use-post';
 
@@ -54,10 +56,21 @@ const CreateTask = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Button type="submit">Create</Button>
-      <ConfigTask value={config} onChange={(evt, value) => setConfig(value)} />
-    </form>
+    <AppLayout>
+      <Typography variant="h4">Create new task:</Typography>
+      <form onSubmit={handleSubmit}>
+        <ConfigTask
+          value={config}
+          onChange={(evt, value) => setConfig(value)}
+        />
+        <Button type="submit" color="primary" variant="contained">
+          Save
+        </Button>
+        <Link to="/">
+          <Button>Cancel</Button>
+        </Link>
+      </form>
+    </AppLayout>
   );
 };
 

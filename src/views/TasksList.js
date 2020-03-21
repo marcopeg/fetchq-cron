@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import AppLayout from '../layouts/AppLayout';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorsList from '../components/ErrorsList';
 import TasksListTable from '../components/TasksListTable';
@@ -21,10 +22,10 @@ const TasksList = () => {
     history.push(`/task/${groupName}/${taskName}/edit`);
 
   return (
-    <div>
+    <AppLayout>
       <TasksListTable items={tasks} onDisclose={handleDiscloseItem} />
       <Link to="/new">Create new task</Link>
-    </div>
+    </AppLayout>
   );
 };
 
