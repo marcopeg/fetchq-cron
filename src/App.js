@@ -1,7 +1,9 @@
 import React from 'react';
+import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import LoadingView from './views/LoadingView';
 import LoginView from './views/LoginView';
-import TasksList from './containers/TasksList';
+import TasksList from './views/TasksList';
+import CreateTask from './views/CreateTask';
 import { useAuth } from './state/use-auth';
 
 export default function App() {
@@ -16,11 +18,11 @@ export default function App() {
   }
 
   return (
-    <div className="App">
-      <h1>Fetchq Cron</h1>
-      <h2>Schedule tasks like a king!</h2>
-      <hr />
-      <TasksList />
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/" exact component={TasksList} />
+        <Route path="/new" component={CreateTask} />
+      </Switch>
+    </Router>
   );
 }

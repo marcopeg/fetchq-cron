@@ -23,7 +23,11 @@ const ConfigSchedule = ({ value, onChange }) => {
       <Grid container spacing={2}>
         <Grid item xs={2}>
           <FormControl fullWidth>
-            <Select value={value.method} onChange={onChangeProp('method')}>
+            <Select
+              required
+              value={value.method}
+              onChange={onChangeProp('method')}
+            >
               <MenuItem value={'delay'}>DELAY</MenuItem>
               <MenuItem value={'cron'}>CRON</MenuItem>
             </Select>
@@ -32,6 +36,7 @@ const ConfigSchedule = ({ value, onChange }) => {
         <Grid item xs={10}>
           <FormControl fullWidth>
             <TextField
+              required
               placeholder={value.method === 'delay' ? '2 days' : '* * * * *'}
               value={value.value}
               onChange={onChangeProp('value')}

@@ -223,7 +223,7 @@ exports.f5 = {
     method: 'POST',
     url: '/worker/v1/q1/foo__t5',
     handler: async (request, reply) => {
-      const { iterations = 0, iterationsLimit = 1 } = request.body;
+      const { iterations = 0, iterationsLimit = 1 } = request.body || {};
       console.info({ iterations, iterationsLimit });
 
       // When hits iteration limit, try to complete the process
@@ -242,7 +242,7 @@ exports.f5 = {
         success: true,
         logs: [
           {
-            message: `log for iteration: ${request.body.iterations}`,
+            message: `log for iteration: ${iterations}`,
             details: request.body,
           },
         ],

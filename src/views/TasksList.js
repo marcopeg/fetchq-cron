@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorsList from '../components/ErrorsList';
 import TasksListTable from '../components/TasksListTable';
@@ -18,6 +19,7 @@ const TasksList = () => {
   return (
     <div>
       <TasksListTable items={tasks} />
+      <Link to="/new">Create new task</Link>
     </div>
   );
 };

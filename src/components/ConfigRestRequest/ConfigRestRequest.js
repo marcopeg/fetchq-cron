@@ -48,7 +48,7 @@ const ConfigRestRequest = ({ value, onChange }) => {
         <Grid container spacing={2}>
           <Grid item xs={2}>
             <FormControl className={classes.formControl}>
-              <Select value={value.method} onChange={onChangeMethod}>
+              <Select required value={value.method} onChange={onChangeMethod}>
                 <MenuItem value={'GET'}>GET</MenuItem>
                 <MenuItem value={'POST'}>POST</MenuItem>
                 <MenuItem value={'PUT'}>PUT</MenuItem>
@@ -58,6 +58,7 @@ const ConfigRestRequest = ({ value, onChange }) => {
           <Grid item xs={10}>
             <FormControl className={classes.formControl}>
               <TextField
+                required
                 placeholder="https://"
                 value={value.url}
                 onChange={onChangeUrl}
