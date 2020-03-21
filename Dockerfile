@@ -21,8 +21,8 @@ FROM node:13.10-alpine AS builder
 # NPM Install for building
 WORKDIR /usr/src/app-build
 ADD package.json /usr/src/app-build
-ADD yarn.lock /usr/src/app-build
-RUN yarn install
+ADD package-lock.json /usr/src/app-build
+RUN npm install --only=production
 
 # Copy source files:
 WORKDIR /usr/src/app-build
@@ -31,7 +31,7 @@ ADD public /usr/src/app-build/public
 
 # Build:
 WORKDIR /usr/src/app-build
-RUN yarn build
+RUN npm run build
 
 # Remove dev dependencies
 RUN npm prune --production
