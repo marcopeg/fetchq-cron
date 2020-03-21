@@ -1,0 +1,6 @@
+data
+node_modules
+.viscode
+.gitpod.yml
+.prettierc
+docker-compose.yml

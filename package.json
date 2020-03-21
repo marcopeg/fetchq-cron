@@ -1,6 +1,7 @@
 {
   "name": "fetchq-cron",
-  "version": "1.0.0",
+  "organization": "marcopeg",
+  "version": "0.0.1",
   "description": "",
   "main": "ssr/index.js",
   "scripts": {
