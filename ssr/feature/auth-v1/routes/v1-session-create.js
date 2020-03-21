@@ -7,12 +7,14 @@ const getLoginDetails = async (secret, { uname, passw }) => {
     return {
       jwtClaims: {
         groups: ['*'],
+        secure: false,
       },
       jwtOptions: {
         expiresIn: '5s',
       },
       public: {
         groups: ['*'],
+        secure: false,
         iat: new Date(),
         eat: new Date(Date.now() + ms('5s')),
       },
@@ -24,6 +26,7 @@ const getLoginDetails = async (secret, { uname, passw }) => {
     return {
       jwtClaims: {
         groups: ['*'],
+        secure: true,
       },
       jwtOptions: {
         expiresIn: '2h',
@@ -32,6 +35,7 @@ const getLoginDetails = async (secret, { uname, passw }) => {
       eat: new Date(Date.now() + ms('2h')),
       public: {
         groups: ['*'],
+        secure: true,
       },
     };
   }

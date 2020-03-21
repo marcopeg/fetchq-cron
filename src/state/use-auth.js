@@ -8,6 +8,7 @@ const initialState = {
   errorMsg: null,
   hasChecked: false,
   hasAuth: false,
+  isSecured: null,
 
   // Methods
   login: () => {},
@@ -50,6 +51,7 @@ export const AuthProvider = ({ children }) => {
     errorMsg: loginInfo.errors ? loginInfo.errors[0].message : null,
     hasChecked: !sessionInfo.isFirstLoading,
     hasAuth: auth !== null,
+    isSecured: auth ? auth.secure : null,
     // Methods
     login,
   };

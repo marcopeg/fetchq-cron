@@ -10,15 +10,15 @@ const theme = createMuiTheme();
 const rootElement = document.getElementById('root');
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <AuthProvider>
-        <React.Fragment>
-          <CssBaseline />
-          <App />
-        </React.Fragment>
-      </AuthProvider>
-    </ThemeProvider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <ThemeProvider theme={theme}>
+    <AuthProvider>
+      <React.Fragment>
+        <CssBaseline />
+        <App />
+      </React.Fragment>
+    </AuthProvider>
+  </ThemeProvider>,
+  // </React.StrictMode>
   rootElement,
 );

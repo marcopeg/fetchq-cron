@@ -11,7 +11,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 const EditTask = ({ match }) => {
   const { groupName, taskName } = match.params;
   const endpoint = `/api/v1/cron/${groupName}/${taskName}`;
-  const [{ isLoading, data, errors }] = useGet(endpoint);
+  const [{ data }] = useGet(endpoint);
   const [{ data: editData }, { send }] = usePost('/api/v1/cron/');
   const [config, setConfig] = useState(null);
 

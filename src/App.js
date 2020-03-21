@@ -22,7 +22,7 @@ export default function App() {
     <Router>
       <Switch>
         <Route path="/" exact component={TasksList} />
-        <Route path="/new" component={CreateTask} />
+        <Route path="/tasks/new" component={CreateTask} />
         <Route path="/task/:groupName/:taskName/edit" component={EditTask} />
       </Switch>
     </Router>

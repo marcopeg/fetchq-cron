@@ -22,6 +22,7 @@ const authenticateDecorator = async (request, reply) => {
   if (password === null) {
     request.auth = {
       groups: ['*'],
+      secure: false,
       iat: new Date(),
       eat: new Date(Date.now() + 1000 * 60),
     };
