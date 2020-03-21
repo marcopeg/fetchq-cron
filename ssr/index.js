@@ -40,3 +40,6 @@ runHookApp({
     featureWorkersV1,
   ],
 }).catch(err => console.error(err.message));
+
+// Let Docker exit on Ctrl+C
+process.on('SIGINT', () => process.exit());
