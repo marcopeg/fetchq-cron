@@ -12,7 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import DisplayDate from '../components/DisplayDate';
 import { taskShape } from '../data-types/task';
 
-const TasksListTable = ({ items }) => {
+const TasksListTable = ({ items, onDisclose }) => {
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -35,7 +35,7 @@ const TasksListTable = ({ items }) => {
               lastIteration,
             } = task;
             return (
-              <TableRow key={subject}>
+              <TableRow key={subject} onClick={() => onDisclose(task)}>
                 <TableCell>
                   {groupName}/{taskName}
                 </TableCell>
@@ -57,6 +57,11 @@ const TasksListTable = ({ items }) => {
 
 TasksListTable.propTypes = {
   items: PropTypes.arrayOf(taskShape),
+  onDisclose: PropTypes.func,
+};
+
+TasksListTable.defaultProps = {
+  onDisclose: () => {},
 };
 
 export default React.memo(TasksListTable);

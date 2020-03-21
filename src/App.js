@@ -4,6 +4,7 @@ import LoadingView from './views/LoadingView';
 import LoginView from './views/LoginView';
 import TasksList from './views/TasksList';
 import CreateTask from './views/CreateTask';
+import EditTask from './views/EditTask';
 import { useAuth } from './state/use-auth';
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
       <Switch>
         <Route path="/" exact component={TasksList} />
         <Route path="/new" component={CreateTask} />
+        <Route path="/task/:groupName/:taskName/edit" component={EditTask} />
       </Switch>
     </Router>
   );

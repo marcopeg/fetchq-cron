@@ -26,7 +26,7 @@ const defaultConfig = {
 };
 
 const CreateTask = () => {
-  const [{ data, errors }, { send }] = usePost('/api/v1/cron/');
+  const [{ data }, { send }] = usePost('/api/v1/cron/');
   const [config, setConfig] = useState(defaultConfig);
 
   const handleSubmit = evt => {
