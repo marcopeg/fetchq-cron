@@ -51,6 +51,9 @@ const settings = ({ setConfig, getConfig }) => {
   setConfig('app.logs.page.size', 100);
   setConfig('app.auth.console.password', process.env.CONSOLE_PASSWORD || null);
 
+  // Heroku compatible port environment variable
+  setConfig('fastify.port', process.env.PORT || '8080');
+
   // Setup static files from CRA's build folder
   setConfig('fastify.static', {
     root: path.join(__dirname, '..', 'build'),
