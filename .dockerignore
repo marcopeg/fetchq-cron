@@ -1,6 +1,9 @@
+assets
 data
 node_modules
+test
 .viscode
+.circleci
 .gitpod.yml
 .prettierc
 docker-compose.yml

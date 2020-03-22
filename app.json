@@ -1,0 +1,7 @@
+{
+  "name": "Fetchq CRON",
+  "description": "Run smart cron jobs",
+  "repository": "https://github.com/marcopeg/fetchq-cron",
+  "logo": "https://raw.githubusercontent.com/marcopeg/fetchq-cron/development/assets/images/fetchq-cron.png",
+  "keywords": ["cron", "tasks", "postgres", "queue"]
+}
