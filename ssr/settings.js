@@ -18,7 +18,8 @@ const settings = ({ setConfig, getConfig }) => {
   // FetchQ Maintenance
   setConfig('fetchq', {
     connectionString:
-      process.env.PGSTRING ||
+      process.env.PGSTRING || // Default fetchq client
+      process.env.DATABASE_URL || // Heroku
       'postgres://gitpod:gitpod@localhost:5432/postgres',
     pool: {
       max: 1,
