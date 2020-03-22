@@ -7,7 +7,11 @@
   "image": "heroku/nodejs",
   "success_url": "/",
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "CONSOLE_PASSWORD": {
+      "description": "A secret password for logging you into the web console.",
+      "generator": "secret"
+    }
   },
   "scripts": {
     "predeploy": "npm run build"
