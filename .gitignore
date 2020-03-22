@@ -2,4 +2,5 @@
 /data
 /build
 /yarn-error.log
+/yarn.lock
 /.env
