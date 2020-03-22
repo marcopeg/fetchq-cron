@@ -9,8 +9,7 @@
   "env": {
     "NODE_ENV": "production",
     "CONSOLE_PASSWORD": {
-      "description": "A secret password for logging you into the web console.",
-      "generator": "secret"
+      "description": "A secret password for logging you into the web console."
     }
   },
   "scripts": {
