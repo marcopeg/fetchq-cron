@@ -4,12 +4,12 @@
   "repository": "https://github.com/marcopeg/fetchq-cron-heroku",
   "logo": "https://raw.githubusercontent.com/marcopeg/fetchq-cron-heroku/master/assets/fetchq-cron.png",
   "keywords": ["cron", "tasks", "postgres", "queue"],
-  "image": "heroku/nodejs",
   "success_url": "/",
   "env": {
     "NODE_ENV": "production",
     "CONSOLE_PASSWORD": {
-      "description": "A secret password for logging you into the web console."
+      "description": "A secret password for logging you into the web console.",
+      "required": false
     }
   },
   "scripts": {
