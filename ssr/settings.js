@@ -64,7 +64,6 @@ const settings = ({ setConfig, getConfig }) => {
     options: {
       httpOnly: true,
       secure: true,
-      domain: '.gitpod.io', // TODO: set this automatically or via environment?
       path: '/',
     },
   });
