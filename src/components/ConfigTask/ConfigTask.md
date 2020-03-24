@@ -12,7 +12,7 @@ const [config, setConfig] = React.useState({
       type: 'rest',
       method: 'GET',
       url: '',
-      headers: [],
+      headers: {},
       body: {},
     },
   },

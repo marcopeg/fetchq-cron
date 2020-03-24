@@ -17,43 +17,13 @@ const EditTask = ({ match }) => {
 
   useEffect(() => {
     if (data) {
-      setConfig({
-        ...data.task.payload,
-        action: {
-          ...data.task.payload.action,
-          request: {
-            ...data.task.payload.action.request,
-            headers: data.task.payload.action.request.headers
-              ? Object.keys(data.task.payload.action.request.headers).map(
-                  key => ({
-                    key,
-                    value: data.task.payload.action.request.headers[key],
-                  }),
-                )
-              : [],
-          },
-        },
-      });
+      setConfig(data.task.payload);
     }
   }, [data, setConfig]);
 
   const handleSubmit = evt => {
     evt.preventDefault();
-
-    // TODO: figure out a better way to translate headers from array to object
-    send({
-      ...config,
-      action: {
-        ...config.action,
-        request: {
-          ...config.action.request,
-          headers: config.action.request.headers.reduce(
-            (acc, curr) => ({ ...acc, [curr.key]: curr.value }),
-            {},
-          ),
-        },
-      },
-    });
+    send(config);
   };
 
   // TODO: show some form of confirmation message before redirecting

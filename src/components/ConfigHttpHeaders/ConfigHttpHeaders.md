@@ -1,5 +1,8 @@
 ```js
-const [headers, setHeaders] = React.useState([]);
+const [headers, setHeaders] = React.useState({
+  foo: 123,
+  aa: 'xxx',
+});
 <>
   <ConfigHttpHeaders
     value={headers}

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import headersUtils from 'http-headers-validation';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -20,34 +21,68 @@ const useStyles = makeStyles(theme => ({
 
 const ConfigHttpHeaders = ({ value, onChange }) => {
   const classes = useStyles();
+  const [localValue, setLocalValue] = useState(value);
+  const [invalidItems, setInvalidItems] = useState([]);
+
+  // Keep local value updated from external props
+  useEffect(() => {
+    setLocalValue(value);
+  }, [value, setLocalValue]);
+
+  // Apply validation to the headers
+  useEffect(() => {
+    const invalidItems = Object.keys(localValue).filter(
+      key => !headersUtils.validateHeader(String(key), String(localValue[key])),
+    );
+
+    setInvalidItems(invalidItems);
+
+    if (
+      invalidItems.length === 0 &&
+      JSON.stringify(value) !== JSON.stringify(localValue)
+    ) {
+      onChange(null, localValue);
+    }
+  }, [value, localValue, onChange]);
 
   const onChangeItem = (prop, targetItem) => evt => {
-    const updatedHeaders = value.map(item => {
-      if (item === targetItem) {
-        return {
-          ...item,
-          [prop]: evt.target.value,
-        };
-      }
-      return item;
-    });
-    onChange(evt, updatedHeaders);
+    const update = Object.keys(localValue)
+      .map(key => {
+        if (key !== targetItem.key) {
+          return { key, value: localValue[key] };
+        }
+
+        if (prop === 'key') {
+          return { key: evt.target.value, value: targetItem.value };
+        }
+
+        return { key, value: evt.target.value };
+      })
+      .reduce((acc, curr) => ({ ...acc, [curr.key]: curr.value }), {});
+
+    setLocalValue(update);
   };
 
   const onRemoveItem = targetItem => evt => {
-    const updatedHeaders = value.filter(item => item !== targetItem);
-    onChange(evt, updatedHeaders);
+    const update = Object.keys(localValue)
+      .filter(key => key !== targetItem.key)
+      .map(key => ({ key, value: localValue[key] }))
+      .reduce((acc, curr) => ({ ...acc, [curr.key]: curr.value }), {});
+
+    onChange(evt, update);
   };
 
   const onAddItem = evt => {
-    onChange(evt, [
-      ...value,
-      {
-        key: '',
-        value: '',
-      },
-    ]);
+    setLocalValue({
+      ...localValue,
+      '': '',
+    });
   };
+
+  const listValue = Object.keys(localValue).map(key => ({
+    key,
+    value: localValue[key],
+  }));
 
   return (
     <>
@@ -68,10 +103,11 @@ const ConfigHttpHeaders = ({ value, onChange }) => {
           </IconButton>
         </Grid>
       </Grid>
-      {value.map((item, idx) => (
+      {listValue.map((item, idx) => (
         <Grid key={idx} container spacing={2}>
           <Grid item xs={4}>
             <TextField
+              error={invalidItems.includes(item.key)}
               placeholder="header"
               value={item.key}
               onChange={onChangeItem('key', item)}
@@ -101,12 +137,12 @@ const ConfigHttpHeaders = ({ value, onChange }) => {
 };
 
 ConfigHttpHeaders.propTypes = {
-  value: PropTypes.arrayOf(
-    PropTypes.shape({
-      key: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
+  // value: PropTypes.arrayOf(
+  //   PropTypes.shape({
+  //     key: PropTypes.string.isRequired,
+  //     value: PropTypes.string.isRequired,
+  //   }),
+  // ).isRequired,
   onChange: PropTypes.func.isRequired,
 };
 

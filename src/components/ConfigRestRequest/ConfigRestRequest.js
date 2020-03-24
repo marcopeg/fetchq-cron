@@ -32,6 +32,7 @@ const ConfigRestRequest = ({ value, onChange }) => {
   const onChangeUrl = evt => onChange(evt, { ...value, url: evt.target.value });
 
   const onChangeHeaders = (evt, headers) => {
+    console.log('***', headers);
     onChange(evt, { ...value, headers });
   };
 
