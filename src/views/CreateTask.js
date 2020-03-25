@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import AppLayout from '../layouts/AppLayout';
 import ConfigTask from '../components/ConfigTask';
+import RoutedButton from '../components/RoutedButton';
 import { usePost } from '../state/use-post';
 
 const defaultConfig = {
@@ -52,9 +53,7 @@ const CreateTask = () => {
         <Button type="submit" color="primary" variant="contained">
           Save
         </Button>
-        <Link to="/">
-          <Button>Cancel</Button>
-        </Link>
+        <RoutedButton to="/">Cancel</RoutedButton>
       </form>
     </AppLayout>
   );

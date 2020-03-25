@@ -1,12 +1,12 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import AppLayout from '../layouts/AppLayout';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorsList from '../components/ErrorsList';
 import TasksListTable from '../components/TasksListTable';
+import RoutedFab from '../components/RoutedFab';
 import { useTasksList } from '../state/use-tasks-list';
 
 const useStyles = makeStyles(theme => ({
@@ -37,13 +37,9 @@ const TasksList = () => {
     <AppLayout>
       <TasksListTable items={tasks} onDisclose={handleDiscloseItem} />
 
-      <Fab
-        color="primary"
-        className={classes.fab}
-        onClick={() => history.push('/tasks/new')}
-      >
+      <RoutedFab to="/tasks/new" color="primary" className={classes.fab}>
         <AddIcon />
-      </Fab>
+      </RoutedFab>
     </AppLayout>
   );
 };
