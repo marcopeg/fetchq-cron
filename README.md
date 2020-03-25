@@ -35,8 +35,10 @@ WEBAPP_PORT=8080
 
 ## Environment Variables
 
-| name                         | type    | description                                                             |
-| ---------------------------- | ------- | ----------------------------------------------------------------------- |
-| FETCHQ_CRON_PORT             |  number | Fastify's service port. It falls back on `PORT` and `8080`              |
-| FETCHQ_CRON_PG_STRING        |  string | Postgres connection string. It falls back on `DATABASE_URL`, `PGSTRING` |
-| FETCHQ_CRON_CONSOLE_PASSWORD |  string | setup a password to access the console                                  |
+| name                         | type   | description                                                                           |
+| ---------------------------- | ------ | ------------------------------------------------------------------------------------- |
+| FETCHQ_CRON_PORT             | number | Fastify's service port. It falls back on `PORT` and `8080`                            |
+| FETCHQ_CRON_PG_STRING        | string | Postgres connection string. It falls back on `DATABASE_URL`, `PGSTRING`               |
+| FETCHQ_CRON_CONSOLE_PASSWORD | string | setup a password to access the console                                                |
+| FETCHQ_CRON_ENABLE_CONSOLE   | bool   | set it to `false` to disable the web interface. default: `true`                       |
+| FETCHQ_CRON_ENABLE_CORS      | bool   | set it to `true` to enable CORS. default `false` (enabled for `NODE_ENV=development`) |
