@@ -32,3 +32,11 @@ Configure the host's ports via `.env`:
 PG_PORT=5432
 WEBAPP_PORT=8080
 ```
+
+## Environment Variables
+
+| name                         | type    | description                                                             |
+| ---------------------------- | ------- | ----------------------------------------------------------------------- |
+| FETCHQ_CRON_PORT             |  number | Fastify's service port. It falls back on `PORT` and `8080`              |
+| FETCHQ_CRON_PG_STRING        |  string | Postgres connection string. It falls back on `DATABASE_URL`, `PGSTRING` |
+| FETCHQ_CRON_CONSOLE_PASSWORD |  string | setup a password to access the console                                  |

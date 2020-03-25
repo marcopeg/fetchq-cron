@@ -18,8 +18,9 @@ const settings = ({ setConfig, getConfig }) => {
   // FetchQ Maintenance
   setConfig('fetchq', {
     connectionString:
-      process.env.PGSTRING || // Default fetchq client
+      process.env.FETCHQ_CRON_PG_STRING || // Explicit setup
       process.env.DATABASE_URL || // Heroku
+      process.env.PGSTRING || // Default fetchq client
       'postgres://gitpod:gitpod@localhost:5432/postgres',
     pool: {
       max: 1,
@@ -38,7 +39,7 @@ const settings = ({ setConfig, getConfig }) => {
         errorsRetention: '1h',
         maintenance: {
           mnt: { delay: '500ms', duration: '5m', limit: 500 },
-          sts: { delay: '1m', duration: '5m' },
+          sts: { delay: '1h', duration: '5m' },
           cmp: { delay: '30m', duration: '5m' },
           drp: { delay: '10m', duration: '5m' },
         },
@@ -49,10 +50,16 @@ const settings = ({ setConfig, getConfig }) => {
   // Generica app configuration
   setConfig('app.q1.name', Q1);
   setConfig('app.logs.page.size', 100);
-  setConfig('app.auth.console.password', process.env.CONSOLE_PASSWORD || null);
+  setConfig(
+    'app.auth.console.password',
+    process.env.FETCHQ_CRON_CONSOLE_PASSWORD || null,
+  );
 
   // Heroku compatible port environment variable
-  setConfig('fastify.port', process.env.PORT || '8080');
+  setConfig(
+    'fastify.port',
+    process.env.FETCHQ_CRON_PORT || process.env.PORT || '8080',
+  );
 
   // Setup static files from CRA's build folder
   setConfig('fastify.static', {
