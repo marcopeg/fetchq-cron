@@ -38,10 +38,3 @@ ports:
     onOpen: ignore
   - port: 6060
     onOpen: ignore
-
-vscode:
-  extensions:
-    - dbaeumer.vscode-eslint@2.1.1:DO6k4GCpqhwZcKo+jY9xjQ==
-    - mikestead.dotenv@1.0.1:SSXjr5hZcbqSF7nMIhTNnA==
-    - esbenp.prettier-vscode@3.20.0:37/f4uBlE287wUjENFq1aA==
-    - wayou.vscode-todo-highlight@1.0.4
