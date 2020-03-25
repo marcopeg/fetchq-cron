@@ -27,34 +27,40 @@ const { settings } = require('./settings');
  * Feature Flags
  */
 
+// Use the application scope to flag api and workers feature
+const useApi = String(process.env.FETCHQ_CRON_MODE) !== 'worker';
+const useWorkers = String(process.env.FETCHQ_CRON_MODE) !== 'api';
+
 // The web console can be disabled in case it's being executed from a CDN (ex CloudFront)
-const useConsole = String(process.env.FETCHQ_CRON_ENABLE_CONSOLE) !== 'false';
+const useConsole =
+  useApi && String(process.env.FETCHQ_CRON_ENABLE_CONSOLE) !== 'false';
 
 // CORS are needed during development to run an external client, or in the
 // case the UI should be served from a CDN (ex CloudFront)
 const useCors =
-  String(process.env.FETCHQ_CRON_ENABLE_CORS) === 'true' ||
-  process.env.NODE_ENV === 'development';
+  useApi &&
+  (String(process.env.FETCHQ_CRON_ENABLE_CORS) === 'true' ||
+    process.env.NODE_ENV === 'development');
 
 runHookApp({
   settings,
   trace: 'compact',
   services: [
     serviceFetchq,
-    serviceFastify,
+    ...(useApi ? [serviceFastify] : []),
     ...(useCors ? [serviceFastifyCors] : []),
     ...(useConsole ? [serviceFastifyStatic] : []),
-    serviceFastifyCookie,
-    serviceFastifyJwt,
-    serviceFastifyFetchq,
+    ...(useApi ? [serviceFastifyCookie] : []),
+    ...(useApi ? [serviceFastifyJwt] : []),
+    ...(useApi ? [serviceFastifyFetchq] : []),
     serviceTdd,
   ],
   features: [
-    featurePing,
-    featureSchemaV1,
-    featureApiV1,
-    featureAuthV1,
-    featureWorkersV1,
+    ...(useApi ? [featurePing] : []),
+    ...(useApi ? [featureSchemaV1] : []),
+    ...(useApi ? [featureApiV1] : []),
+    ...(useApi ? [featureAuthV1] : []),
+    ...(useWorkers ? [featureWorkersV1] : []),
   ],
 }).catch(err => console.error(err.message));
 

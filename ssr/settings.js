@@ -15,7 +15,7 @@ const { Q1 } = require('./contants');
 const settings = ({ setConfig, getConfig }) => {
   // TODO: add envalid
 
-  // FetchQ Maintenance
+  // FetchQ Client
   setConfig('fetchq', {
     connectionString:
       process.env.FETCHQ_CRON_PG_STRING || // Explicit setup
@@ -26,7 +26,7 @@ const settings = ({ setConfig, getConfig }) => {
       max: 1,
     },
     maintenance: {
-      limit: 1,
+      limit: 1, // TODO: need to update fetchq-client so to avoid maintenance running
       delay: 10,
       sleep: 100,
     },

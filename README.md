@@ -42,3 +42,14 @@ WEBAPP_PORT=8080
 | FETCHQ_CRON_CONSOLE_PASSWORD | string | setup a password to access the console                                                |
 | FETCHQ_CRON_ENABLE_CONSOLE   | bool   | set it to `false` to disable the web interface. default: `true`                       |
 | FETCHQ_CRON_ENABLE_CORS      | bool   | set it to `true` to enable CORS. default `false` (enabled for `NODE_ENV=development`) |
+| FETCHQ_CRON_MODE             | enum   | refer to the specific paragraph                                                       |
+
+#### FETCHQ_CRON_MODE
+
+| prop    | value          |
+| ------- | -------------- |
+| value   | `api | worker` |
+| default | `null`         |
+
+Set to `api` if you want to skip running the queue workers on this particular instance.
+Set to `worker` to run only the queue workers (no api, no web console).
