@@ -23,6 +23,7 @@ describe('v1/session/details', () => {
   it('should validate a session via Authentication header', async () => {
     // Obtain a valid session token by authentication method
     const passwdSettings = await global.setAppConfig(PWD_PATH, 'foobar');
+    const headerName = await global.getAppConfig('app.auth.header.name');
     const r1 = await axios.post(`${TEST_SERVER_ROOT}/api/v1/session`, {
       uname: 'console',
       passw: 'foobar',
@@ -30,7 +31,7 @@ describe('v1/session/details', () => {
     // Check the session status by forwarding the session token as a Header
     const res = await axios.get(`${TEST_SERVER_ROOT}/api/v1/session?q=2`, {
       headers: {
-        Authorization: `Bearer ${r1.data.data.token}`,
+        [headerName]: `Bearer ${r1.data.data.token}`,
       },
     });
 
@@ -43,6 +44,7 @@ describe('v1/session/details', () => {
   it('should validate a session via Cookie', async () => {
     // Obtain a valid session token by authentication method
     const passwdSettings = await global.setAppConfig(PWD_PATH, 'foobar');
+    const cookieName = await global.getAppConfig('app.auth.cookie.name');
     const r1 = await axios.post(`${TEST_SERVER_ROOT}/api/v1/session`, {
       uname: 'console',
       passw: 'foobar',
@@ -51,7 +53,7 @@ describe('v1/session/details', () => {
     // Check the session status by forwarding the session token as a Cookie
     const res = await axios.get(`${TEST_SERVER_ROOT}/api/v1/session?q=2`, {
       headers: {
-        Cookie: `auth=${r1.data.data.token}`,
+        Cookie: `${cookieName}=${r1.data.data.token}`,
       },
     });
 
@@ -64,6 +66,7 @@ describe('v1/session/details', () => {
   it('should validate a session via Query', async () => {
     // Obtain a valid session token by authentication method
     const passwdSettings = await global.setAppConfig(PWD_PATH, 'foobar');
+    const queryParamName = await global.getAppConfig('app.auth.query.param');
     const r1 = await axios.post(`${TEST_SERVER_ROOT}/api/v1/session`, {
       uname: 'console',
       passw: 'foobar',
@@ -71,7 +74,7 @@ describe('v1/session/details', () => {
 
     // Check the session status by forwarding the session token as a Query
     const res = await axios.get(
-      `${TEST_SERVER_ROOT}/api/v1/session?auth=${r1.data.data.token}`,
+      `${TEST_SERVER_ROOT}/api/v1/session?${queryParamName}=${r1.data.data.token}`,
     );
 
     // console.log(res.data);
@@ -82,9 +85,10 @@ describe('v1/session/details', () => {
 
   it('should fail to validate a session with a wrong signature', async () => {
     const passwdSettings = await global.setAppConfig(PWD_PATH, 'foobar');
+    const headerName = await global.getAppConfig('app.auth.header.name');
     const res = await axios.get(`${TEST_SERVER_ROOT}/api/v1/session?q=2`, {
       headers: {
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJncm91cHMiOlsiKiJdLCJpYXQiOjE1ODM3NDI1NDUsImV4cCI6MTU4Mzc0MjU0N30.D3E7MPe_uB7TrI-gSwh1Ij_8mefX17AjeRqQ434K7yI`,
+        [headerName]: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJncm91cHMiOlsiKiJdLCJpYXQiOjE1ODM3NDI1NDUsImV4cCI6MTU4Mzc0MjU0N30.D3E7MPe_uB7TrI-gSwh1Ij_8mefX17AjeRqQ434K7yI`,
       },
     });
     // console.log(res.data);
@@ -95,9 +99,10 @@ describe('v1/session/details', () => {
 
   it('should fail to validate a session with an expired token', async () => {
     const passwdSettings = await global.setAppConfig(PWD_PATH, 'foobar');
+    const headerName = await global.getAppConfig('app.auth.header.name');
     const res = await axios.get(`${TEST_SERVER_ROOT}/api/v1/session?q=2`, {
       headers: {
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJncm91cHMiOlsiKiJdLCJpYXQiOjE1ODM3NDI1NDUsImV4cCI6MTU4Mzc0MjU0N30.5MsIEMv2zYmlC7i8dmZvMMunDElYv1N3Dp0ODR8UDOE`,
+        [headerName]: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJncm91cHMiOlsiKiJdLCJpYXQiOjE1ODM3NDI1NDUsImV4cCI6MTU4Mzc0MjU0N30.5MsIEMv2zYmlC7i8dmZvMMunDElYv1N3Dp0ODR8UDOE`,
       },
     });
     // console.log(res.data);

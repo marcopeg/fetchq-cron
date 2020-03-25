@@ -4,14 +4,18 @@ const { v1SessionCreate } = require('./routes/v1-session-create');
 const { v1SessionDetails } = require('./routes/v1-session-details');
 
 const getRequestToken = request => {
-  if (request.headers.authorization) {
+  const cookieName = request.getConfig('app.auth.cookie.name');
+  const paramName = request.getConfig('app.auth.query.param');
+  const headerName = request.getConfig('app.auth.header.name');
+
+  if (request.headers[headerName]) {
     return request.headers.authorization.substr(7);
   }
-  if (request.cookies.auth) {
-    return request.cookies.auth;
+  if (request.cookies[cookieName]) {
+    return request.cookies[cookieName];
   }
-  if (request.query.auth) {
-    return request.query.auth;
+  if (request.query[paramName]) {
+    return request.query[paramName];
   }
 };
 

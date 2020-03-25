@@ -50,10 +50,14 @@ const settings = ({ setConfig, getConfig }) => {
   // Generica app configuration
   setConfig('app.q1.name', Q1);
   setConfig('app.logs.page.size', 100);
+  // Authorization setup
   setConfig(
     'app.auth.console.password',
     process.env.FETCHQ_CRON_CONSOLE_PASSWORD || null,
   );
+  setConfig('app.auth.cookie.name', 'fetchq_cron_auth');
+  setConfig('app.auth.query.param', 'auth');
+  setConfig('app.auth.header.name', 'authorization');
 
   // Heroku compatible port environment variable
   setConfig(

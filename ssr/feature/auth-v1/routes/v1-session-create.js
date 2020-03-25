@@ -52,6 +52,7 @@ const v1SessionCreate = {
   handler: async (request, reply) => {
     const { getConfig } = request;
     const password = getConfig('app.auth.console.password');
+    const cookieName = getConfig('app.auth.cookie.name');
     const cookieOptions = getConfig('fastify.cookie.options', {});
 
     const details = await getLoginDetails(password, request.body);
@@ -68,7 +69,7 @@ const v1SessionCreate = {
 
     // Send out secure cookie
     const expiryMs = ms(jwtOptions.expiresIn);
-    reply.setCookie('auth', token, {
+    reply.setCookie(cookieName, token, {
       ...cookieOptions,
       maxAge: expiryMs / 1000,
       expires: details.eat,
