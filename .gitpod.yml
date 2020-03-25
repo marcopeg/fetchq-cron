@@ -2,12 +2,12 @@ image: marcopeg/gitpod-workspace-postgres:2.5.0
 
 tasks:
   - name: Unit Tests
-    init: sleep 30
+    init: sleep 60
     command: yarn tdd:unit
     openIn: right
     openMode: tab-after
   - name: E2E Tests
-    init: sleep 30
+    init: sleep 60
     command: yarn tdd:e2e
     openIn: right
     openMode: tab-after
@@ -17,12 +17,12 @@ tasks:
     openIn: bottom
     openMode: tab-after
   - name: Styleguide
-    init: sleep 30
+    init: sleep 60
     command: yarn start:gitpod:styleguide
     openIn: bottom
     openMode: split-right
   - name: App
-    init: sleep 30
+    init: sleep 60
     command: yarn start:gitpod:app
     openIn: bottom
     openMode: tab-after
@@ -38,3 +38,11 @@ ports:
     onOpen: ignore
   - port: 6060
     onOpen: ignore
+
+vscode:
+  extensions:
+    - dbaeumer.vscode-eslint@2.1.1:DO6k4GCpqhwZcKo+jY9xjQ==
+    - esbenp.prettier-vscode@3.20.0:37/f4uBlE287wUjENFq1aA==
+    - mikestead.dotenv@1.0.1:SSXjr5hZcbqSF7nMIhTNnA==
+    - wayou.vscode-todo-highlight@1.0.4:8IqxuxCVol2WnScJc5xVzg==
+    
