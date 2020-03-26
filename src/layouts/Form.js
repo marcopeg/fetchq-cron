@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
-  form: {
-    padding: theme.spacing(2),
-    backgroundColor: '#eee',
+  title: {
+    marginBottom: theme.spacing(4),
+    fontSize: '2rem',
   },
   actions: {},
 }));
@@ -18,6 +19,7 @@ const Form = ({
   lblCancel,
   isLoading,
   children,
+  title,
 }) => {
   const classes = useStyles();
 
@@ -32,7 +34,12 @@ const Form = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className={classes.form}>
+    <form onSubmit={handleSubmit}>
+      {title && (
+        <Typography variant="h2" className={classes.title}>
+          {title}
+        </Typography>
+      )}
       {children}
       <div className={classes.actions}>
         <Button type="submit" color="primary" variant="contained">

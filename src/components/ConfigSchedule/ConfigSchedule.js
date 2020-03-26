@@ -27,7 +27,7 @@ const ConfigSchedule = ({ value, errors, onChange }) => {
   return (
     <div className={classes.formWrapper}>
       <Grid container spacing={2}>
-        <Grid item xs={2}>
+        <Grid item sm={4} md={2}>
           <Select
             required
             fullWidth
@@ -42,7 +42,7 @@ const ConfigSchedule = ({ value, errors, onChange }) => {
             ]}
           />
         </Grid>
-        <Grid item xs={10}>
+        <Grid item sm={8} md={10}>
           <TextField
             required
             fullWidth

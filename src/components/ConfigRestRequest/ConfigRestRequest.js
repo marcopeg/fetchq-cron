@@ -54,7 +54,7 @@ const ConfigRestRequest = ({ value, errors, onChange }) => {
     <div className={classes.formWrapper}>
       <div className={classes.formSection}>
         <Grid container spacing={2}>
-          <Grid item xs={2}>
+          <Grid item sm={4} md={2}>
             <Select
               required
               fullWidth
@@ -75,7 +75,7 @@ const ConfigRestRequest = ({ value, errors, onChange }) => {
               <MenuItem value={'PUT'}>PUT</MenuItem>
             </Select>
           </Grid>
-          <Grid item xs={10}>
+          <Grid item sm={8} md={10}>
             <TextField
               required
               fullWidth

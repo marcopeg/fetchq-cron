@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import { Redirect, useHistory } from 'react-router-dom';
 import AppLayout from '../layouts/AppLayout';
-import ConfigTask from '../components/ConfigTask';
-import RoutedButton from '../components/RoutedButton';
+import CreateTaskUI from '../components/forms/CreateTaskUI';
 import { usePost } from '../state/use-post';
 
 const defaultConfig = {
@@ -31,10 +28,15 @@ const defaultConfig = {
 const CreateTask = () => {
   const [{ data }, { send }] = usePost('/api/v1/cron/');
   const [config, setConfig] = useState(defaultConfig);
+  const history = useHistory();
 
-  const handleSubmit = evt => {
-    evt.preventDefault();
-    send(config);
+  const handleSubmit = (evt, values) => {
+    console.log(values);
+    return send(config);
+  };
+
+  const handleCancel = evt => {
+    history.push('/');
   };
 
   // TODO: show some form of confirmation message before redirecting
@@ -44,17 +46,13 @@ const CreateTask = () => {
 
   return (
     <AppLayout>
-      <Typography variant="h4">Create new task:</Typography>
-      <form onSubmit={handleSubmit}>
-        <ConfigTask
-          value={config}
-          onChange={(evt, value) => setConfig(value)}
-        />
-        <Button type="submit" color="primary" variant="contained">
-          Save
-        </Button>
-        <RoutedButton to="/">Cancel</RoutedButton>
-      </form>
+      <CreateTaskUI
+        title="Create new task:"
+        value={config}
+        errors={[]}
+        onSubmit={handleSubmit}
+        onCancel={handleCancel}
+      />
     </AppLayout>
   );
 };

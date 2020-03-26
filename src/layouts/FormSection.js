@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 const FormSection = ({ title, floatingEl, children, ...props }) => {
   const classes = useStyles();
   return (
-    <Paper className={classes.wrapper} elevation={0} {...props}>
+    <Paper className={classes.wrapper} elevation={1} {...props}>
       {title && (
         <Typography variant="button" component="h3" className={classes.title}>
           {title}
