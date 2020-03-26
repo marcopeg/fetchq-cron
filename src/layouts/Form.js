@@ -11,7 +11,14 @@ const useStyles = makeStyles(theme => ({
   actions: {},
 }));
 
-const Form = ({ onSubmit, onCancel, lblSubmit, lblCancel, children }) => {
+const Form = ({
+  onSubmit,
+  onCancel,
+  lblSubmit,
+  lblCancel,
+  isLoading,
+  children,
+}) => {
   const classes = useStyles();
 
   const handleSubmit = evt => {
@@ -29,7 +36,7 @@ const Form = ({ onSubmit, onCancel, lblSubmit, lblCancel, children }) => {
       {children}
       <div className={classes.actions}>
         <Button type="submit" color="primary" variant="contained">
-          {lblSubmit}
+          {isLoading ? '...' : lblSubmit}
         </Button>
         {onCancel && (
           <Button type="reset" variant="text" onClick={handleCancel}>
@@ -44,6 +51,7 @@ const Form = ({ onSubmit, onCancel, lblSubmit, lblCancel, children }) => {
 Form.defaultProps = {
   lblSubmit: 'Save',
   lblCancel: 'Cancel',
+  isLoading: false,
 };
 
 Form.propTypes = {
@@ -51,6 +59,7 @@ Form.propTypes = {
   onCancel: PropTypes.func,
   lblSubmit: PropTypes.string,
   lblCancel: PropTypes.string,
+  isLoading: PropTypes.bool,
 };
 
 export default Form;
