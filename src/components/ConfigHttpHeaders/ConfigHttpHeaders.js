@@ -5,17 +5,26 @@ import headersUtils from 'http-headers-validation';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import IconAdd from '@material-ui/icons/Add';
 import IconRemove from '@material-ui/icons/RemoveCircleOutlineOutlined';
+import TextField from '../forms/components/TextField';
 
 const useStyles = makeStyles(theme => ({
   btnAdd: {
     marginTop: 0 - theme.spacing(1.5),
   },
-  table: {
-    marginTop: 0 - theme.spacing(3),
+  btnAddFirst: {
+    marginTop: theme.spacing(1),
+    fontSize: '0.8em',
+    color: '#888',
+    cursor: 'pointer',
+  },
+  header: {
+    marginBottom: 0 - theme.spacing(2.5),
+  },
+  row: {
+    marginBottom: theme.spacing(1),
   },
 }));
 
@@ -24,12 +33,14 @@ const ConfigHttpHeaders = ({ value, onChange }) => {
   const [localValue, setLocalValue] = useState(value);
   const [invalidItems, setInvalidItems] = useState([]);
 
-  // Keep local value updated from external props
+  // Keep local value updated from external props:
   useEffect(() => {
-    setLocalValue(value);
-  }, [value, setLocalValue]);
+    if (JSON.stringify(value) !== JSON.stringify(localValue)) {
+      setLocalValue(value);
+    }
+  }, [value, setLocalValue]); // eslint-disable-line
 
-  // Apply validation to the headers
+  // Apply validation to the headers:
   useEffect(() => {
     const invalidItems = Object.keys(localValue).filter(
       key => !headersUtils.validateHeader(String(key), String(localValue[key])),
@@ -43,7 +54,7 @@ const ConfigHttpHeaders = ({ value, onChange }) => {
     ) {
       onChange(null, localValue);
     }
-  }, [value, localValue, onChange]);
+  }, [localValue]); // eslint-disable-line
 
   const onChangeItem = (prop, targetItem) => evt => {
     const update = Object.keys(localValue)
@@ -87,7 +98,7 @@ const ConfigHttpHeaders = ({ value, onChange }) => {
 
   return (
     <>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} className={classes.header}>
         <Grid item xs={11}>
           <Typography gutterBottom variant="body2">
             Headers:
@@ -107,26 +118,33 @@ const ConfigHttpHeaders = ({ value, onChange }) => {
         )}
       </Grid>
       {listValue.length === 0 && (
-        <Typography onClick={onAddItem} variant="body2">
-          + Add first header
+        <Typography
+          onClick={onAddItem}
+          variant="body2"
+          className={classes.btnAddFirst}
+        >
+          + add first header
         </Typography>
       )}
       {listValue.map((item, idx) => (
-        <Grid key={idx} container spacing={2} className={classes.table}>
+        <Grid key={idx} container spacing={2} className={classes.row}>
           <Grid item xs={4}>
             <TextField
               fullWidth
-              error={invalidItems.includes(item.key)}
+              label="header:"
               placeholder="header"
               value={item.key}
+              error={invalidItems.includes(item.key)}
               onChange={onChangeItem('key', item)}
             />
           </Grid>
           <Grid item xs={7}>
             <TextField
               fullWidth
+              label="value:"
               placeholder="value"
               value={item.value}
+              error={invalidItems.includes(item.key)}
               onChange={onChangeItem('value', item)}
             />
           </Grid>

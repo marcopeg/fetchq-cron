@@ -20,24 +20,7 @@ const initialValue = {
   payload: {},
 };
 const [config, setConfig] = React.useState(initialValue);
-const [errors, setErrors] = React.useState([
-  {
-    field: 'task_name',
-    message: 'yeah about that',
-  },
-  {
-    field: 'schedule.value',
-    message: 'error here',
-  },
-  {
-    field: 'action.request.url',
-    message: 'must pass a url',
-  },
-  {
-    field: 'action.request.method',
-    message: 'invalid method here',
-  },
-]);
+const [errors, setErrors] = React.useState([]);
 const handleSubmit = (evt, values) =>
   new Promise(resolve => {
     const errors = [];
@@ -55,7 +38,10 @@ const handleSubmit = (evt, values) =>
     }
     setTimeout(resolve, 1000);
   });
-const handleCancel = evt => setConfig(initialValue);
+const handleCancel = evt => {
+  setConfig(initialValue);
+  setErrors([]);
+};
 <>
   <CreateTaskUI
     value={config}

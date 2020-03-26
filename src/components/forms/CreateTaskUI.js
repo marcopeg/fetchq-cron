@@ -120,7 +120,7 @@ const CreateTaskUI = ({ value, errors, onSubmit, onCancel }) => {
         <FormControl fullWidth>
           <TextField
             required
-            label="Task Name:"
+            label="task Name:"
             value={currentValue.task_name}
             error={hasError('task_name')}
             helperText={getErrorMessage('task_name')}
@@ -130,7 +130,7 @@ const CreateTaskUI = ({ value, errors, onSubmit, onCancel }) => {
         <FormControl fullWidth>
           <TextField
             required
-            label="Group Name:"
+            label="group Name:"
             value={currentValue.group_name}
             error={hasError('group_name')}
             helperText={getErrorMessage('group_name')}
@@ -141,7 +141,7 @@ const CreateTaskUI = ({ value, errors, onSubmit, onCancel }) => {
           <TextField
             multiline
             rows="3"
-            label="Description:"
+            label="description:"
             value={currentValue.description}
             error={hasError('description')}
             helperText={getErrorMessage('description')}
@@ -149,7 +149,7 @@ const CreateTaskUI = ({ value, errors, onSubmit, onCancel }) => {
           />
         </FormControl>
       </FormSection>
-      <FormSection title="Schedule Action">
+      <FormSection title="Schedule:">
         <ConfigSchedule
           value={currentValue.schedule}
           errors={scheduleErrors}
@@ -157,7 +157,7 @@ const CreateTaskUI = ({ value, errors, onSubmit, onCancel }) => {
         />
       </FormSection>
       <FormSection
-        title="Configure Webhook"
+        title="HTTP Request:"
         floatingEl={
           useVisualComposer ? (
             <Button onClick={() => setUseVisualComposer(false)}>

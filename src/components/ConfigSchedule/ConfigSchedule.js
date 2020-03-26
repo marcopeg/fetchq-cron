@@ -31,7 +31,7 @@ const ConfigSchedule = ({ value, errors, onChange }) => {
           <Select
             required
             fullWidth
-            label="Method"
+            label="method:"
             value={value.method}
             error={hasError('method')}
             helperText={getErrorMessage('method')}
@@ -46,7 +46,7 @@ const ConfigSchedule = ({ value, errors, onChange }) => {
           <TextField
             required
             fullWidth
-            label="Value"
+            label="value:"
             placeholder={value.method === 'delay' ? '2 days' : '* * * * *'}
             value={value.value}
             error={hasError('value')}

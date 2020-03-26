@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import TextField from '../forms/components/TextField';
+import Select from '../forms/components/Select';
 
 import ConfigHttpHeaders from '../ConfigHttpHeaders';
 import JsonEditor from '../JsonEditor';
@@ -21,9 +20,12 @@ const useStyles = makeStyles(theme => ({
   formControl: {
     minWidth: '100%',
   },
+  title: {
+    marginBottom: theme.spacing(1),
+  },
 }));
 
-const ConfigRestRequest = ({ value, onChange }) => {
+const ConfigRestRequest = ({ value, errors, onChange }) => {
   const classes = useStyles();
 
   const onChangeMethod = evt =>
@@ -40,31 +42,50 @@ const ConfigRestRequest = ({ value, onChange }) => {
     onChange(evt, { ...value, body });
   };
 
+  // Error helpers
+  const hasError = field => errors.some(err => err.field === field);
+  const getErrorMessage = field =>
+    errors
+      .filter(err => err.field === field)
+      .map(err => err.message)
+      .shift();
+
   return (
     <div className={classes.formWrapper}>
       <div className={classes.formSection}>
-        <Typography gutterBottom variant="body2">
-          Endpoint:
-        </Typography>
         <Grid container spacing={2}>
           <Grid item xs={2}>
-            <FormControl className={classes.formControl}>
-              <Select required value={value.method} onChange={onChangeMethod}>
-                <MenuItem value={'GET'}>GET</MenuItem>
-                <MenuItem value={'POST'}>POST</MenuItem>
-                <MenuItem value={'PUT'}>PUT</MenuItem>
-              </Select>
-            </FormControl>
+            <Select
+              required
+              fullWidth
+              value={value.method}
+              onChange={onChangeMethod}
+              label="method:"
+              error={hasError('method')}
+              helperText={getErrorMessage('method')}
+              options={[
+                { value: 'GET' },
+                { value: 'POST' },
+                { value: 'PUT' },
+                { value: 'DELETE' },
+              ]}
+            >
+              <MenuItem value={'GET'}>GET</MenuItem>
+              <MenuItem value={'POST'}>POST</MenuItem>
+              <MenuItem value={'PUT'}>PUT</MenuItem>
+            </Select>
           </Grid>
           <Grid item xs={10}>
-            <FormControl className={classes.formControl}>
-              <TextField
-                required
-                placeholder="https://"
-                value={value.url}
-                onChange={onChangeUrl}
-              />
-            </FormControl>
+            <TextField
+              required
+              fullWidth
+              label="url:"
+              placeholder="https://"
+              value={value.url}
+              error={hasError('url')}
+              helperText={getErrorMessage('url')}
+              onChange={onChangeUrl}
+            />
           </Grid>
         </Grid>
       </div>
@@ -75,7 +96,12 @@ const ConfigRestRequest = ({ value, onChange }) => {
         <Typography gutterBottom variant="body2">
           Body:
         </Typography>
-        <JsonEditor value={value.body} onChange={onChangeBody} />
+        <JsonEditor
+          value={value.body}
+          onChange={onChangeBody}
+          error={hasError('body')}
+          helperText={getErrorMessage('body')}
+        />
       </div>
     </div>
   );
@@ -86,7 +112,17 @@ ConfigRestRequest.propTypes = {
     method: PropTypes.oneOf(['GET', 'POST', 'PUT', 'DELETE']).isRequired,
     url: PropTypes.string.isRequired,
   }).isRequired,
+  errors: PropTypes.arrayOf(
+    PropTypes.shape({
+      field: PropTypes.string.isRequired,
+      message: PropTypes.string.isRequired,
+    }),
+  ),
   onChange: PropTypes.func.isRequired,
+};
+
+ConfigRestRequest.defaultProps = {
+  errors: [],
 };
 
 export default ConfigRestRequest;

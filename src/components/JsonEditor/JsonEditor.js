@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import TextField from '../forms/components/TextField';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -24,12 +24,13 @@ const JsonEditor = ({
   label,
   rows,
   maxRows,
+  error,
   helperText,
   invalidJsonHelperText,
 }) => {
   const classes = useStyles();
   const [textValue, setTextValue] = useState('{}');
-  const [error, setError] = useState(false);
+  const [localError, setLocalError] = useState(false);
 
   // Updates the internal value with the incoming property
   // only if the content is different.
@@ -46,16 +47,23 @@ const JsonEditor = ({
 
   const handleChange = evt => {
     setTextValue(evt.target.value);
-    setError(false);
+    setLocalError(false);
     try {
       onChange(evt, JSON.parse(evt.target.value));
     } catch (err) {
-      setError(true);
+      setLocalError(true);
     }
   };
 
   const prettifyJson = () =>
     setTextValue(value => JSON.stringify(JSON.parse(value), null, 2));
+
+  let localHelperText = null;
+  if (localError) {
+    localHelperText = invalidJsonHelperText;
+  } else if (error) {
+    localHelperText = helperText;
+  }
 
   return (
     <div className={classes.wrapper}>
@@ -65,8 +73,8 @@ const JsonEditor = ({
         label={label}
         rows={rows}
         rowsMax={maxRows || rows}
-        error={error}
-        helperText={error ? invalidJsonHelperText : helperText}
+        error={error || localError}
+        helperText={localHelperText}
         value={textValue}
         onChange={handleChange}
         inputProps={{ className: classes.inputEl }}
