@@ -2,10 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import TextField from '../forms/components/TextField';
+import Select from '../forms/components/Select';
 
 const useStyles = makeStyles(theme => ({
   formWrapper: {
@@ -13,35 +11,48 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ConfigSchedule = ({ value, onChange }) => {
+const ConfigSchedule = ({ value, errors, onChange }) => {
   const classes = useStyles();
   const onChangeProp = prop => evt =>
     onChange(evt, { ...value, [prop]: evt.target.value });
 
+  // Error helpers
+  const hasError = field => errors.some(err => err.field === field);
+  const getErrorMessage = field =>
+    errors
+      .filter(err => err.field === field)
+      .map(err => err.message)
+      .shift();
+
   return (
     <div className={classes.formWrapper}>
       <Grid container spacing={2}>
-        <Grid item xs={2}>
-          <FormControl fullWidth>
-            <Select
-              required
-              value={value.method}
-              onChange={onChangeProp('method')}
-            >
-              <MenuItem value={'delay'}>DELAY</MenuItem>
-              <MenuItem value={'cron'}>CRON</MenuItem>
-            </Select>
-          </FormControl>
+        <Grid item sm={4} md={2}>
+          <Select
+            required
+            fullWidth
+            label="method:"
+            value={value.method}
+            error={hasError('method')}
+            helperText={getErrorMessage('method')}
+            onChange={onChangeProp('method')}
+            options={[
+              { value: 'delay', label: 'DELAY' },
+              { value: 'cron', label: 'CRON' },
+            ]}
+          />
         </Grid>
-        <Grid item xs={10}>
-          <FormControl fullWidth>
-            <TextField
-              required
-              placeholder={value.method === 'delay' ? '2 days' : '* * * * *'}
-              value={value.value}
-              onChange={onChangeProp('value')}
-            />
-          </FormControl>
+        <Grid item sm={8} md={10}>
+          <TextField
+            required
+            fullWidth
+            label="value:"
+            placeholder={value.method === 'delay' ? '2 days' : '* * * * *'}
+            value={value.value}
+            error={hasError('value')}
+            helperText={getErrorMessage('value')}
+            onChange={onChangeProp('value')}
+          />
         </Grid>
       </Grid>
     </div>
@@ -53,7 +64,17 @@ ConfigSchedule.propTypes = {
     method: PropTypes.oneOf(['delay', 'cron']).isRequired,
     value: PropTypes.string.isRequired,
   }).isRequired,
+  errors: PropTypes.arrayOf(
+    PropTypes.shape({
+      field: PropTypes.string.isRequired,
+      message: PropTypes.string.isRequired,
+    }),
+  ),
   onChange: PropTypes.func.isRequired,
+};
+
+ConfigSchedule.defaultProps = {
+  errors: [],
 };
 
 export default ConfigSchedule;

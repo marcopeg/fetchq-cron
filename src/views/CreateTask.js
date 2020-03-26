@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import React from 'react';
+import { Redirect, useHistory } from 'react-router-dom';
 import AppLayout from '../layouts/AppLayout';
-import ConfigTask from '../components/ConfigTask';
-import RoutedButton from '../components/RoutedButton';
+import CreateTaskUI from '../components/forms/CreateTaskUI';
 import { usePost } from '../state/use-post';
 
 const defaultConfig = {
@@ -19,8 +16,7 @@ const defaultConfig = {
     request: {
       type: 'rest',
       method: 'GET',
-      url:
-        'https://8080-bef24188-530f-4579-84d5-61f22d7b9334.ws-eu01.gitpod.io/ping',
+      url: 'https://fetchq-cron.herokuapp.com/ping',
       headers: [],
       body: {},
     },
@@ -30,11 +26,15 @@ const defaultConfig = {
 
 const CreateTask = () => {
   const [{ data }, { send }] = usePost('/api/v1/cron/');
-  const [config, setConfig] = useState(defaultConfig);
+  const history = useHistory();
 
-  const handleSubmit = evt => {
-    evt.preventDefault();
-    send(config);
+  const handleSubmit = (evt, values) => {
+    console.log(values);
+    return send(values);
+  };
+
+  const handleCancel = evt => {
+    history.push('/');
   };
 
   // TODO: show some form of confirmation message before redirecting
@@ -44,17 +44,13 @@ const CreateTask = () => {
 
   return (
     <AppLayout>
-      <Typography variant="h4">Create new task:</Typography>
-      <form onSubmit={handleSubmit}>
-        <ConfigTask
-          value={config}
-          onChange={(evt, value) => setConfig(value)}
-        />
-        <Button type="submit" color="primary" variant="contained">
-          Save
-        </Button>
-        <RoutedButton to="/">Cancel</RoutedButton>
-      </form>
+      <CreateTaskUI
+        title="Create new task:"
+        value={defaultConfig}
+        errors={[]}
+        onSubmit={handleSubmit}
+        onCancel={handleCancel}
+      />
     </AppLayout>
   );
 };
