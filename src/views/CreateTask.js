@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import AppLayout from '../layouts/AppLayout';
 import CreateTaskUI from '../components/forms/CreateTaskUI';
@@ -16,8 +16,7 @@ const defaultConfig = {
     request: {
       type: 'rest',
       method: 'GET',
-      url:
-        'https://8080-bef24188-530f-4579-84d5-61f22d7b9334.ws-eu01.gitpod.io/ping',
+      url: 'https://fetchq-cron.herokuapp.com/ping',
       headers: [],
       body: {},
     },
@@ -27,12 +26,11 @@ const defaultConfig = {
 
 const CreateTask = () => {
   const [{ data }, { send }] = usePost('/api/v1/cron/');
-  const [config, setConfig] = useState(defaultConfig);
   const history = useHistory();
 
   const handleSubmit = (evt, values) => {
     console.log(values);
-    return send(config);
+    return send(values);
   };
 
   const handleCancel = evt => {
@@ -48,7 +46,7 @@ const CreateTask = () => {
     <AppLayout>
       <CreateTaskUI
         title="Create new task:"
-        value={config}
+        value={defaultConfig}
         errors={[]}
         onSubmit={handleSubmit}
         onCancel={handleCancel}
