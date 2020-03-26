@@ -28,14 +28,8 @@ const CreateTask = () => {
   const [{ data }, { send }] = usePost('/api/v1/cron/');
   const history = useHistory();
 
-  const handleSubmit = (evt, values) => {
-    console.log(values);
-    return send(values);
-  };
-
-  const handleCancel = evt => {
-    history.push('/');
-  };
+  const handleSubmit = (evt, values) => send(values);
+  const handleCancel = evt => history.push('/');
 
   // TODO: show some form of confirmation message before redirecting
   if (data) {

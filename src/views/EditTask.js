@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import { Redirect, useHistory } from 'react-router-dom';
 import AppLayout from '../layouts/AppLayout';
 import { useGet } from '../state/use-get';
 import { usePost } from '../state/use-post';
-import ConfigTask from '../components/ConfigTask';
 import LoadingSpinner from '../components/LoadingSpinner';
-import RoutedButton from '../components/RoutedButton';
+import CreateTaskUI from '../components/forms/CreateTaskUI';
 
 const EditTask = ({ match }) => {
   const { groupName, taskName } = match.params;
@@ -15,6 +12,7 @@ const EditTask = ({ match }) => {
   const [{ data }] = useGet(endpoint);
   const [{ data: editData }, { send }] = usePost('/api/v1/cron/');
   const [config, setConfig] = useState(null);
+  const history = useHistory();
 
   useEffect(() => {
     if (data) {
@@ -22,10 +20,8 @@ const EditTask = ({ match }) => {
     }
   }, [data, setConfig]);
 
-  const handleSubmit = evt => {
-    evt.preventDefault();
-    send(config);
-  };
+  const handleSubmit = (evt, values) => send(values);
+  const handleCancel = evt => history.push('/');
 
   // TODO: show some form of confirmation message before redirecting
   if (editData) {
@@ -42,17 +38,13 @@ const EditTask = ({ match }) => {
 
   return (
     <AppLayout>
-      <Typography variant="h4">Edit task:</Typography>
-      <form onSubmit={handleSubmit}>
-        <ConfigTask
-          value={config}
-          onChange={(evt, value) => setConfig(value)}
-        />
-        <Button type="submit" color="primary" variant="contained">
-          Save
-        </Button>
-        <RoutedButton to="/">Cancel</RoutedButton>
-      </form>
+      <CreateTaskUI
+        title="Edit task:"
+        value={config}
+        errors={[]}
+        onSubmit={handleSubmit}
+        onCancel={handleCancel}
+      />
     </AppLayout>
   );
 };
