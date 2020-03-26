@@ -11,11 +11,11 @@ import IconAdd from '@material-ui/icons/Add';
 import IconRemove from '@material-ui/icons/RemoveCircleOutlineOutlined';
 
 const useStyles = makeStyles(theme => ({
-  formControl: {
-    minWidth: '100%',
-  },
   btnAdd: {
     marginTop: 0 - theme.spacing(1.5),
+  },
+  table: {
+    marginTop: 0 - theme.spacing(3),
   },
 }));
 
@@ -69,7 +69,8 @@ const ConfigHttpHeaders = ({ value, onChange }) => {
       .map(key => ({ key, value: localValue[key] }))
       .reduce((acc, curr) => ({ ...acc, [curr.key]: curr.value }), {});
 
-    onChange(evt, update);
+    // onChange(evt, update);
+    setLocalValue(update);
   };
 
   const onAddItem = evt => {
@@ -88,41 +89,48 @@ const ConfigHttpHeaders = ({ value, onChange }) => {
     <>
       <Grid container spacing={2}>
         <Grid item xs={11}>
-          <Typography gutterBottom variant="button">
+          <Typography gutterBottom variant="body2">
             Headers:
           </Typography>
         </Grid>
-        <Grid item xs={1}>
-          <IconButton
-            aria-label="Create new header"
-            onClick={onAddItem}
-            color="primary"
-            className={classes.btnAdd}
-          >
-            <IconAdd />
-          </IconButton>
-        </Grid>
+        {listValue.length > 0 && (
+          <Grid item xs={1} style={{ textAlign: 'right' }}>
+            <IconButton
+              aria-label="Create new header"
+              onClick={onAddItem}
+              color="primary"
+              className={classes.btnAdd}
+            >
+              <IconAdd />
+            </IconButton>
+          </Grid>
+        )}
       </Grid>
+      {listValue.length === 0 && (
+        <Typography onClick={onAddItem} variant="body2">
+          + Add first header
+        </Typography>
+      )}
       {listValue.map((item, idx) => (
-        <Grid key={idx} container spacing={2}>
+        <Grid key={idx} container spacing={2} className={classes.table}>
           <Grid item xs={4}>
             <TextField
+              fullWidth
               error={invalidItems.includes(item.key)}
               placeholder="header"
               value={item.key}
               onChange={onChangeItem('key', item)}
-              className={classes.formControl}
             />
           </Grid>
           <Grid item xs={7}>
             <TextField
+              fullWidth
               placeholder="value"
               value={item.value}
               onChange={onChangeItem('value', item)}
-              className={classes.formControl}
             />
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={1} style={{ textAlign: 'right' }}>
             <IconButton
               aria-label="Create new header"
               onClick={onRemoveItem(item)}
