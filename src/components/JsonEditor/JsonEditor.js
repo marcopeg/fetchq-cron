@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
   beautifyBtn: {
     position: 'absolute',
     top: theme.spacing(0.5),
-    right: 0,
+    right: theme.spacing(1),
   },
   inputEl: {
     fontFamily: 'monospace',
@@ -70,6 +70,10 @@ const JsonEditor = ({
         value={textValue}
         onChange={handleChange}
         inputProps={{ className: classes.inputEl }}
+        variant="outlined"
+        InputLabelProps={{
+          shrink: true,
+        }}
       />
       {error ? null : (
         <Typography

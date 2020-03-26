@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(1),
   },
   formSection: {
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(3),
   },
   formControl: {
     minWidth: '100%',
@@ -43,7 +43,7 @@ const ConfigRestRequest = ({ value, onChange }) => {
   return (
     <div className={classes.formWrapper}>
       <div className={classes.formSection}>
-        <Typography gutterBottom variant="button">
+        <Typography gutterBottom variant="body2">
           Endpoint:
         </Typography>
         <Grid container spacing={2}>
@@ -72,7 +72,7 @@ const ConfigRestRequest = ({ value, onChange }) => {
         <ConfigHttpHeaders value={value.headers} onChange={onChangeHeaders} />
       </div>
       <div className={classes.formSection}>
-        <Typography gutterBottom variant="button">
+        <Typography gutterBottom variant="body2">
           Body:
         </Typography>
         <JsonEditor value={value.body} onChange={onChangeBody} />
