@@ -4,7 +4,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(theme => ({
-  actions: {},
+  actions: {
+    display: 'flex',
+    flexDirection: 'row-reverse',
+    '& > button': {
+      marginLeft: theme.spacing(2),
+    },
+  },
 }));
 
 const Form = ({
