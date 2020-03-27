@@ -5,6 +5,7 @@ import { useGet } from '../state/use-get';
 import { usePost } from '../state/use-post';
 import LoadingSpinner from '../components/LoadingSpinner';
 import CreateTaskUI from '../components/forms/CreateTaskUI';
+import ViewTitle from '../components/ViewTitle';
 
 const EditTask = ({ match }) => {
   const { groupName, taskName } = match.params;
@@ -38,8 +39,8 @@ const EditTask = ({ match }) => {
 
   return (
     <AppLayout>
+      <ViewTitle title="Edit task:" backTo="/" />
       <CreateTaskUI
-        title="Edit task:"
         value={config}
         errors={[]}
         onSubmit={handleSubmit}

@@ -1,5 +1,5 @@
 const path = require('path');
-const makeCRAWebpackConfig = require('react-scripts/config/webpack.config.js');
+// const makeCRAWebpackConfig = require('react-scripts/config/webpack.config.js');
 
 module.exports = {
   components: 'src/components/**/[A-Z]*.js',

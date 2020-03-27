@@ -2,13 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
-  title: {
-    marginBottom: theme.spacing(4),
-    fontSize: '2rem',
-  },
   actions: {},
 }));
 
@@ -19,7 +14,6 @@ const Form = ({
   lblCancel,
   isLoading,
   children,
-  title,
 }) => {
   const classes = useStyles();
 
@@ -35,11 +29,6 @@ const Form = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      {title && (
-        <Typography variant="h2" className={classes.title}>
-          {title}
-        </Typography>
-      )}
       {children}
       <div className={classes.actions}>
         <Button type="submit" color="primary" variant="contained">
@@ -55,18 +44,18 @@ const Form = ({
   );
 };
 
-Form.defaultProps = {
-  lblSubmit: 'Save',
-  lblCancel: 'Cancel',
-  isLoading: false,
-};
-
 Form.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   onCancel: PropTypes.func,
   lblSubmit: PropTypes.string,
   lblCancel: PropTypes.string,
   isLoading: PropTypes.bool,
+};
+
+Form.defaultProps = {
+  lblSubmit: 'Save',
+  lblCancel: 'Cancel',
+  isLoading: false,
 };
 
 export default Form;

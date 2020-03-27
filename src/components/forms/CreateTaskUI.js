@@ -11,7 +11,7 @@ import FormSection from '../../layouts/FormSection';
 import FormControl from './components/FormControl';
 import TextField from './components/TextField';
 
-const CreateTaskUI = ({ title, value, errors, onSubmit, onCancel }) => {
+const CreateTaskUI = ({ value, errors, onSubmit, onCancel }) => {
   const [currentValue, setCurrentValue] = useState({
     group_name: '',
     task_name: '',
@@ -115,12 +115,7 @@ const CreateTaskUI = ({ title, value, errors, onSubmit, onCancel }) => {
     }));
 
   return (
-    <Form
-      isLoading={isLoading}
-      onSubmit={handleSubmit}
-      onCancel={handleCancel}
-      title={title}
-    >
+    <Form isLoading={isLoading} onSubmit={handleSubmit} onCancel={handleCancel}>
       <FormSection title="General">
         <FormControl fullWidth>
           <TextField
@@ -195,7 +190,6 @@ const CreateTaskUI = ({ title, value, errors, onSubmit, onCancel }) => {
 CreateTaskUI.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
-  title: PropTypes.string,
   errors: PropTypes.arrayOf(
     PropTypes.shape({
       field: PropTypes.string.isRequired,
