@@ -11,7 +11,7 @@ const v1CronDetails = {
 
     // TODO: validate that this is just a string?
     const { groupName, taskName } = request.params;
-    const subject = `${groupName}__${taskName}`;
+    const subject = `${groupName}/${taskName}`;
 
     const sql = `
       SELECT * FROM "fetchq_catalog"."fetchq__${Q1}__documents"

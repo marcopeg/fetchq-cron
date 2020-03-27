@@ -25,7 +25,7 @@ const handler = async (request, reply) => {
   sql.push(`SELECT * FROM "fetchq_catalog"."fetchq__${Q1}__errors"`);
 
   if (params.groupName && params.taskName) {
-    where.push(`subject = '${params.groupName}__${params.taskName}'`);
+    where.push(`subject = '${params.groupName}/${params.taskName}'`);
   } else if (params.groupName) {
     where.push(`details->>'group_name' = '${params.groupName}'`);
   }

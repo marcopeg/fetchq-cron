@@ -5,6 +5,7 @@ describe('v1/cron', () => {
   const t1 = {
     group_name: 'foo',
     task_name: 't1',
+    description: 'fooo',
     action: {
       method: 'webhook',
       request: {
@@ -32,7 +33,7 @@ describe('v1/cron', () => {
   describe('upsert', () => {
     it('should upsert a new task with a delay', async () => {
       const r1 = await axios.post(`${TEST_SERVER_ROOT}/api/v1/cron/`, t1);
-      // console.info(r1.data);
+      // global.info(r1.data);
       expect(r1.data.success).toBe(true);
       expect(r1.data.data.was_created).toBe(true);
 
@@ -114,8 +115,8 @@ describe('v1/cron', () => {
         `${TEST_SERVER_ROOT}/api/v1/cron/?limit=1&cursor=${cursor}`,
       );
 
-      expect(r1.data.data.tasks[0].subject).toBe('faa__t6');
-      expect(r2.data.data.tasks[0].subject).toBe('faa__t5');
+      expect(r1.data.data.tasks[0].subject).toBe('faa/t6');
+      expect(r2.data.data.tasks[0].subject).toBe('faa/t5');
     });
 
     it('should fetch tasks by group', async () => {
@@ -133,7 +134,7 @@ describe('v1/cron', () => {
     it('should show details for a single task', async () => {
       const r1 = await axios.get(`${TEST_SERVER_ROOT}/api/v1/cron/foo/t1`);
       expect(r1.data.success).toBe(true);
-      expect(r1.data.data.task.subject).toBe('foo__t1');
+      expect(r1.data.data.task.subject).toBe('foo/t1');
       expect(r1.data.data.task).toHaveProperty('payload');
       // console.log(r1.data.data);
     });

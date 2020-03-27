@@ -10,7 +10,7 @@ const v1CronUpsert = {
     const Q1 = getConfig('app.q1.name');
     const { group_name, task_name, schedule } = request.body;
 
-    const subject = `${group_name}__${task_name}`;
+    const subject = `${group_name}/${task_name}`;
     const nextIteration = getNextIteration(schedule.method, schedule.value);
 
     const doc = {

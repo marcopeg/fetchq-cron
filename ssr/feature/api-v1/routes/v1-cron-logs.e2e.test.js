@@ -53,9 +53,9 @@ describe('v1/cron', () => {
       group_name: 'faa',
       task_name: 't1',
     });
-    await global.assertQueueIterations(queueName, 'foo__t1', TASKS_COUNT);
-    await global.assertQueueIterations(queueName, 'foo__t2', TASKS_COUNT);
-    await global.assertQueueIterations(queueName, 'faa__t1', TASKS_COUNT);
+    await global.assertQueueIterations(queueName, 'foo/t1', TASKS_COUNT);
+    await global.assertQueueIterations(queueName, 'foo/t2', TASKS_COUNT);
+    await global.assertQueueIterations(queueName, 'faa/t1', TASKS_COUNT);
   });
 
   afterAll(async () => {

@@ -45,6 +45,9 @@ module.exports = {
       task_name: {
         type: 'string',
       },
+      description: {
+        type: 'string',
+      },
       action,
       schedule,
       payload: {
