@@ -7,6 +7,7 @@ import CreateTask from './views/CreateTask';
 import EditTask from './views/EditTask';
 import SecretAlert from './containers/SecretAlert';
 import { useAuth } from './state/use-auth';
+import AppBar from './containers/AppBar';
 
 export default function App() {
   const { hasChecked, hasAuth } = useAuth();
@@ -22,6 +23,7 @@ export default function App() {
   return (
     <Router>
       <SecretAlert />
+      <AppBar />
       <Switch>
         <Route path="/" exact component={TasksList} />
         <Route path="/tasks/new" component={CreateTask} />

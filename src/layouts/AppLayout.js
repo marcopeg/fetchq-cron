@@ -1,32 +1,29 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Logo from '../components/Logo';
+import ViewTitle from '../components/ViewTitle';
 
 const useStyles = makeStyles(theme => ({
-  logo: {
-    marginRight: theme.spacing(1),
-  },
   content: {
     margin: theme.spacing(3),
   },
 }));
 
-const AppLayout = ({ children }) => {
+const AppLayout = ({ children, titleProps }) => {
   const classes = useStyles();
   return (
-    <>
-      <AppBar position="static">
-        <Toolbar>
-          <Logo className={classes.logo} />
-          <Typography>Fetchq CRON</Typography>
-        </Toolbar>
-      </AppBar>
-      <div className={classes.content}>{children}</div>
-    </>
+    <div className={classes.content}>
+      {titleProps && <ViewTitle {...titleProps} />}
+      {children}
+    </div>
   );
+};
+
+AppLayout.propTypes = {
+  /**
+   * Properties to setup a ViewTitle component
+   */
+  titleProps: PropTypes.object,
 };
 
 export default AppLayout;

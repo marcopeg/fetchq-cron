@@ -3,7 +3,6 @@ import { Redirect, useHistory } from 'react-router-dom';
 import AppLayout from '../layouts/AppLayout';
 import CreateTaskUI from '../components/forms/CreateTaskUI';
 import { usePost } from '../state/use-post';
-import ViewTitle from '../components/ViewTitle';
 
 const defaultConfig = {
   group_name: 'foo',
@@ -38,8 +37,7 @@ const CreateTask = () => {
   }
 
   return (
-    <AppLayout>
-      <ViewTitle title="Create new task:" backTo="/" />
+    <AppLayout titleProps={{ title: 'Create new task:', backTo: '/' }}>
       <CreateTaskUI
         value={defaultConfig}
         errors={[]}
