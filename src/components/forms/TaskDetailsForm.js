@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CreateTaskUI = ({ edit, value, errors, onSubmit, onCancel }) => {
+const TaskDetailsForm = ({ edit, value, errors, onSubmit, onCancel }) => {
   const classes = useStyles();
 
   const [currentValue, setCurrentValue] = useState({
@@ -214,7 +214,7 @@ const CreateTaskUI = ({ edit, value, errors, onSubmit, onCancel }) => {
   );
 };
 
-CreateTaskUI.propTypes = {
+TaskDetailsForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   /**
@@ -229,9 +229,9 @@ CreateTaskUI.propTypes = {
   ),
 };
 
-CreateTaskUI.defaultProps = {
+TaskDetailsForm.defaultProps = {
   edit: false,
   errors: [],
 };
 
-export default CreateTaskUI;
+export default TaskDetailsForm;
