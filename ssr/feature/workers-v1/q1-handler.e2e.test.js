@@ -16,6 +16,8 @@ const makeHandlerWithReject = async (payload, debugFn) => {
   const doc = {
     ...makeTask(fixture.f4.task),
     reject: debugFn ? jest.fn(debugFn) : jest.fn(),
+    reschedule: jest.fn(),
+    logError: jest.fn(),
   };
 
   doc.payload.payload = payload;
@@ -31,15 +33,28 @@ const expectReject = (doc, errorMessage) =>
 describe('v1/q1-handler', () => {
   describe('method:webhook', () => {
     describe('rest/GET', () => {
-      it('should reschedule from the task definition', async () => {
+      it('should reschedule from the task definition foobar', async () => {
+        const logError = jest.fn(async (msg, details, refId) => {
+          // console.log({ msg, details, refId });
+          // global.info(details);
+          return true;
+        });
         const doc = {
           ...makeTask(fixture.f1.task),
           reschedule: (...args) => args,
+          logError,
         };
 
         const [p1, p2] = await handler(doc);
         expect(p1).toBe('+1s');
         expect(p2.payload.payload.count).toBe(1);
+
+        // Assert on the response logging
+        // global.info(logError.mock.callsa);
+        expect(logError.mock.calls[0][0]).toBe('200 OK');
+        expect(logError.mock.calls[0][1].type).toBe('response');
+        expect(logError.mock.calls[0][1].group_name).toBe('foo');
+        expect(logError.mock.calls[0][1].task_name).toBe('t1');
       });
 
       it('should reschedule from the response', async () => {
@@ -55,7 +70,7 @@ describe('v1/q1-handler', () => {
         expect(p2.payload.payload.foo).toBe('abc');
       });
 
-      it('should add a log out of the webhook response', async () => {
+      it('should add a log out of the webhook response foobar', async () => {
         const logError = jest.fn(async (msg, details, refId) => {
           // console.log({ msg, details, refId });
           return true;
@@ -69,24 +84,31 @@ describe('v1/q1-handler', () => {
         const [p1, p2] = await handler(doc);
         // console.log(p1, p2);
 
-        expect(logError.mock.calls.length).toBe(2);
+        // global.info(p1);
+        // global.info(p2);
+
+        // global.info(logError.mock.calls);
+
+        expect(logError.mock.calls.length).toBe(3);
         expect(logError).toHaveBeenCalledWith(
           'log1',
           {
+            type: 'log',
             group_name: 'foo',
             task_name: 't1',
             cursor: expect.any(Number),
-            details: { a: 123 },
+            data: { a: 123 },
           },
           null,
         );
         expect(logError).toHaveBeenCalledWith(
           'log2',
           {
+            type: 'log',
             group_name: 'foo',
             task_name: 't1',
             cursor: expect.any(Number),
-            details: {},
+            data: {},
           },
           'xxx',
         );
@@ -98,6 +120,7 @@ describe('v1/q1-handler', () => {
         const doc = {
           ...makeTask(fixture.f3.task),
           reschedule: (...args) => args,
+          logError: () => {},
         };
 
         const [p1, p2] = await handler(doc);
@@ -148,7 +171,7 @@ describe('v1/q1-handler', () => {
         it(message, async () => {
           const [doc] = await makeHandlerWithReject(payload);
           expect(doc.reject.mock.calls.length).toBe(1);
-          expectReject(doc, 'failed webhook payload validation');
+          expectReject(doc, 'Invalid webhook payload');
         }),
       );
     });
@@ -158,28 +181,27 @@ describe('v1/q1-handler', () => {
         const [doc] = await makeHandlerWithReject(
           {
             status: 400,
-            payload: {
-              success: false,
-              foo: 123,
-            },
+            payload: { success: true },
           },
           // deepLogArgs,
         );
+
+        // global.info(doc.reject.mock.calls);
+
         expect(doc.reject.mock.calls.length).toBe(1);
-        expectReject(doc, 'webhook returned an error status code');
+        expect(doc.logError.mock.calls.length).toBe(0);
+        // expectReject(doc, 'webhook returned an error status code');
       });
 
-      it('should detect a NON-JSON response and throw an error', async () => {
-        const [doc] = await makeHandlerWithReject(
-          {
-            status: 200,
-            payload: '+ok',
-          },
-          // deepLogArgs,
-        );
+      it('should detect a NON-JSON response', async () => {
+        const [doc] = await makeHandlerWithReject({
+          status: 200,
+          payload: '+ok',
+        });
 
-        expect(doc.reject.mock.calls.length).toBe(1);
-        expectReject(doc, 'failed communication toward webhook');
+        expect(doc.reject.mock.calls.length).toBe(0);
+        expect(doc.reschedule.mock.calls.length).toBe(1);
+        expect(doc.logError.mock.calls.length).toBe(1);
       });
     });
   });
