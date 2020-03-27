@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import VisualComposerIcon from '@material-ui/icons/Visibility';
 import CodeComposerIcon from '@material-ui/icons/Code';
@@ -11,7 +14,15 @@ import FormSection from '../../layouts/FormSection';
 import FormControl from './components/FormControl';
 import TextField from './components/TextField';
 
-const CreateTaskUI = ({ value, errors, onSubmit, onCancel }) => {
+const useStyles = makeStyles(theme => ({
+  taskInfo: {
+    marginBottom: theme.spacing(3),
+  },
+}));
+
+const CreateTaskUI = ({ edit, value, errors, onSubmit, onCancel }) => {
+  const classes = useStyles();
+
   const [currentValue, setCurrentValue] = useState({
     group_name: '',
     task_name: '',
@@ -117,27 +128,43 @@ const CreateTaskUI = ({ value, errors, onSubmit, onCancel }) => {
   return (
     <Form isLoading={isLoading} onSubmit={handleSubmit} onCancel={handleCancel}>
       <FormSection title="General">
-        <FormControl fullWidth>
-          <TextField
-            required
-            label="task Name:"
-            value={currentValue.task_name}
-            error={hasError('task_name')}
-            helperText={getErrorMessage('task_name')}
-            onChange={onChangeProp('task_name')}
-          />
-        </FormControl>
-        <FormControl fullWidth>
-          <TextField
-            required
-            label="group Name:"
-            value={currentValue.group_name}
-            error={hasError('group_name')}
-            helperText={getErrorMessage('group_name')}
-            onChange={onChangeProp('group_name')}
-          />
-        </FormControl>
-        <FormControl fullWidth>
+        {edit === false ? (
+          <>
+            <FormControl fullWidth>
+              <TextField
+                required
+                label="task Name:"
+                value={currentValue.task_name}
+                error={hasError('task_name')}
+                helperText={getErrorMessage('task_name')}
+                onChange={onChangeProp('task_name')}
+              />
+            </FormControl>
+            <FormControl fullWidth>
+              <TextField
+                required
+                label="group Name:"
+                value={currentValue.group_name}
+                error={hasError('group_name')}
+                helperText={getErrorMessage('group_name')}
+                onChange={onChangeProp('group_name')}
+              />
+            </FormControl>
+          </>
+        ) : (
+          <Grid container className={classes.taskInfo}>
+            <Grid item xs={6}>
+              <Typography variant="caption">{'task name: '}</Typography>
+              <Typography>{value.task_name}</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="caption">{'group name: '}</Typography>
+              <Typography>{value.group_name}</Typography>
+            </Grid>
+          </Grid>
+        )}
+
+        <FormControl fullWidth style={{ marginBottom: 0 }}>
           <TextField
             multiline
             rows="3"
@@ -190,6 +217,10 @@ const CreateTaskUI = ({ value, errors, onSubmit, onCancel }) => {
 CreateTaskUI.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
+  /**
+   * when true, task name and group can not be changed
+   */
+  edit: PropTypes.bool,
   errors: PropTypes.arrayOf(
     PropTypes.shape({
       field: PropTypes.string.isRequired,
@@ -199,6 +230,7 @@ CreateTaskUI.propTypes = {
 };
 
 CreateTaskUI.defaultProps = {
+  edit: false,
   errors: [],
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import AppLayout from '../layouts/AppLayout';
-import CreateTaskUI from '../components/forms/CreateTaskUI';
+import TaskDetailsForm from '../components/forms/TaskDetailsForm';
 import { usePost } from '../state/use-post';
 
 const defaultConfig = {
@@ -38,7 +38,7 @@ const CreateTask = () => {
 
   return (
     <AppLayout titleProps={{ title: 'Create new task:', backTo: '/' }}>
-      <CreateTaskUI
+      <TaskDetailsForm
         value={defaultConfig}
         errors={[]}
         onSubmit={handleSubmit}

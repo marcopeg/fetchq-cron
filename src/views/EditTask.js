@@ -4,7 +4,7 @@ import AppLayout from '../layouts/AppLayout';
 import { useGet } from '../state/use-get';
 import { usePost } from '../state/use-post';
 import LoadingSpinner from '../components/LoadingSpinner';
-import CreateTaskUI from '../components/forms/CreateTaskUI';
+import TaskDetailsForm from '../components/forms/TaskDetailsForm';
 
 const EditTask = ({ match }) => {
   const { groupName, taskName } = match.params;
@@ -36,16 +36,15 @@ const EditTask = ({ match }) => {
     );
   }
 
-  const { task_name, group_name } = data.task.payload;
-
   return (
     <AppLayout
       titleProps={{
-        title: `${group_name}/${task_name}`,
+        title: 'Edit task:',
         backTo: '/',
       }}
     >
-      <CreateTaskUI
+      <TaskDetailsForm
+        edit
         value={config}
         errors={[]}
         onSubmit={handleSubmit}
