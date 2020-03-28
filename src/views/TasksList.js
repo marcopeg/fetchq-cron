@@ -31,7 +31,7 @@ const TasksList = () => {
   }
 
   const handleDiscloseItem = ({ groupName, taskName }) =>
-    history.push(`/task/${groupName}/${taskName}/edit`);
+    history.push(`/task/${groupName}/${taskName}`);
 
   return (
     <AppLayout>

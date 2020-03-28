@@ -40,7 +40,7 @@ describe('v1/cron', () => {
       expect(r1.data.success).toBe(true);
       expect(r1.data.data.task.subject).toBe('foo/t1');
       expect(r1.data.data.task).toHaveProperty('payload');
-      // console.log(r1.data.data);
+      // global.info(r1.data.data);
     });
 
     it('should return an error if the task was not found', async () => {

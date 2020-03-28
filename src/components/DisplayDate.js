@@ -12,7 +12,15 @@ import date2text from '../lib/date2text';
  * All the thresholds an be customised, look into `lib/date2text` for their
  * defaults.
  */
-const DisplayDate = ({ date, stringify, refreshInterval, ...config }) => {
+const DisplayDate = ({
+  date,
+  fallbackText,
+  stringify,
+  refreshInterval,
+  component,
+  variant,
+  ...config
+}) => {
   const timer = useRef();
   const [, refreshUpdate] = useState(0);
 
@@ -28,18 +36,39 @@ const DisplayDate = ({ date, stringify, refreshInterval, ...config }) => {
     return () => clearInterval(timer.current);
   }, [refreshInterval, refreshUpdate]);
 
-  return (
-    <Tooltip title={stringify(date)}>
-      <Typography variant="body1" component="span">
-        {date2text(date, config)}
+  if (!date) {
+    return (
+      <Typography variant={variant} component={component}>
+        {fallbackText}
       </Typography>
-    </Tooltip>
+    );
+  }
+
+  let body = null;
+  let tooltip = null;
+
+  try {
+    body = date ? date2text(date, config) : fallbackText;
+    tooltip = date ? stringify(date) : null;
+  } catch (err) {
+    body = fallbackText;
+    tooltip = err.message;
+  }
+
+  const text = (
+    <Typography variant={variant} component={component}>
+      {body}
+    </Typography>
   );
+
+  return tooltip ? <Tooltip title={tooltip}>{text}</Tooltip> : text;
 };
 
 DisplayDate.propTypes = {
   /** Javascript Date instance */
-  date: PropTypes.instanceOf(Date).isRequired,
+  date: PropTypes.instanceOf(Date),
+  /** Rendered in case of a null date */
+  fallbackText: PropTypes.string,
   /** Renders a full text date in the tooltip */
   stringify: PropTypes.func,
   /** Refresh the string value every {x}ms. Use {0} to disable. */
@@ -58,15 +87,23 @@ DisplayDate.propTypes = {
   thresholdHours: PropTypes.number,
   thresholdDays: PropTypes.number,
   thresholdMonths: PropTypes.number,
+  /** Customize the component used by Typography */
+  component: PropTypes.string,
+  /** Customize the variant used by Typography */
+  variant: PropTypes.string,
 };
 
 DisplayDate.defaultProps = {
+  date: null,
+  fallbackText: 'n/a',
   refreshInterval: 0,
   stringify: date =>
     date
       .toString()
       .split(' (')
       .shift(),
+  component: 'span',
+  variant: 'body1',
 };
 
 export default React.memo(DisplayDate);

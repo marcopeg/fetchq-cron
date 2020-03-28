@@ -11,6 +11,7 @@ import ErrorsDialog from '../components/dialogs/ErrorsDialog';
 const EditTask = ({ match }) => {
   const { groupName, taskName } = match.params;
   const endpoint = `/api/v1/cron/${groupName}/${taskName}`;
+  const backUrl = `/task/${groupName}/${taskName}`;
   const [{ data, errors: loadingErrors }] = useGet(endpoint);
   const [{ data: editData, errors: editErrors }, { send }] = usePost(
     '/api/v1/cron/',
@@ -25,12 +26,12 @@ const EditTask = ({ match }) => {
   }, [data, setConfig]);
 
   const handleSubmit = (evt, values) => send(values);
-  const handleCancel = evt => history.push('/');
+  const handleCancel = evt => history.push(backUrl);
 
   const getBody = () => {
     // TODO: show some form of confirmation message before redirecting
     if (editData) {
-      return <Redirect to="/" />;
+      return <Redirect to={backUrl} />;
     }
 
     if (loadingErrors) {
@@ -67,7 +68,7 @@ const EditTask = ({ match }) => {
     <AppLayout
       titleProps={{
         title: 'Edit task:',
-        backTo: '/',
+        backTo: backUrl,
       }}
       children={getBody()}
     />

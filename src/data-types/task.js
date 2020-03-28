@@ -15,6 +15,6 @@ export const makeTask = task => ({
   taskName: task.payload.task_name,
   iterations: task.iterations,
   nextIteration: new Date(task.next_iteration),
-  lastIteration: new Date(task.last_iteration),
+  lastIteration: task.last_iteration ? new Date(task.last_iteration) : null,
   payload: task.payload,
 });
