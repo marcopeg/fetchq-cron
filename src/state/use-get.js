@@ -42,6 +42,7 @@ export const useGet = (
         ...fetchOptions,
         withCredentials: true,
       });
+
       setState(state => ({
         ...state,
         isLoading: false,

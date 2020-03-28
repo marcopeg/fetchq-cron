@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import AppLayout from '../layouts/AppLayout';
 import TaskDetailsForm from '../components/forms/TaskDetailsForm';
+import ErrorsDialog from '../components/dialogs/ErrorsDialog';
 import { usePost } from '../state/use-post';
 
 const defaultConfig = {
@@ -25,7 +26,7 @@ const defaultConfig = {
 };
 
 const CreateTask = () => {
-  const [{ data }, { send }] = usePost('/api/v1/cron/');
+  const [{ data, errors }, { send }] = usePost('/api/v1/cron?mode=insert');
   const history = useHistory();
 
   const handleSubmit = (evt, values) => send(values);
@@ -44,6 +45,7 @@ const CreateTask = () => {
         onSubmit={handleSubmit}
         onCancel={handleCancel}
       />
+      <ErrorsDialog title="This task was not created:" errors={errors} />
     </AppLayout>
   );
 };

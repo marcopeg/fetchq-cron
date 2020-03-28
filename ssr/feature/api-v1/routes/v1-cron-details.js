@@ -21,12 +21,23 @@ const v1CronDetails = {
 
     const res = await fetchq.pool.query(sql, [subject]);
 
-    reply.send({
-      success: true,
-      data: {
-        task: res.rows[0],
-      },
-    });
+    if (res.rowCount === 0) {
+      reply.send({
+        success: false,
+        errors: [
+          {
+            message: `task not found`,
+          },
+        ],
+      });
+    } else {
+      reply.send({
+        success: true,
+        data: {
+          task: res.rows[0],
+        },
+      });
+    }
   },
 };
 
