@@ -2,12 +2,12 @@ image: marcopeg/gitpod-workspace-postgres:2.5.0
 
 tasks:
   - name: Unit Tests
-    init: while ! curl -I $(gp url 8008) | grep "HTTP/2 200" ; do sleep 30; done
+    init: while ! find ./node_modules/.bin/jest ; do sleep 30; done
     command: yarn tdd:unit
     openIn: right
     openMode: tab-after
   - name: E2E Tests
-    init: while ! curl -I $(gp url 8008) | grep "HTTP/2 200" ; do sleep 30; done
+    init: while ! find ./node_modules/.bin/jest ; do sleep 30; done
     command: yarn tdd:e2e
     openIn: right
     openMode: tab-after
@@ -17,12 +17,12 @@ tasks:
     openIn: bottom
     openMode: tab-after
   - name: Styleguide
-    init: while ! curl -I $(gp url 8008) | grep "HTTP/2 200" ; do sleep 30; done
+    init: while ! find ./node_modules/.bin/styleguidist ; do sleep 30; done
     command: yarn start:gitpod:styleguide
     openIn: bottom
     openMode: split-right
   - name: App
-    init: while ! curl -I $(gp url 8008) | grep "HTTP/2 200" ; do sleep 30; done
+    init: while ! find ./node_modules/.bin/react-scripts ; do sleep 30; done
     command: yarn start:gitpod:app
     openIn: bottom
     openMode: tab-after
