@@ -34,6 +34,16 @@ const action = {
 };
 
 module.exports = {
+  query: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      mode: {
+        type: 'string',
+        enum: ['insert'],
+      },
+    },
+  },
   body: {
     type: 'object',
     required: ['group_name', 'task_name', 'action', 'schedule'],

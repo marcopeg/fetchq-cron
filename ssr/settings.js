@@ -65,6 +65,11 @@ const settings = ({ setConfig, getConfig }) => {
     process.env.FETCHQ_CRON_PORT || process.env.PORT || '8080',
   );
 
+  setConfig('fastify.instance.options', {
+    logger: false,
+    ignoreTrailingSlash: true,
+  });
+
   // Setup static files from CRA's build folder
   setConfig('fastify.static', {
     root: path.join(__dirname, '..', 'build'),

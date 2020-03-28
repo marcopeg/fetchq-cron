@@ -30,55 +30,6 @@ describe('v1/cron', () => {
     await axios.get(`${TEST_SERVER_ROOT}/test/schema-v1/queues/start`);
   });
 
-  describe('upsert', () => {
-    it('should upsert a new task with a delay', async () => {
-      const r1 = await axios.post(`${TEST_SERVER_ROOT}/api/v1/cron/`, t1);
-      // global.info(r1.data);
-      expect(r1.data.success).toBe(true);
-      expect(r1.data.data.was_created).toBe(true);
-
-      // Assert on the delay
-      const ni = new Date(r1.data.data.next_iteration);
-      const ct = new Date(r1.data.data.created_at);
-      expect(ni - ct).toBeLessThanOrEqual(1000);
-    });
-
-    it('should upsert a new task at a specific point in time', async () => {
-      const r1 = await axios.post(`${TEST_SERVER_ROOT}/api/v1/cron/`, {
-        ...t1,
-        schedule: {
-          method: 'plan',
-          value: '2012-12-26T12:00:00Z',
-        },
-      });
-      //   console.info(r1.data);
-      expect(r1.data.success).toBe(true);
-      expect(r1.data.data.was_created).toBe(true);
-      expect(r1.data.data.next_iteration).toBe('2012-12-26T12:00:00.000Z');
-    });
-
-    it('should upsert a new task with a cron strategy', async () => {
-      const r1 = await axios.post(`${TEST_SERVER_ROOT}/api/v1/cron/`, {
-        ...t1,
-        schedule: {
-          method: 'cron',
-          value: '* * * * *',
-        },
-      });
-      const dateNext = new Date(r1.data.data.next_iteration);
-      const dateCreate = new Date(r1.data.data.created_at);
-      expect(dateNext - dateCreate).toBeLessThanOrEqual(60000);
-    });
-
-    it('should upsert a existing task', async () => {
-      await axios.post(`${TEST_SERVER_ROOT}/api/v1/cron/`, t1);
-      const res = await axios.post(`${TEST_SERVER_ROOT}/api/v1/cron/`, t1);
-      // console.info(res.data);
-      expect(res.data.success).toBe(true);
-      expect(res.data.data.was_created).toBe(false);
-    });
-  });
-
   describe('list', () => {
     const t2 = { ...t1, task_name: 't2' };
     const t3 = { ...t1, task_name: 't3' };

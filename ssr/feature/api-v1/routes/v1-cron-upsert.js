@@ -19,6 +19,26 @@ const v1CronUpsert = {
       nextIteration,
     };
 
+    // Check for an existing document in insert mode
+    if (request.query.mode === 'insert') {
+      const sql = `
+        SELECT subject
+        FROM fetchq_catalog.fetchq__${Q1}__documents
+        WHERE subject = $1
+      `;
+      const res = await fetchq.pool.query(sql, [subject]);
+      if (res.rowCount > 0) {
+        return reply.send({
+          success: false,
+          errors: [
+            {
+              message: 'task exists',
+            },
+          ],
+        });
+      }
+    }
+
     // Upsert document
     const { queued_docs, updated_docs } = await fetchq.doc.upsert(Q1, doc);
 

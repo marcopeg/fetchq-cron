@@ -3,7 +3,8 @@ const { INIT_SERVICE, START_SERVICE } = require('@forrestjs/hooks');
 const hooks = require('./hooks');
 
 const onInitService = ({ getConfig, setContext, createHook, getContext }) => {
-  const server = fastify({ logger: getConfig('fastify.logger', false) });
+  const options = getConfig('fastify.instance.options', {});
+  const server = fastify(options);
 
   const registerPlugin = (...options) => server.register(...options);
   const registerRoute = (...options) => server.route(...options);
