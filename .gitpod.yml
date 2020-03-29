@@ -2,27 +2,27 @@ image: marcopeg/gitpod-workspace-postgres:2.5.0
 
 tasks:
   - name: Unit Tests
-    before: echo "Awaiting NPM install..." && while ! find ./.gitpod.lock 2> /dev/null 1> /dev/null; do sleep 5; done
+    init: echo "Awaiting NPM install..." && while ! find ./.gitpod.lock 2> /dev/null 1> /dev/null; do sleep 5; done
     command: yarn tdd:unit
     openIn: right
     openMode: tab-after
   - name: E2E Tests
-    before: echo "Awaiting NPM install..." && while ! find ./.gitpod.lock 2> /dev/null 1> /dev/null; do sleep 5; done
+    init: echo "Awaiting NPM install..." && while ! find ./.gitpod.lock 2> /dev/null 1> /dev/null; do sleep 5; done
     command: yarn tdd:e2e
     openIn: right
     openMode: tab-after
   - name: Api
-    before: rm -rf ./.gitpod.lock && yarn install && touch ./.gitpod.lock
+    init: rm -rf ./.gitpod.lock && yarn install && touch ./.gitpod.lock
     command: yarn start:gitpod:api
     openIn: bottom
     openMode: tab-after
   - name: Styleguide
-    before: echo "Awaiting NPM install..." && while ! find ./.gitpod.lock 2> /dev/null 1> /dev/null; do sleep 5; done
+    init: echo "Awaiting NPM install..." && while ! find ./.gitpod.lock 2> /dev/null 1> /dev/null; do sleep 5; done
     command: yarn start:gitpod:styleguide
     openIn: bottom
     openMode: split-right
   - name: App
-    before: echo "Awaiting NPM install..." && while ! find ./.gitpod.lock 2> /dev/null 1> /dev/null; do sleep 5; done
+    init: echo "Awaiting NPM install..." && while ! find ./.gitpod.lock 2> /dev/null 1> /dev/null; do sleep 5; done
     command: yarn start:gitpod:app
     openIn: bottom
     openMode: tab-after
