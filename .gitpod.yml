@@ -2,27 +2,27 @@ image: marcopeg/gitpod-workspace-postgres:2.5.0
 
 tasks:
   - name: Unit Tests
-    init: while ! find ./node_modules/.bin/jest ; do sleep 30; done
+    before: echo "Awaiting NPM install..." && while ! find ./node_modules/.bin/jest 2> /dev/null 1> /dev/null; do sleep 5; done
     command: yarn tdd:unit
     openIn: right
     openMode: tab-after
   - name: E2E Tests
-    init: while ! find ./node_modules/.bin/jest ; do sleep 30; done
+    before: echo "Awaiting NPM install..." && while ! find ./node_modules/.bin/jest 2> /dev/null 1> /dev/null; do sleep 5; done
     command: yarn tdd:e2e
     openIn: right
     openMode: tab-after
   - name: Api
-    init: yarn install
+    before: yarn install
     command: yarn start:gitpod:api
     openIn: bottom
     openMode: tab-after
   - name: Styleguide
-    init: while ! find ./node_modules/.bin/styleguidist ; do sleep 30; done
+    before: echo "Awaiting NPM install..." && while ! find ./node_modules/.bin/styleguidist 2> /dev/null 1> /dev/null; do sleep 5; done
     command: yarn start:gitpod:styleguide
     openIn: bottom
     openMode: split-right
   - name: App
-    init: while ! find ./node_modules/.bin/react-scripts ; do sleep 30; done
+    before: echo "Awaiting NPM install..." && while ! find ./node_modules/.bin/react-scripts 2> /dev/null 1> /dev/null; do sleep 5; done
     command: yarn start:gitpod:app
     openIn: bottom
     openMode: tab-after
