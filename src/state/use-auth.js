@@ -44,11 +44,30 @@ export const AuthProvider = ({ children }) => {
     }
   }, [sessionInfo.errors, loginInfo.errors]);
 
+  // Attempt to isolate a network error possibly based on CORS
+  const getErrorMsg = () => {
+    if (loginInfo.errors && loginInfo.errors.length) {
+      if (loginInfo.response) {
+        return loginInfo.errors[0].message;
+      } else {
+        return 'network';
+      }
+    }
+    if (sessionInfo.errors && sessionInfo.errors.length) {
+      if (sessionInfo.response) {
+        return sessionInfo.errors[0].message;
+      } else {
+        return 'network';
+      }
+    }
+    return null;
+  };
+
   const currentState = {
     ...initialState,
     // Properties
     isLoading: loginInfo.isLoading,
-    errorMsg: loginInfo.errors ? loginInfo.errors[0].message : null,
+    errorMsg: getErrorMsg(),
     hasChecked: !sessionInfo.isFirstLoading,
     hasAuth: auth !== null,
     isSecured: auth ? auth.secure : null,
