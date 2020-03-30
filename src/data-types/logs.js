@@ -2,4 +2,6 @@ import PropTypes from 'prop-types';
 
 export const logShape = PropTypes.shape({});
 
-export const makeLog = log => ({});
+export const makeLog = log => ({
+  groupName: log.group,
+});

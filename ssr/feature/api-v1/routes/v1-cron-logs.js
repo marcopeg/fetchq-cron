@@ -5,13 +5,14 @@ const {
 } = require('./v1-cron-logs.schema');
 
 const prepareLog = log => ({
-  group: log.details.group_name,
-  task: log.details.task_name,
+  group_name: log.details.group_name,
+  task_name: log.details.task_name,
   created_at: log.created_at,
   cursor: log.details.cursor,
   message: log.message,
-  details: log.details,
   ref_id: log.ref_id,
+  log_id: log.id,
+  data: log.details.data,
 });
 
 const handler = async (request, reply) => {

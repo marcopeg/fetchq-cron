@@ -53,3 +53,24 @@ WEBAPP_PORT=8080
 
 Set to `api` if you want to skip running the queue workers on this particular instance.
 Set to `worker` to run only the queue workers (no api, no web console).
+
+## Testing
+
+Run tests:
+
+```bash
+npm run test:unit
+npm run test:client
+npm run test:e2e
+```
+
+Work a _test driven session_:
+
+```bash
+npm run tdd:unit
+npm run tdd:client
+npm run tdd:e2e
+```
+
+**NOTE:** the `e2e` tests are executed agains the running API and reset the the target
+database at every run.
