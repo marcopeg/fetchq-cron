@@ -8,6 +8,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 const SERVER_URL = process.env.REACT_APP_SERVER_URL || '';
+const NODE_ENV = process.env.NODE_ENV || '';
 
 const INITIAL_STATE = {
   isLoading: false,
@@ -40,7 +41,7 @@ export const useGet = (
     try {
       const response = await axios.get(url, {
         ...fetchOptions,
-        withCredentials: true,
+        withCredentials: NODE_ENV !== 'development',
       });
 
       setState(state => ({

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 const SERVER_URL = process.env.REACT_APP_SERVER_URL || '';
+const NODE_ENV = process.env.NODE_ENV || '';
 
 const INITIAL_STATE = {
   isLoading: false,
@@ -27,7 +28,7 @@ export const usePost = (url, options = {}) => {
     try {
       const response = await axios.post(url, data, {
         ...fetchOptions,
-        withCredentials: true,
+        withCredentials: NODE_ENV !== 'development',
       });
       setState(state => ({
         ...state,
