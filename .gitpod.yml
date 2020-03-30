@@ -2,27 +2,27 @@ image: marcopeg/gitpod-workspace-postgres:2.5.0
 
 tasks:
   - name: Unit Tests
-    init: sleep 60
+    init: echo "Awaiting NPM install..." && while ! find ./.gitpod.lock 2> /dev/null 1> /dev/null; do sleep 5; done
     command: yarn tdd:unit
     openIn: right
     openMode: tab-after
   - name: E2E Tests
-    init: sleep 60
+    init: echo "Awaiting NPM install..." && while ! find ./.gitpod.lock 2> /dev/null 1> /dev/null; do sleep 5; done
     command: yarn tdd:e2e
     openIn: right
     openMode: tab-after
   - name: Api
-    init: yarn install
+    init: rm -rf ./.gitpod.lock && yarn install && touch ./.gitpod.lock
     command: yarn start:gitpod:api
     openIn: bottom
     openMode: tab-after
   - name: Styleguide
-    init: sleep 60
+    init: echo "Awaiting NPM install..." && while ! find ./.gitpod.lock 2> /dev/null 1> /dev/null; do sleep 5; done
     command: yarn start:gitpod:styleguide
     openIn: bottom
     openMode: split-right
   - name: App
-    init: sleep 60
+    init: echo "Awaiting NPM install..." && while ! find ./.gitpod.lock 2> /dev/null 1> /dev/null; do sleep 5; done
     command: yarn start:gitpod:app
     openIn: bottom
     openMode: tab-after
@@ -45,4 +45,3 @@ vscode:
     - esbenp.prettier-vscode@3.20.0:37/f4uBlE287wUjENFq1aA==
     - mikestead.dotenv@1.0.1:SSXjr5hZcbqSF7nMIhTNnA==
     - wayou.vscode-todo-highlight@1.0.4:8IqxuxCVol2WnScJc5xVzg==
-    

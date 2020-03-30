@@ -17,9 +17,21 @@ const DisplayDate = ({
   fallbackText,
   stringify,
   refreshInterval,
-  component,
-  variant,
-  ...config
+
+  translate,
+  formatShortDate,
+  formatFullDate,
+  thresholdNow,
+  thresholdSeconds,
+  thresholdAboutAMinute,
+  thresholdMinutes,
+  thresholdAboutOneHour,
+  thresholdHours,
+  thresholdDays,
+  thresholdMonths,
+
+  // Anything else applies to the Typography object
+  ...typographyProps
 }) => {
   const timer = useRef();
   const [, refreshUpdate] = useState(0);
@@ -37,15 +49,24 @@ const DisplayDate = ({
   }, [refreshInterval, refreshUpdate]);
 
   if (!date) {
-    return (
-      <Typography variant={variant} component={component}>
-        {fallbackText}
-      </Typography>
-    );
+    return <Typography {...typographyProps}>{fallbackText}</Typography>;
   }
 
   let body = null;
   let tooltip = null;
+  const config = {
+    translate,
+    formatShortDate,
+    formatFullDate,
+    thresholdNow,
+    thresholdSeconds,
+    thresholdAboutAMinute,
+    thresholdMinutes,
+    thresholdAboutOneHour,
+    thresholdHours,
+    thresholdDays,
+    thresholdMonths,
+  };
 
   try {
     body = date ? date2text(date, config) : fallbackText;
@@ -55,11 +76,7 @@ const DisplayDate = ({
     tooltip = err.message;
   }
 
-  const text = (
-    <Typography variant={variant} component={component}>
-      {body}
-    </Typography>
-  );
+  const text = <Typography {...typographyProps}>{body}</Typography>;
 
   return tooltip ? <Tooltip title={tooltip}>{text}</Tooltip> : text;
 };
@@ -87,10 +104,6 @@ DisplayDate.propTypes = {
   thresholdHours: PropTypes.number,
   thresholdDays: PropTypes.number,
   thresholdMonths: PropTypes.number,
-  /** Customize the component used by Typography */
-  component: PropTypes.string,
-  /** Customize the variant used by Typography */
-  variant: PropTypes.string,
 };
 
 DisplayDate.defaultProps = {
@@ -102,6 +115,8 @@ DisplayDate.defaultProps = {
       .toString()
       .split(' (')
       .shift(),
+
+  // Default typographyProps
   component: 'span',
   variant: 'body1',
 };
