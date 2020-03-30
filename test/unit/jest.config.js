@@ -20,8 +20,5 @@ module.exports = {
   // The test environment that will be used for testing
   testEnvironment: 'node',
 
-  testMatch: [
-    '**/__tests__/**/*.unit.[jt]s?(x)',
-    '**/?(*.)+(unic.spec|unit.test).[jt]s?(x)',
-  ],
+  testMatch: ['**/?(*.)+(spec.unit|test.unit).[jt]s?(x)'],
 };

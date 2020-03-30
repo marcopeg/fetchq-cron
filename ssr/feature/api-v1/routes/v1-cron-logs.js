@@ -49,10 +49,7 @@ const handler = async (request, reply) => {
   reply.send({
     success: true,
     data: {
-      params: request.params,
-      query: request.query,
       logs: res.rows.map(prepareLog),
-      sqlTxt,
     },
   });
 };

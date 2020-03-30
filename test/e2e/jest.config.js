@@ -24,7 +24,7 @@ module.exports = {
 
   testMatch: [
     '**/__tests__/**/*.e2e.[jt]s?(x)',
-    '**/?(*.)+(e2e.spec|e2e.test).[jt]s?(x)',
+    '**/?(*.)+(spec.e2e|test.e2e).[jt]s?(x)',
   ],
 
   globals: getGlobals(),
