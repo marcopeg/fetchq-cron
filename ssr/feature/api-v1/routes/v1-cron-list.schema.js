@@ -12,6 +12,9 @@ module.exports = {
       cursor: {
         type: 'string',
       },
+      reverse: {
+        type: 'boolean',
+      },
     },
   },
   response: {

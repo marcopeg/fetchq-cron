@@ -37,7 +37,7 @@ const TaskDetails = ({ task }) => {
     iterations,
     payload,
   } = task;
-  console.log(task);
+  // console.log(task);
   return (
     <>
       <DetailsSection>

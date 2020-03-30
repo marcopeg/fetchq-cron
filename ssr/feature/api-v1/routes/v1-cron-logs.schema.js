@@ -21,6 +21,9 @@ const query = {
     cursor: {
       type: 'integer',
     },
+    reverse: {
+      type: 'boolean',
+    },
   },
 };
 

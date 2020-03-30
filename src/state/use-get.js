@@ -7,6 +7,8 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { buildUrl } from '../lib/url';
+
 const SERVER_URL = process.env.REACT_APP_SERVER_URL || '';
 
 const INITIAL_STATE = {
@@ -28,18 +30,26 @@ export const useGet = (
   const { lazy, poll, ...fetchOptions } = options;
   const endpointUrl = SERVER_URL + url;
 
-  const fetch = async (url, options) => {
+  const fetch = async (url, options = {}) => {
+    const {
+      keepData,
+      keepErrors,
+      keepResponse,
+      skipIsLoading,
+      ...localFetchOptions
+    } = options;
+
     setState(state => ({
       ...state,
-      isLoading: true,
-      errors: null,
-      data: null,
-      response: null,
+      ...(skipIsLoading ? {} : { isLoading: true }),
+      ...(keepData ? {} : { data: null }),
+      ...(keepErrors ? {} : { errors: null }),
+      ...(keepResponse ? {} : { response: null }),
     }));
 
     try {
       const response = await axios.get(url, {
-        ...fetchOptions,
+        ...localFetchOptions,
         withCredentials: true,
       });
 
@@ -73,7 +83,10 @@ export const useGet = (
   useEffect(() => {
     let t = null;
     if (poll) {
-      t = setInterval(() => fetch(endpointUrl, fetchOptions), poll);
+      t = setInterval(
+        () => fetch(endpointUrl, { ...fetchOptions, keepData: true }),
+        poll,
+      );
     }
 
     return () => {
@@ -84,6 +97,7 @@ export const useGet = (
   return [
     state,
     {
+      buildUrl: (query = {}, _url = endpointUrl) => buildUrl(_url, query),
       // Provide a lazy and fully customizable interface to Fetch
       fetch: (_options = fetchOptions, _url = endpointUrl) =>
         fetch(_url, _options),

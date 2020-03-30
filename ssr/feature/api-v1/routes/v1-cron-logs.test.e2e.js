@@ -138,4 +138,21 @@ describe('v1/cron/logs', () => {
     expect(log).toHaveProperty('log_id');
     expect(log).toHaveProperty('data', expect.any(Object));
   });
+
+  it('should be able to load new logs based on cursor', async () => {
+    const url = `${TEST_SERVER_ROOT}/api/v1/logs/?limit=1`;
+    const r1 = await axios.get(url);
+    const l1 = r1.data.data.logs[0];
+
+    // Load next page
+    const r2 = await axios.get(`${url}&cursor=${l1.cursor}`);
+    const l2 = r2.data.data.logs[0];
+    expect(l2).toHaveProperty('cursor', expect.any(Number));
+    expect(l2.cursor).toBeLessThan(l1.cursor);
+
+    // Load new records by faking a cursor that is less than the first load
+    const r3 = await axios.get(`${url}&cursor=${l1.cursor - 1}&reverse=true`);
+    const l3 = r3.data.data.logs[0];
+    expect(l1.log_id).toBe(l3.log_id);
+  });
 });

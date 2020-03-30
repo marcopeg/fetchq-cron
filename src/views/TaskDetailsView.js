@@ -1,17 +1,23 @@
 import React from 'react';
+import { deepInfo } from '@marcopeg/deeplog';
 import Typography from '@material-ui/core/Typography';
 import AppLayout from '../layouts/AppLayout';
-import { useGet } from '../state/use-get';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorsDialog from '../components/dialogs/ErrorsDialog';
 import TaskDetails from '../components/views/TaskDetails';
 import RoutedButton from '../components/RoutedButton';
-import { makeTask } from '../data-types/task';
+import LogsList from '../components/LogsList';
+import { useTaskDetails } from '../state/use-task-details';
+import { useLogs } from '../state/use-logs';
 
 const TaskDetailsView = ({ match }) => {
   const { groupName, taskName } = match.params;
-  const endpoint = `/api/v1/cron/${groupName}/${taskName}`;
-  const [{ data, errors }] = useGet(endpoint);
+  const { task, errors } = useTaskDetails(groupName, taskName);
+  const { logs, fetchNextPage, fetchNewItems } = useLogs({
+    groupName,
+    taskName,
+    poll: 5000,
+  });
 
   const getBody = () => {
     if (errors) {
@@ -23,15 +29,19 @@ const TaskDetailsView = ({ match }) => {
       );
     }
 
-    if (!data) {
+    if (!task) {
       return <LoadingSpinner />;
     }
 
-    const task = makeTask(data.task);
     const { groupName, taskName } = task;
     return (
       <>
         <TaskDetails task={task} />
+        <LogsList
+          logs={logs}
+          onLoadMore={fetchNextPage}
+          onLoadNew={fetchNewItems}
+        />
         <div style={{ textAlign: 'right' }}>
           <RoutedButton
             to={`/task/${groupName}/${taskName}/edit`}

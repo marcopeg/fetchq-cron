@@ -18,7 +18,7 @@ export const AuthContext = React.createContext(initialState);
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [sessionInfo] = useGet('/api/v1/session', { poll: 5000 });
+  const [sessionInfo] = useGet('/api/v1/session', { poll: 60000 });
   const [loginInfo, loginActions] = usePost('/api/v1/session');
   const [auth, setAuth] = useState(null);
 

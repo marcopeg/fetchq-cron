@@ -12,6 +12,7 @@ const prepareLog = log => ({
   message: log.message,
   ref_id: log.ref_id,
   log_id: log.id,
+  type: log.details.type || 'exception',
   data: log.details.data,
 });
 
@@ -31,7 +32,11 @@ const handler = async (request, reply) => {
     where.push(`details->>'group_name' = '${params.groupName}'`);
   }
 
-  if (query.cursor) {
+  if (query.cursor && query.reverse) {
+    where.push(`(details->>'cursor')::bigint > ${query.cursor}`);
+  }
+
+  if (query.cursor && !query.reverse) {
     where.push(`(details->>'cursor')::bigint < ${query.cursor}`);
   }
 
@@ -41,10 +46,11 @@ const handler = async (request, reply) => {
   }
 
   sql.push(`ORDER BY details->>'cursor' DESC`);
+
   sql.push(`LIMIT ${pageSize}`);
 
   const sqlTxt = sql.join(' ');
-  // console.info(sqlTxt);
+  console.info(query, sqlTxt);
   const res = await fetchq.pool.query(sqlTxt);
 
   reply.send({
