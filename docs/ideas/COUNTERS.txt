@@ -1,0 +1,13 @@
+# Counters
+
+A simple way to keep track of counters for `groups` and `logs-count` would be:
+
+- attach a trigger to the fetchq'a document table in insert/delete that append
+  a variation (+1-1) to a counters WAL table
+- having a generic maintenance table that processes the WAL tables and computes
+  the counters values
+
+The same principle can be applied to the logs/insert&delete so to be able to apply
+some form of log limitation. By keeping tracks of how many logs each group has
+generated, we can create a maintenance queue that drops old logs based on group limits.
+
