@@ -7,7 +7,7 @@
   "success_url": "/",
   "env": {
     "NODE_ENV": "production",
-    "FETCHQ_CRON_ENABLE_CONSOLE": {
+    "FETCHQ_CRON_CONSOLE_PASSWORD": {
       "description": "A secret password for logging you into the web console.",
       "required": false
     }
