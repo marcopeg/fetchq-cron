@@ -2,7 +2,7 @@
   "name": "fetchq-cron",
   "organization": "marcopeg",
   "version": "0.0.1",
-  "description": "",
+  "description": "Run smart cron jobs via REST API and WebConsole",
   "main": "ssr/index.js",
   "scripts": {
     "___// Development Utilities //___": "",
