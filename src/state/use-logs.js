@@ -42,7 +42,7 @@ export const useLogs = ({ groupName, taskName, limit = 20, poll = 0 } = {}) => {
         cursorMore.current = cursors[cursors.length - 1];
       }
     })();
-  }, [info.data]);
+  }, [info]);
 
   // Merge new data into the current available items
   useEffect(() => {

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { deepInfo } from '@marcopeg/deeplog';
+// import { deepInfo } from '@marcopeg/deeplog';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,9 +11,10 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import CachedIcon from '@material-ui/icons/Cached';
+import { logShape } from '../../data-types/logs';
 import DisplayDate from '../DisplayDate';
 import DetailsSection from '../../layouts/DetailsSection';
-import { logShape } from '../../data-types/logs';
+import LogDetails from './LogDetails';
 
 const useStyles = makeStyles(theme => ({
   table: {
@@ -24,7 +25,10 @@ const useStyles = makeStyles(theme => ({
 
 const LogsList = ({ logs, onLoadMore, onLoadNew, ...props }) => {
   const classes = useStyles(props);
-  const onDisclose = log => deepInfo(log);
+  const [currentLog, setCurrentLog] = useState(null);
+
+  const onDisclose = log => setCurrentLog(log);
+  const onCloseDialog = () => setCurrentLog(null);
 
   const loadNewEl = (
     <Button onClick={onLoadNew}>
@@ -74,6 +78,7 @@ const LogsList = ({ logs, onLoadMore, onLoadNew, ...props }) => {
           </Button>
         </Grid>
       </Grid>
+      <LogDetails log={currentLog} onClose={onCloseDialog} />
     </DetailsSection>
   );
 };

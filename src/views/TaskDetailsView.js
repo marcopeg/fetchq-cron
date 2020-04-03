@@ -1,5 +1,5 @@
 import React from 'react';
-import { deepInfo } from '@marcopeg/deeplog';
+// import { deepInfo } from '@marcopeg/deeplog';
 import Typography from '@material-ui/core/Typography';
 import AppLayout from '../layouts/AppLayout';
 import LoadingSpinner from '../components/LoadingSpinner';

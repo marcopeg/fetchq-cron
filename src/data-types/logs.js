@@ -10,6 +10,7 @@ export const logShape = PropTypes.shape({
 });
 
 export const makeLog = log => {
+  // console.log(JSON.stringify(log));
   return {
     createdAt: new Date(log.created_at),
     groupName: log.group_name,
@@ -17,5 +18,6 @@ export const makeLog = log => {
     message: log.message,
     cursor: log.cursor,
     type: log.type,
+    data: log.data,
   };
 };

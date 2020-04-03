@@ -1,0 +1,50 @@
+export const f1 = {
+  group_name: 'foo',
+  task_name: 'a001',
+  created_at: '2020-04-03T08:09:10.776Z',
+  cursor: 88150162249,
+  message: '200 OK',
+  ref_id: 'null',
+  log_id: 8786,
+  type: 'response',
+  data: {
+    config: {
+      url: 'https://fetchq-cron.herokuapp.com/ping',
+      body: {},
+      type: 'rest',
+      rules: [{ match: ['all'] }],
+      method: 'GET',
+      headers: [],
+    },
+    result: { emotion: '💩', message: '+ok', success: true },
+    request: {
+      url: 'https://fetchq-cron.herokuapp.com/ping',
+      method: 'GET',
+      headers: [],
+    },
+    response: {
+      url: 'https://fetchq-cron.herokuapp.com/ping',
+      size: 0,
+      status: 200,
+      headers: {
+        _headers: {
+          via: ['1.1 vegur'],
+          date: ['Fri, 03 Apr 2020 08:09:10 GMT'],
+          server: ['Cowboy'],
+          connection: ['close'],
+          'content-type': ['application/json; charset=utf-8'],
+          'content-length': ['49'],
+        },
+      },
+      statusText: 'OK',
+    },
+    variables: {
+      payload: {},
+      attempts: 1,
+      schedule: { value: '1s', method: 'delay' },
+      created_at: '2020-04-03T08:08:45.299Z',
+      iterations: 1,
+      next_iteration: '2020-04-03T08:14:10.655Z',
+    },
+  },
+};
