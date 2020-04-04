@@ -50,7 +50,7 @@ const handler = async (request, reply) => {
   sql.push(`LIMIT ${pageSize}`);
 
   const sqlTxt = sql.join(' ');
-  console.info(query, sqlTxt);
+  // console.info(query, sqlTxt);
   const res = await fetchq.pool.query(sqlTxt);
 
   reply.send({
