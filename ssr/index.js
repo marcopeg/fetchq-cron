@@ -3,13 +3,13 @@ const { runHookApp } = require('@forrestjs/hooks');
 /**
  * Services
  */
-const serviceFastify = require('./service/service-fastify');
-const serviceFastifyCors = require('./service/service-fastify-cors');
-const serviceFastifyStatic = require('./service/service-fastify-static');
-const serviceFastifyCookie = require('./service/service-fastify-cookie');
-const serviceFastifyJwt = require('./service/service-fastify-jwt');
-const serviceFetchq = require('./service/service-fetchq');
-const serviceFastifyFetchq = require('./service/service-fastify-fetchq');
+const serviceFastify = require('@forrestjs/service-fastify');
+const serviceFastifyCors = require('@forrestjs/service-fastify-cors');
+const serviceFastifyStatic = require('@forrestjs/service-fastify-static');
+const serviceFastifyCookie = require('@forrestjs/service-fastify-cookie');
+const serviceFastifyJwt = require('@forrestjs/service-fastify-jwt');
+const serviceFetchq = require('@forrestjs/service-fetchq');
+const serviceFastifyFetchq = require('@forrestjs/service-fastify-fetchq');
 const serviceTdd = require('./service/service-tdd');
 
 /**
